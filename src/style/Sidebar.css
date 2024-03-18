@@ -1,0 +1,88 @@
+
+body {
+    display: block !important;
+}
+
+.App {
+    display: flex;
+    font-family: "IBM Plex Sana Thai Looped", sans-serif; 
+    color: black;
+    background: #FFF8F1; 
+    height: 100vh;
+  }
+
+.body_container {
+    flex: 1;
+  }
+.closed{
+  margin-left: 2.8em;
+}
+.sidebar_container {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    left:0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+.sidebar{
+    display: flex;
+    width: 14rem;
+    height: 90%;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px 10px 15px 10px;
+    margin: 10px;
+    background: #FDC02F;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(5.5px);
+    border-radius:10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+  }
+.lines_icon{
+  display: flex;
+  align-self: flex-end;    
+  border-radius: 5px;
+  }
+  
+.profile { 
+  display: flex;
+  justify-content: center ;
+  width: 100%;
+  border-radius: 50%; 
+  height: auto;
+  width: 5rem;
+  height: 5rem;
+    } 
+
+.profile>img { 
+  width: 100%; 
+  height: auto; 
+  }
+.UserDetail{
+  display: flex;
+  flex-direction: column;
+}
+.UserDetail_container{
+  margin-bottom: 10px;
+}
+
+.groups{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* justify-content: space-between; */
+
+  }
+.group{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  }
+
+h3{
+  font-size: 1rem;
+  margin: 10px 0px 10px 0px
+  }

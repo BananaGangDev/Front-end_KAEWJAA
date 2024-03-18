@@ -1,0 +1,70 @@
+.LinkCom {
+    /* background-color: violet; */
+    width: 100vw;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.h2Link {
+    margin-top: 100px;
+    margin-bottom: 20px;
+    margin-left: -800px;
+}
+
+.LinkCom input {
+    width: 985px;
+    height: 30px;
+    background: white;
+    border: 10px solid #FBDA80;
+    border-radius: 20px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 18px;
+    color: #515151;
+    padding: 20px 45px 20px 30px;
+    /* margin-left: 100px; */
+}
+
+.LinkCom input:hover {
+    font-style: italic;
+    border: 10px solid #FBDA80;
+    /* background: #FFF8F1; */
+    color: black;
+}
+
+.LinkCom input:active {
+    border: 2px solid #515151;
+    background: #fff3b7;
+    color: black;
+}
+
+.LinkCom button {
+    font-family: 'Fredoka', sans-serif;
+    width: 150px;
+    height: 50px;
+    background: #FC5B5C;
+    color: white;
+    border: 2px solid rgba(0, 0, 0, .1);
+    outline: none;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight : bold;
+    margin-top: 50px;
+    margin-left: 800px;
+    transition: background-color 0.3s ease;
+}
+
+.LinkCom button:hover {
+    border: 2px solid #FC5B5C;
+    background: white;
+    color: #FC5B5C;
+}
+
+.LinkCom button:active {
+    border: 2px solid #FC5B5C;
+    background: white;
+    color: #FC5B5C;
+}
