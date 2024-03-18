@@ -1,0 +1,123 @@
+/* #root{
+  --color-primary: #FC5B5C;
+} */
+.document-title {
+    font-family: Dangrek, sans-serif;
+    /* src: url('../styles/Dangrek-Regular.ttf') format('truetype'); */
+    /* src: url('../styles/Fredoka-VariableFont_wdth,wght.ttf') format('truetype'); */
+    text-align: center;
+    font-size: 80px;
+    font-weight: bold;
+    border-bottom: 8px solid #FBDA80;
+    /* border-radius: 10px; */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+.tagset-title {
+  font-family: Dangrek, sans-serif;
+  text-align: center;
+  font-size: 80px;
+  font-weight: bold;
+  border-bottom: 8px solid #FBDA80;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+  
+  .button-bar {
+    font-family: Fredoka;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: none;
+  }
+
+  .corpus-button {
+    padding: 0.1em 1.0em;
+    border: none;
+  }
+
+  .concordancer-button {
+    padding: 0.1em 1.0em;
+    border: none;
+  }
+  
+  .sort-button {
+    background-color: var(--color-primary);
+    border: none;
+    padding: 0.1em 1.0em;
+  }
+  
+  .sort-button:focus {
+    background-color: #FC5B5C;
+  }
+  
+  .new-button {
+    background-color: #FC5B5C;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    color: #ffffff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    position: absolute;
+    bottom: 100px; 
+    right: 100px; 
+    border: none;
+  }
+  
+  .new-button:focus {
+    background-color: #fa4a4a;
+  }
+  
+  .item-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .item {
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px;
+  }
+  
+  .item-icon {
+    font-size: 80px;
+    text-align: center;
+    /* margin-bottom: 5px; */
+  }
+  
+  .item-name {
+    font-family: Fredoka, sans-serif;
+    font-weight: bold;
+  }
+  
+  .item-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+
+.tagset-create-button {
+  background-color: #FC5B5C;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  color: #ffffff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  position: fixed;
+
+  top: 120px;
+  right: 120px; 
+  border: none;
+}

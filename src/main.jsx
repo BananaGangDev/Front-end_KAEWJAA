@@ -10,14 +10,17 @@ import Logout from "./pages/Logout";
 import Concordance from "./pages/Concordance";
 import './style/main.css';
 
+import DocumentPage from './pages/DocumentPage';
+import TagsetPage from './pages/TagsetPage';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Document />} />
+        <Route path="/" element={<DocumentPage />} />
+          <Route path="tagset" element={<TagsetPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/concordance" element={<Concordance />} />
-          <Route path="/tagset" element={<Tagset />} />
           <Route path="/logout" element={<Logout />} />
 
           <Route path="*" element={<> not found</>} />
