@@ -17,12 +17,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<LoginForm />} />
+          <Route path="/document" element={<DocumentPage />} />
+          <Route path="tagset" element={<TagsetPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/import" element={<ImportDefault />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/concordance" element={<Concordance />} />
-          <Route path="/tagset" element={<Tagset />} />
-          <Route path="/logout" element={<Logout />} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>
