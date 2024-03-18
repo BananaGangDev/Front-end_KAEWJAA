@@ -1,0 +1,23 @@
+.item{
+    display: flex;
+    padding: 0.2em;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #FC5B5C;
+    margin: 5px 0 5px 0;
+    
+}
+
+.selected{
+    color: #fff;
+    background-color: #FC5B5C !important;
+
+}
+.icon{
+    margin-left: 6px;
+    margin-top: 6px;
+    padding: 0 10px 0 0;
+    
+}
