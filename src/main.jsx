@@ -1,12 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import LoginForm from '/src/pages/LoginForm.jsx';
+import ResetPassword from '/src/pages/ResetPassword.jsx';
+import ImportDefault from '/src/pages/ImportDefault.jsx';
 import './index.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import Document from "./pages/Document";
-import Tagset from "./pages/Tagset";
-import Logout from "./pages/Logout";
 import Concordance from "./pages/Concordance";
 import './style/main.css';
 
@@ -17,10 +16,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
       <BrowserRouter>
         <Routes>
-        <Route path="/" element={<DocumentPage />} />
-          <Route path="tagset" element={<TagsetPage />} />
+          <Route exact path="/" element={<LoginForm />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/import" element={<ImportDefault />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/concordance" element={<Concordance />} />
+          <Route path="/tagset" element={<Tagset />} />
           <Route path="/logout" element={<Logout />} />
 
           <Route path="*" element={<> not found</>} />

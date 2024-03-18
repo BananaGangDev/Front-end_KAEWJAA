@@ -1,0 +1,42 @@
+.FileCom {
+  width: 100vw;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  }
+  
+.h2File {
+    margin-top: 70px;
+    margin-bottom: 20px;
+    margin-left: -800px;
+  }
+  
+  /* You can add :hover and :active states for interactivity */
+.FileCom .drop-container, .choose-container {
+    /* Add styles for the drop area */
+    border-collapse: collapse;
+    border: 2px dashed #ccc; /* Example for dashed border */
+    padding: 20px;
+    text-align: center;
+    /* margin: 10px; */
+    background-color: #f9f9f9; /* Example for background color */
+}
+  
+.FileCom button {
+    font-family: 'Fredoka', sans-serif;
+    width: 150px;
+    height: 50px;
+    background: #FC5B5C;
+    color: white;
+    border: 2px solid rgba(0, 0, 0, .1);
+    outline: none;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight : bold;
+    margin-top: 50px;
+    margin-left: 800px;
+    transition: background-color 0.3s ease;
+}
