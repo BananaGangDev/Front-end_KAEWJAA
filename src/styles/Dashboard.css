@@ -1,0 +1,50 @@
+.dashboardpage {
+    font-family: "IBM Plex Sana Thai Looped", sans-serif;
+    color: black;
+    background: #FFF8F1;
+    display: flex;
+    flex-direction: column;
+    padding: 2em 2em 0 2em;
+    /* align-items: center; */
+  }
+.dashboardpage .cardsGroup{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.dashboardpage .cardsGroup .card{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 0.6em;
+    border-radius: 1.1em;
+}
+.dashboardpage .cardLogo{
+    font-size: 1em;
+}
+.dashboardpage .cardData{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    align-items: end;
+    font-size: 0.8em;
+}
+.dashboardpage .cardLabel{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.dashboardpage .filter-btn{
+    display: flex;
+    width: auto;
+    background-color: #fff;
+    font-size: 1.2em;
+    padding: 0.8em;
+    margin: 0.5em;
+    border-radius: 1.1em;
+}
