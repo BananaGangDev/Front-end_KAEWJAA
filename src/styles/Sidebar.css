@@ -8,7 +8,7 @@ body {
     font-family: "IBM Plex Sana Thai Looped", sans-serif; 
     color: black;
     background: #FFF8F1; 
-    height: 100vh;
+    /* height: 100vh; */
   }
 
 .body_container {
