@@ -1,5 +1,6 @@
-body {
+.Loginpage {
     background: linear-gradient(to top, #ffa043 20%, #FBDA80, #fff3b7);
+    height: 100vh;
 }
 
 .wrapper {
