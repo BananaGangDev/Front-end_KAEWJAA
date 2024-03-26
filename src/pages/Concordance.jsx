@@ -18,7 +18,7 @@ import { styled } from "@mui/system";
 import { unstable_useForkRef as useForkRef } from "@mui/utils";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
-import { Button } from "@mui/material";
+import AbcOutlinedIcon from "@mui/icons-material/AbcOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const CompactNumberInput = React.forwardRef(function CompactNumberInput(
@@ -145,40 +145,28 @@ const Pre = styled("pre")`
   font-size: 0.75rem;
 `;
 
-// detail | leftContext | rightContext
-const DATA = [
-  ["641074xxxx.pdf", 159, 6.0],
-  ["641074xxxx.pdf", 237, 9.0],
-  ["641074xxxx.pdf", 262, 16.0],
-  ["641074xxxx.pdf", 305, 3.7],
-  ["641074xxxx.pdf", 356, 16.0],
-  ["641074xxxx.pdf", 159, 6.0],
-  ["641074xxxx.pdf", 237, 9.0],
-  ["641074xxxx.pdf", 262, 16.0],
-  ["641074xxxx.pdf", 305, 3.7],
-  ["641074xxxx.pdf", 356, 16.0],
-  ["641074xxxx.pdf", 159, 6.0],
-  ["641074xxxx.pdf", 237, 9.0],
-  ["641074xxxx.pdf", 262, 16.0],
-  ["641074xxxx.pdf", 305, 3.7],
-  ["641074xxxx.pdf", 356, 16.0],
-];
+
+
 
 function createData(id, detailFile, leftContext, rightContext, pointFocus) {
   return { id, detailFile, leftContext, rightContext, pointFocus };
 }
 
 function Concordance() {
-  //Value Input
-  const [optionSearch, setOptionSearch] = useState("KWIC");
-  const handelOptionSearch = (event) => {
-    setOptionSearch(event.target.value);
-  };
-  const [wordFocus, setWord] = useState("to");
-  const [amount, setAmount] = useState("10,123");
-  const [perMillion, setPerMillion] = useState("12,345");
-  const [lengthSearch, setLength] = useState(10); // State สำหรับ CompactNumberInput
-  let information = `Simple ${wordFocus} ・${amount} ・ ${perMillion} per million token • 1.2% `;
+  const [search, setSearch] = useState(false);
+  const [wordFocus, setWordFocus] = useState("");
+  //amount | perMillion | perCent
+  const [dataAnalysis, setDataAnalysis] = useState([null, null, null]);
+
+  // detail | leftContext | rightContext
+const [data, setData] = useState([[]]);
+
+  const [searchData, setSearchData] = useState({
+    search: "",
+    type: "KWIC",
+    lenght: 10,
+  });
+  let information = `Simple ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `;
 
   const columns = [
     {
@@ -200,8 +188,8 @@ function Concordance() {
       align: "right",
     },
     {
-      width: 50,
-      label: optionSearch,
+      width: searchData.type === "KWIC" ? 50 :300,
+      label: searchData.type,
       dataKey: "pointFocus",
       align: "center",
     },
@@ -213,8 +201,8 @@ function Concordance() {
     },
   ];
 
-  const rows = Array.from({ length: DATA.length }, (_, index) => {
-    return createData(index + 1, ...DATA[index], wordFocus);
+  const rows = Array.from({ length: data.length }, (_, index) => {
+    return createData(index + 1, ...data[index], wordFocus);
   });
 
   const VirtuosoTableComponents = {
@@ -233,6 +221,7 @@ function Concordance() {
       <TableBody {...props} ref={ref} />
     )),
   };
+
   //Header
   function fixedHeaderContent() {
     return (
@@ -241,12 +230,8 @@ function Concordance() {
           <TableCell
             key={column.dataKey}
             variant="head"
-            // align={column.numeric || false ? 'right' : 'left'}
             align={column.align}
             style={{ width: column.width }}
-            // sx={{
-            //   backgroundColor: '#FBDA80',
-            // }}
           >
             {column.label}
           </TableCell>
@@ -254,7 +239,6 @@ function Concordance() {
       </TableRow>
     );
   }
-
   //Context
   function rowContent(_index, row) {
     return (
@@ -268,46 +252,83 @@ function Concordance() {
     );
   }
 
+  const handleSearch = () => {
+    setSearch(true);
+    setData([
+      ["641074xxxx.pdf", "The cat climbed", " the top of"],
+      ["641074xxxx.pdf", "The students gathere", "protest against the"],
+      ["641074xxxx.pdf", "sent a letter", "her grandmother. I"],
+      ["641074xxxx.pdf", "into the pool", "cool off. He"],
+      ["641074xxxx.pdf", "brings a book ", "read on the"],
+      ["641074xxxx.pdf", "They are planning", "move to a"],
+      ["641074xxxx.pdf", "planning to move ", "a new city"],
+      ["641074xxxx.pdf", "chef added salt", "enhance the flavor"],
+      ["641074xxxx.pdf", "The cat climbed", " the top of"],
+      ["641074xxxx.pdf", "The students gathere", "protest against the"],
+      ["641074xxxx.pdf", "sent a letter", "her grandmother. I"],
+      ["641074xxxx.pdf", "into the pool", "cool off. He"],
+      ["641074xxxx.pdf", "brings a book ", "read on the"],
+      ["641074xxxx.pdf", "They are planning", "move to a"],
+      ["641074xxxx.pdf", "planning to move ", "a new city"],
+      ["641074xxxx.pdf", "chef added salt", "enhance the flavor"],
+    ]);
+    setWordFocus(searchData.search);
+  };
+  
+
   return (
-    <div className="page">
+    <div className="Concordancepage">
       <div className="header">
         <ArrowBackIcon id="backArrow" />
         <div className="headerContext">Concordance</div>
-        
       </div>
       <hr id="line" />
       <div className="body">
         <div className="filter-concordance">
           {/* box analysis */}
           <div className="box data-analysis">
-            {information}{" "}
-            <div className="info-icon">
-              <InfoOutlinedIcon />{" "}
-            </div>
+            {/* {`Simple  ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `} */}
+            {search ? 
+              `Simple  ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `
+              : "No Data"}
+            <div className="info-icon">{/* <InfoOutlinedIcon /> */}</div>
           </div>
 
           {/* input filter */}
+          {/* wordSearch ->  searchData.search */}
           <div className="box input-wrapper">
-            <SearchIcon
+            <AbcOutlinedIcon
               id="search-icon"
               sx={{ color: "action.active", mr: 1, my: 0.5 }}
             />
             <TextField
               id="filled-basic"
-              placeholder="Search"
+              placeholder="Word Search"
+              value={searchData.search}
               variant="standard"
+              onChange={(event) =>
+                setSearchData((prevState) => ({
+                  ...prevState,
+                  search: event.target.value,
+                }))
+              }
             />
           </div>
 
+          {/* type(Context/ KWIC) ->  searchData.type */}
           <div className="box input-wrapper">
-            {/* <InputLabel >Age</InputLabel> */}
             <Select
               variant="standard"
               id="option-search"
               className="box input-wrapper"
-              value={optionSearch}
+              value={searchData.type}
               placeholder="Search"
-              onChange={handelOptionSearch}
+              onChange={(event) =>
+                setSearchData((prevState) => ({
+                  ...prevState,
+                  type: event.target.value,
+                }))
+              }
             >
               <MenuItem value={"KWIC"}>KWIC</MenuItem>
               <MenuItem value={"Context"}>Context</MenuItem>
@@ -315,26 +336,40 @@ function Concordance() {
           </div>
 
           {/* Number */}
-
-          <div className="box input-wrapper">
+          {/* length ->  searchData.lenght */}
+          <div className="box input-wrapper word-num">
             <Layout>
-              <Pre>Number of word: {lengthSearch ?? " "}</Pre>
+              <Pre>Number of word: {searchData.lenght}</Pre>
+
               <CompactNumberInput
                 aria-label="Compact number input"
                 placeholder="Type a number…"
-                readOnly
-                value={lengthSearch}
-                min={0}
-                onChange={(event, val) => setLength(val)}
+                value={searchData.lenght}
+                min={1}
+                onChange={(event, value) =>
+                  setSearchData((prevState) => ({
+                    ...prevState,
+                    lenght: value,
+                  }))
+                }
               />
             </Layout>
           </div>
 
-          <button className="btn-search">Search</button>
+          <button 
+          className="btn-search"
+          onClick={handleSearch}
+          >
+            <SearchIcon
+              id="search-icon"
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+            />
+            Search
+          </button>
 
           <div className="box folderName">
             <DescriptionOutlinedIcon />
-            Folder name
+            CN342(666)_TU....
           </div>
         </div>
 
