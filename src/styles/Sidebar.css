@@ -1,6 +1,7 @@
 
-body {
+.Sidebar {
     display: block !important;
+    min-width: 320px;
 }
 
 .App {

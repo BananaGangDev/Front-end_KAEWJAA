@@ -46,6 +46,9 @@ function sidebar(props) {
   };
 
   return (
+    <div className="Sidebar">
+
+    
     <div className="App">
       <motion.div
       data-open={open}
@@ -145,6 +148,7 @@ function sidebar(props) {
         {props.children}
       </div>
 
+    </div>
     </div>
   );
 }
