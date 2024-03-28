@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import CreateTagsetModal from '../components/CreateTagsetModal';
 import TagsetAccordion from '../components/TagsetAccordion';
 import { Container, Row, Col, Button, Dropdown, FormControl, InputGroup, Modal, Form } from 'react-bootstrap';
 import { BsPlus, BsFileEarmarkText, BsFolderPlus, BsPencil, BsTrash } from 'react-icons/bs';
-import '../styles/Page.css';
+import '/src/style/Page.css';
 
 function TagsetPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);

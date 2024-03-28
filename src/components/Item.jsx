@@ -3,7 +3,7 @@ import {motion} from 'framer-motion'
 import { BrowserRouter as Router, NavLink } from "react-router-dom";
 import { useState } from "react";
 
-import './Item.css'
+import '/src/components/Item.css'
 function Item({to,icon, name}) {
 
     const [selectedTab, setSelectedTab] = useState("");

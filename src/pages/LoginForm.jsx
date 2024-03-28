@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import '/src/styles/LoginForm.css';
-import { AiOutlineUser } from "react-icons/ai";
-import { MdLockOpen } from "react-icons/md";
-// import EmptyPage from '../../EmptyPage';
+import { useNavigate } from 'react-router-dom';
 import logo from '/src/assets/kaewja-logo.jpg';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +8,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -26,9 +25,11 @@ const LoginForm = () => {
 
   if (isLoggedIn) {
     console.log("Login successfully!!!");
+    navigate('/import');
   }
 
   return (
+    <>
     <div className='wrapper'>
         <form onSubmit={handleLogin}>
             <div className="logo-container">
@@ -43,7 +44,7 @@ const LoginForm = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
-                <AiOutlineUser className='icon'/>
+                {/* <AiOutlineUser className='icon'/> */}
             </div>
             <div className="input-box2">
                 <input
@@ -53,18 +54,19 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <MdLockOpen className='icon'/>
+                {/* <MdLockOpen className='icon'/> */}
 
             </div>
 
             <div className="forgot">
-              {/* <p>Forgot your password? <Link to="/reset_password">Click Here</Link> </p> */}
               <p>Forgot your password? <Link to="reset-password">Click Here</Link> </p>
             </div>
 
             <button type='submit'>Login</button>
         </form>
     </div>
+    </>
+
   );
 }
 

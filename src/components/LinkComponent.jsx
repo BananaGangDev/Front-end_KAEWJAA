@@ -52,9 +52,15 @@ function LinkUploadComponent() {
 
   return (
     <div className='LinkCom'>
+      <div className='link-header-text'>
         <h2 className='h2Link'>Embed link</h2>
+      </div>
+      <div className='link-input'>
         <input type="text" value={link} onChange={handleLinkChange} placeholder="Paste your link here" />
+      </div>
+      <div className='link-submit'>
         <button onClick={handleUpload}>Submit</button>
+      </div>
     </div>
   );
 }

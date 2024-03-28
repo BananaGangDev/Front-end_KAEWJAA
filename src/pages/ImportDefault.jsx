@@ -9,7 +9,9 @@ function ImportFilePage() {
   return (
     <div className='ImportFilePage'>
        <div>
-        <h1>Import File</h1>
+        <div className='h1-class'>
+          <h1>Import File</h1>
+        </div>
         <div className='ButtonFrame'>
           <button className={`FileMode ${uploadType === 'file' ? 'active' : ''}`} onClick={() => setUploadType('file')}>File</button>
           <button className={`LinkMode ${uploadType === 'link' ? 'active' : ''}`} onClick={() => setUploadType('link')}>Link</button>
