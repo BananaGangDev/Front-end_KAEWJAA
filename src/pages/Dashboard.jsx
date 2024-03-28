@@ -1,6 +1,6 @@
 import React, { StrictMode } from "react";
 import SideBar from "../components/SideBar";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Fab from '@mui/material/Fab';
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
@@ -94,36 +94,7 @@ function Dashboard() {
     Value: item.id,
     Errortagger: item.value,
    }))
-  //[
-  //   {
-  //     Value: "AD",
-  //     Errortagger: 152,
-  //   },
-  //   {
-  //     Value: "AE",
-  //     Errortagger: 177,
-  //   },
-  //   {
-  //     Value: "AF",
-  //     Errortagger: 15,
-  //   },
-  //   {
-  //     Value: "AG",
-  //     Errortagger: 46,
-  //   },
-  //   {
-  //     Value: "AI",
-  //     Errortagger: 168,
-  //   },
-  //   {
-  //     Value: "AL",
-  //     Errortagger: 114,
-  //   },
-  //   {
-  //     Value: "AM",
-  //     Errortagger: 23,
-  //   },
-  // ];
+
 
   const MyResponsiveLine = ({ data }) => (
     <ResponsiveLine
@@ -311,10 +282,13 @@ function Dashboard() {
         </div>
         <hr id="line" />
         <div className="body">
-          <div className="filter-btn">
-            Add Filter
-            <FilterAltOutlinedIcon />
+          <div className="btn-container">
+            <Fab variant="extended" className="filter-btn">
+              <FilterAltOutlinedIcon sx={{ mr: 1 }} />
+              Add Filter
+            </Fab>
           </div>
+
           <div className="cardsGroup">
             {Cards.map((card, index) => (
               <Paper
