@@ -48,34 +48,34 @@ function Dashboard() {
 
   const dashboard_Data = [
     {
-      id: "rust",
-      label: "rust",
-      value: 232,
+      id: "Lexis (L)",
+      label: "Lexis (L)",
+      value: 7.5,
     },
     {
-      id: "php",
-      label: "php",
-      value: 220,
+      id: "Word(W)",
+      label: "Word(W)",
+      value: 10.5,
     },
     {
-      id: "haskell",
-      label: "haskell",
-      value: 507,
+      id: "Infelicities (Z)",
+      label: "Infelicities (Z)",
+      value: 1.3,
     },
     {
-      id: "c",
-      label: "c",
-      value: 56,
+      id: "Lexico-G(X)",
+      label: "Lexico-G(X)",
+      value: 30,
     },
     {
-      id: "erlang",
-      label: "erlang",
-      value: 164,
+      id: "Grammar (G)",
+      label: "Grammar (G)",
+      value: 21.8,
     },
     {
-      id: "erlangs",
-      label: "erlangs",
-      value: 200,
+      id: "Form (F)",
+      label: "Form (F)",
+      value: 26.3,
     },
   ];
 
