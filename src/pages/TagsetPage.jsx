@@ -62,7 +62,17 @@ function TagsetPage() {
         </Col>
       </Row>
       <div>
-        <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateModal(true)}>+</Button>
+        {/* <div className='tagset-description'>
+        <Col>
+            <h2>Name</h2>
+            <h2>Description</h2>
+          </Col>
+        </div> */}
+        <Button className='tagset-create-button' variant="primary" 
+        onClick={() => setShowCreateModal(true)}
+        >
+          <BsPlus/>
+        </Button>
         <CreateTagsetModal
           show={showCreateModal}
           setShowCreateModal={setShowCreateModal}
@@ -74,6 +84,9 @@ function TagsetPage() {
         {newTagset && newTagset.id && (
           <TagsetAccordion key={newTagset.id} name={newTagset.name} description={newTagset.description} />
         )}
+        {/* <TagsetAccordion>
+          
+        </TagsetAccordion> */}
       </div>
     </Container>
   );

@@ -22,11 +22,11 @@ function EditModal({
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={() => handleEdit(selectedItem.name)}>
-          Save
-        </Button>
         <Button variant="secondary" onClick={() => setShowEditModal(false)}>
           Cancel
+        </Button>
+        <Button variant="primary" onClick={() => handleEdit(selectedItem.name)}>
+          Save
         </Button>
       </Modal.Footer>
     </Modal>

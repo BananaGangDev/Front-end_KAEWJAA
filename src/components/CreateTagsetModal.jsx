@@ -77,8 +77,8 @@ function CreateTagsetModal({ show, setShowCreateModal }) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleCreateClick}>Create</Button>
         <Button variant="secondary" onClick={() => setShowCreateModal(false)}>Cancel</Button>
+        <Button variant="primary" onClick={handleCreateClick}>Create</Button>
       </Modal.Footer>
     </Modal>
   );

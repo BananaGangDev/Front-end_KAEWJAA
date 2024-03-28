@@ -3,6 +3,8 @@ import { Container, Row, Col, Button, Dropdown, FormControl, InputGroup, Modal }
 import { BsPlus, BsFileEarmarkText, BsFolderPlus, BsPencil, BsTrash } from 'react-icons/bs';
 import '../styles/Page.css';
 
+import Fab from '@mui/material/Fab';
+
 function DocumentPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
@@ -63,7 +65,7 @@ function DocumentPage() {
         <Col className="text-right">
           <Button className="new-button" onClick={() => setShowCreateModal(true)}>
             <BsPlus />
-          </Button>
+          </Button>         
         </Col>
       </Row>
       {/* เริ่มต้นแถบตัวเลือกสร้างไฟล์หรือโฟลเดอร์ */}
@@ -96,7 +98,7 @@ function DocumentPage() {
       {/* สิ้นสุดแถบตัวเลือกสร้างไฟล์หรือโฟลเดอร์ */}
       <Row className="item-list">
         {items.map((item) => (
-          <Col key={item.id} className="item">
+          <Col key={item.id} className="file-item">
             <div className="item-icon">
               {item.type === 'file' ? <BsFileEarmarkText /> : <BsFolderPlus />}
             </div>
