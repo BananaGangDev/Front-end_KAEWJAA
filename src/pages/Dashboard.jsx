@@ -1,6 +1,6 @@
 import React, { StrictMode } from "react";
 import SideBar from "../components/SideBar";
-import Fab from '@mui/material/Fab';
+import Fab from "@mui/material/Fab";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
@@ -10,6 +10,11 @@ import Paper from "@mui/material/Paper";
 import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveBar } from "@nivo/bar";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 function Dashboard() {
   const Cards = [
@@ -87,14 +92,12 @@ function Dashboard() {
         y: item.value,
       })),
     },
-
   ];
 
   const bar_Data = dashboard_Data.map((item) => ({
     Value: item.id,
     Errortagger: item.value,
-   }))
-
+  }));
 
   const MyResponsiveLine = ({ data }) => (
     <ResponsiveLine
@@ -274,6 +277,10 @@ function Dashboard() {
     />
   );
 
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const tagsetgroup = [{ title: "AjarnNok" }, { title: "AjarnJack" }];
+
   return (
     <SideBar>
       <div className="dashboardpage">
@@ -282,11 +289,37 @@ function Dashboard() {
         </div>
         <hr id="line" />
         <div className="body">
-          <div className="btn-container">
-            <Fab variant="extended" className="filter-btn">
-              <FilterAltOutlinedIcon sx={{ mr: 1 }} />
-              Add Filter
-            </Fab>
+          <div className="btn-container ">
+            {/* <Fab variant="extended" className="filter-btn">
+                <FilterAltOutlinedIcon sx={{ mr: 1 }} />
+                Add Filter
+              </Fab> */}
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              options={tagsetgroup}
+              disableCloseOnSelect
+              getOptionLabel={(option) => option.title}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.title}
+                </li>
+              )}
+              style={{ width: "auto", minWidth: 200, background: "#fff" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Choose Tagset"
+                  placeholder="Tagset"
+                />
+              )}
+            />
           </div>
 
           <div className="cardsGroup">
