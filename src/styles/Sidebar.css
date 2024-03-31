@@ -13,10 +13,12 @@
   }
 
 .body_container {
-    flex: 1;
+  flex: 1;
+  width: calc(100% - 282px);
   }
-.closed{
-  margin-left: 2.8em;
+.body_container-closed{
+  margin-left: 3em;
+  width: 100%;
 }
 .sidebar_container {
     height: 100vh;

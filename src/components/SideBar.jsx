@@ -144,7 +144,7 @@ function sidebar(props) {
         </motion.div>
       </motion.div>
 
-      <div className={`body_container ${open ? "" : "closed"}`}>
+      <div className={`body_container${open ? "" : "-closed"}`}>
         {props.children}
       </div>
 
