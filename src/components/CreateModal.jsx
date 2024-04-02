@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, InputGroup, FormControl } from 'react-bootstrap';
+import '../styles/CreateModal.css';
 
 
 function CreateModal({ show, setShowCreateModal, handleCreate }) {
@@ -20,7 +21,7 @@ function CreateModal({ show, setShowCreateModal, handleCreate }) {
 
 
   return (
-    <Modal className='create-file-modal' show={show} onHide={() => setShowCreateModal(false)}>
+    <Modal className='modal-dialog' show={show} onHide={() => setShowCreateModal(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Create New {type === 'file' ? 'File' : 'Folder'}</Modal.Title>
       </Modal.Header>
