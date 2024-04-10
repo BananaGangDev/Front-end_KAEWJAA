@@ -1,0 +1,11 @@
+.tagset-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}  
+.header-column {
+    flex: 1;
+    text-align: center;
+}
+  

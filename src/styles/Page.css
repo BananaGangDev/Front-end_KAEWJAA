@@ -1,6 +1,11 @@
-/* #root{
-  --color-primary: #FC5B5C;
-} */
+:root{
+  color:black;
+}
+
+body {
+  background: #FFF8F1;
+}
+
 .document-title {
     font-family: Dangrek, sans-serif;
     /* src: url('../styles/Dangrek-Regular.ttf') format('truetype'); */
@@ -9,9 +14,10 @@
     font-size: 80px;
     font-weight: bold;
     border-bottom: 8px solid #FBDA80;
-    /* border-radius: 10px; */
+
     padding-bottom: 10px;
     margin-bottom: 20px;
+    color: black;
   }
 
 .tagset-title {
@@ -37,17 +43,19 @@
   .corpus-button {
     padding: 0.1em 1.0em;
     border: none;
+    background-color: #FC5B5C;
   }
 
   .concordancer-button {
     padding: 0.1em 1.0em;
     border: none;
+    background-color: #FC5B5C;
   }
   
   .sort-button {
-    background-color: var(--color-primary);
     border: none;
     padding: 0.1em 1.0em;
+    background-color: #FC5B5C;
   }
   
   .sort-button:focus {
@@ -58,12 +66,13 @@
     background-color: #FC5B5C;
     justify-content: center;
     align-items: center;
-    font-size: large;
     color: #ffffff;
     border: none;
     width: 40px;
     height: 40px;
-    border-radius: 100%;
+    padding: 5px 5px;
+    font-size: 30px;
+    border-radius: 35px;
     position: absolute;
     bottom: 100px; 
     right: 100px; 
@@ -80,8 +89,7 @@
     gap: 20px;
   }
   
-  .item {
-    /* border: 1px solid #ccc; */
+  .file-item {
     border-radius: 5px;
     padding: 10px;
     width: 200px;
@@ -90,7 +98,6 @@
   .item-icon {
     font-size: 80px;
     text-align: center;
-    /* margin-bottom: 5px; */
   }
   
   .item-name {
@@ -109,15 +116,51 @@
   background-color: #FC5B5C;
   justify-content: center;
   align-items: center;
-  font-size: large;
   color: #ffffff;
   border: none;
   width: 40px;
   height: 40px;
+  padding: 5px 5px;
+  font-size: 30px;
+  border-radius: 35px;
   border-radius: 100%;
   position: fixed;
 
-  top: 120px;
+  top: 30px;
   right: 120px; 
+  border: none;
+}
+
+.tagset-description {
+  font-family: Fredoka;
+  text-align: center;
+  font-size: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+
+/* .create-file-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: 'background.paper';
+  border: 2px solid #000;
+  box-shadow: 24;
+  padding: 4;
+} */
+
+input {
+  background-color: white;
+  color:gray;
+}
+
+textarea {
+  font-family: fredoka;
+  background-color: white;
+  color:gray;
+  font-size: 1em;
   border: none;
 }

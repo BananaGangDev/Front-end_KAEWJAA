@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Routes>
           <Route exact path="/" element={<LoginForm />} />
           <Route path="/document" element={<DocumentPage />} />
-          <Route path="tagset" element={<TagsetPage />} />
+          <Route path="/tagset" element={<TagsetPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/import" element={<ImportDefault />} />
           <Route path="/dashboard" element={<Dashboard />} />
