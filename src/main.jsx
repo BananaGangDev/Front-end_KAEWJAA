@@ -7,7 +7,7 @@ import './index.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Concordance from "./pages/Concordance";
-import './style/main.css';
+import '/src/styles/main.css';
 
 import DocumentPage from './pages/DocumentPage';
 import TagsetPage from './pages/TagsetPage';
