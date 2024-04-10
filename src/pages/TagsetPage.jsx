@@ -4,6 +4,7 @@ import TagsetAccordion from '../components/TagsetAccordion';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { BsPlus } from 'react-icons/bs';
 import '../styles/Page.css';
+import '../styles/tagsetHeader.css';
 
 function TagsetPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -12,27 +13,17 @@ function TagsetPage() {
   const [tagName, setTagName] = useState('');
   const [tagDescription, setTagDescription] = useState('');
 
-  const fetchTagsets = async () => {
-    // ปรับแต่ง API call นี้ให้เหมาะกับระบบของคุณ
-    const response = await fetch('https://documentation.softwareag.com/webmethods/compendiums/v10-11/C_API_Management/api-mgmt-comp/co-api_tagging.html');
-    const data = await response.json();
-
-    setTagsets(data);
-  };
-
   useEffect(() => {
+    const fetchTagsets = async () => {
+      // ปรับแต่ง API call นี้ให้เหมาะกับระบบของคุณ
+      const response = await fetch('https://documentation.softwareag.com/webmethods/compendiums/v10-11/C_API_Management/api-mgmt-comp/co-api_tagging.html');
+      const data = await response.json();
+
+      setTagsets(data);
+    };
+
     fetchTagsets();
   }, []);
-
-  useEffect(() => {
-    if (newTagset && newTagset.id) {
-      // เพิ่ม Tagset ใหม่เข้าไปใน array `tagsets`
-      setTagsets([...tagsets, newTagset]);
-
-      // Reset state `newTagset`
-      setNewTagset(null);
-    }
-  }, [newTagset]);
 
   const handleCreateClick = () => {
     // ตรวจสอบว่าชื่อ Tagset และคำอธิบายไม่เป็นค่าว่าง
@@ -47,11 +38,11 @@ function TagsetPage() {
         description: tagDescription,
       });
 
+      // นำข้อมูลไปสร้าง Tagset จริง ๆ แล้วบันทึกข้อมูลลงในระบบ
+      console.log('Creating tagset with name:', tagName, 'and description:', tagDescription);
       // ปิดโมดอล
       setShowCreateModal(false);
-      // Clear input fields
-      setTagName('');
-      setTagDescription('');
+      // ส่วนที่เหลือคือการสร้าง Tagset จริง ๆ แล้วบันทึกข้อมูลลงในระบบ
     }
   };
 
@@ -62,6 +53,11 @@ function TagsetPage() {
           <h1 className="tagset-title">Tagset</h1>
         </Col>
       </Row>
+      <Row className="tagset-header">
+        <Col className="header-column">Name</Col>
+        <Col className="header-column">Description</Col>
+        <Col className="header-column">Total tagset: {tagsets.length + (newTagset ? 1 : 0)}</Col>
+      </Row>
       <div>
         <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateModal(true)}>
           <BsPlus/>
@@ -69,6 +65,7 @@ function TagsetPage() {
         <CreateTagsetModal
           show={showCreateModal}
           setShowCreateModal={setShowCreateModal}
+          // handleCreate={handleCreateClick}
           onCreateTagset={handleCreateClick}
           tagName={tagName}
           setTagName={setTagName}
@@ -79,7 +76,6 @@ function TagsetPage() {
         {tagsets.map((tagset) => (
           <TagsetAccordion key={tagset.id} name={tagset.name} description={tagset.description} />
         ))}
-        {/* แสดง Tagset ที่ถูกสร้างใหม่ */}
         {newTagset && newTagset.id && (
           <TagsetAccordion key={newTagset.id} name={newTagset.name} description={newTagset.description} />
         )}
