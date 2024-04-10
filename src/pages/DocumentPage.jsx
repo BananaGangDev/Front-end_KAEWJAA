@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Dropdown, FormControl, InputGroup, Modal }
 import { BsPlus, BsFileEarmarkText, BsFolderPlus, BsPencil, BsTrash } from 'react-icons/bs';
 import '../styles/Page.css';
 
-import Fab from '@mui/material/Fab';
+// import Fab from '@mui/material/Fab';
 
 function DocumentPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -13,6 +13,7 @@ function DocumentPage() {
   // const [selectedItem, setSelectedItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState({});
   const [items, setItems] = useState([]);
+
 
   const handleCreate = (name, description) => {
     const newItem = {
@@ -62,11 +63,15 @@ function DocumentPage() {
             </Dropdown>
           </div>
         </Col>
-        <Col className="text-right">
-          <Button className="new-button" onClick={() => setShowCreateModal(true)}>
-            <BsPlus />
-          </Button>         
-        </Col>
+        <Dropdown>
+        <Dropdown.Toggle className="new-button" id="dropdown-basic">
+          <BsPlus />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item onClick={() => setShowCreateModal(true)}>Create File</Dropdown.Item>
+          <Dropdown.Item href="/import">Import File</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
       </Row>
       {/* เริ่มต้นแถบตัวเลือกสร้างไฟล์หรือโฟลเดอร์ */}
       <Modal show={showCreateModal || showImportModal} onHide={() => setShowCreateModal(false)}>
