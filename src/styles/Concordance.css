@@ -101,6 +101,11 @@
 
 }
 
+.focus{
+  padding-left: 1em;
+  color: #ff3e3e;
+}
+
 table {
   border-collapse: collapse;
   font-size: 0.8rem;

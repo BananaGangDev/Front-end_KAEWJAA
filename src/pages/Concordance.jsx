@@ -20,9 +20,9 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import {Alert, Autocomplete, Stack} from "@mui/material";
-import { Link } from 'react-router-dom';
-
+import { Alert, Autocomplete, Stack } from "@mui/material";
+import { Link } from "react-router-dom";
+import '../styles/Concordance.css'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -118,6 +118,7 @@ const StyledStepperButton = styled("button")(
 `
 );
 
+//data
 function createData(id, detailFile, leftContext, rightContext, pointFocus) {
   return { id, detailFile, leftContext, rightContext, pointFocus };
 }
@@ -131,7 +132,7 @@ function Concordance() {
   const [search, setSearch] = useState(false);
   const [wordFocus, setWordFocus] = useState("");
   //amount | perMillion | perCent
-  const [dataAnalysis, setDataAnalysis] = useState([null, null, null]);
+  const [dataAnalysis, setDataAnalysis] = useState([16, 123000, 98]);
 
   // detail | leftContext | rightContext
   const [data, setData] = useState([[]]);
@@ -228,7 +229,7 @@ function Concordance() {
   const [statusInput, setStatusInput] = useState();
 
   const clickSearch = () => {
-    setStatusInput(checkInput(checkedValues, searchData.search))
+    setStatusInput(checkInput(checkedValues, searchData.search));
     //check value
     if (statusInput) {
       console.log("Pass");
@@ -236,14 +237,16 @@ function Concordance() {
       setWordFocus(searchData.search);
       // set data ส่งให้API
       setData([
-        ["641074xxxx.pdf", "The cat climbed", " the top of"],
-        ["641074xxxx.pdf", "The students gathere", "protest against the"],
-        ["641074xxxx.pdf", "sent a letter", "her grandmother. I"],
-        ["641074xxxx.pdf", "into the pool", "cool off. He"],
-        ["641074xxxx.pdf", "brings a book ", "read on the"],
-        ["641074xxxx.pdf", "They are planning", "move to a"],
-        ["641074xxxx.pdf", "planning to move ", "a new city"],
-        ["641074xxxx.pdf", "chef added salt", "enhance the flavor"],
+        ["641074xxx1.pdf", "The cat climbed", " the top of"],
+        ["641074xxx2.pdf", "The students gathere", "protest against the"],
+        ["641074xxx2.pdf", "sent a letter", "her grandmother. I"],
+        ["641074xxx3.pdf", "into the pool", "cool off. He"],
+        ["641074xxx4.pdf", "brings a book ", "read on the"],
+        ["641074xxx5.pdf", "They are planning", "move to a"],
+        ["641074xxx6.pdf", "planning to move ", "a new city"],
+        ["641074xxx6.pdf", "chef added salt", "enhance the flavor"],
+        ["641074xxx7.pdf", "planning to move ", "a new city"],
+        ["641074xxx7.pdf", "chef added salt", "enhance the flavor"],
       ]);
       setWordFocus(searchData.search);
     } else {
@@ -252,12 +255,13 @@ function Concordance() {
   };
 
   const fileName = [
-    "The Shawshank Redemption",
-    "The Godfather",
-    "The Dark Knight",
-    "12 Angry Men",
-    "Schindler's List",
-    "Pulp Fiction",
+    "641074xxx1.pdf",
+    "641074xxx2.pdf",
+    "641074xxx3.pdf",
+    "641074xxx4.pdf",
+    "641074xxx5.pdf",
+    "641074xxx6.pdf",
+    "641074xxx7.pdf",
   ];
 
   //setting alert 5sec
@@ -279,7 +283,7 @@ function Concordance() {
   return (
     <div className="Concordancepage">
       <div className="header">
-      <Link to="/document">
+        <Link to="/document">
           <ArrowBackIcon id="backArrow" />
         </Link>
         <div className="headerContext">Concordancer</div>
@@ -287,7 +291,7 @@ function Concordance() {
       <hr id="line" />
       <Stack
         id="alert-error-input"
-        style={{ display: showAlert&&statusInput ? "block" : "none" }}
+        style={{ display: showAlert && statusInput ? "block" : "none" }}
       >
         <Alert variant="filled" severity="error">
           Data input invalid.
@@ -297,37 +301,43 @@ function Concordance() {
         <div className="filter-concordance">
           {/* box analysis */}
           <div className="box data-analysis">
-            {search
-              ? `Simple  ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `
-              : "No Data"}
+            {search ? (
+              <>
+                Simple 
+                <div className="focus">  {wordFocus}</div>・
+                {dataAnalysis[0]} ・ {dataAnalysis[1]} per million token •{" "}
+                {dataAnalysis[2]}
+              </>
+            ) : (
+              "No Data"
+            )}
             <div className="info-icon">{/* <InfoOutlinedIcon /> */}</div>
           </div>
 
           <Autocomplete
-    multiple
-    className="filename-input"
-    options={['All', ...fileName]}
-    groupBy={(option) => (option === 'All' ? null : 'Files')}
-    getOptionLabel={(option) => option}
-    limitTags={2}
-    disableCloseOnSelect
-    onChange={handleFilename}
-    renderOption={(props, option, { selected }) => (
-        <li {...props}>
-            <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
-            />
-            {option}
-        </li>
-    )}
-    renderInput={(params) => (
-        <TextField {...params} label="Choose File" placeholder="File" />
-    )}
-/>
-
+            multiple
+            className="filename-input"
+            options={["All", ...fileName]}
+            groupBy={(option) => (option === "All" ? null : "Files")}
+            getOptionLabel={(option) => option}
+            limitTags={2}
+            disableCloseOnSelect
+            onChange={handleFilename}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField {...params} label="Choose File" placeholder="File" />
+            )}
+          />
 
           <Paper component="form" className="SearchBox">
             <InputBase

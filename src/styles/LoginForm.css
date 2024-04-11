@@ -145,14 +145,6 @@
     margin-top: 10px;
 } */
 
-body {
-    background: linear-gradient(to top, #ffa043 20%, #FBDA80, #fff3b7);
-    color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
 
 .wrapper {
     text-align: center;
