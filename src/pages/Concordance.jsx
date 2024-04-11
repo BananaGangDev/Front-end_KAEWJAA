@@ -18,11 +18,11 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import Alert from "@mui/material/Alert";
-import Stack from "@mui/material/Stack";
+import {Alert, Autocomplete, Stack} from "@mui/material";
+import { Link } from 'react-router-dom';
+
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -279,7 +279,9 @@ function Concordance() {
   return (
     <div className="Concordancepage">
       <div className="header">
-        <ArrowBackIcon id="backArrow" />
+      <Link to="/document">
+          <ArrowBackIcon id="backArrow" />
+        </Link>
         <div className="headerContext">Concordance</div>
       </div>
       <hr id="line" />
@@ -302,28 +304,30 @@ function Concordance() {
           </div>
 
           <Autocomplete
-            multiple
-            className="filename-input"
-            options={["All", ...fileName]}
-            limitTags={2}
-            disableCloseOnSelect
-            getOptionLabel={(option) => option}
-            onChange={handleFilename}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option}
-              </li>
-            )}
-            renderInput={(params) => (
-              <TextField {...params} label="Choose File" placeholder="File" />
-            )}
-          />
+    multiple
+    className="filename-input"
+    options={['All', ...fileName]}
+    groupBy={(option) => (option === 'All' ? null : 'Files')}
+    getOptionLabel={(option) => option}
+    limitTags={2}
+    disableCloseOnSelect
+    onChange={handleFilename}
+    renderOption={(props, option, { selected }) => (
+        <li {...props}>
+            <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
+            />
+            {option}
+        </li>
+    )}
+    renderInput={(params) => (
+        <TextField {...params} label="Choose File" placeholder="File" />
+    )}
+/>
+
 
           <Paper component="form" className="SearchBox">
             <InputBase

@@ -6,7 +6,6 @@ import ImportDefault from '/src/pages/ImportDefault.jsx';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Concordance from "./pages/Concordance";
-import ConcordanceInput from "./pages/InputConcordance.jsx";
 import './index.css'
 import './styles/main.css';
 
