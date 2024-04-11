@@ -1,17 +1,28 @@
-import React, { StrictMode } from "react";
+import React, { StrictMode, useState } from "react";
 import SideBar from "../components/SideBar";
-import Fab from "@mui/material/Fab";
+
+// Material-UI Icons
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
+
+// Material-UI Components
 import Paper from "@mui/material/Paper";
-import { ResponsivePie } from "@nivo/pie";
-import { ResponsiveLine } from "@nivo/line";
-import { ResponsiveBar } from "@nivo/bar";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
+// Nivo Components
+import { ResponsivePie } from "@nivo/pie";
+import { ResponsiveLine } from "@nivo/line";
+import { ResponsiveBar } from "@nivo/bar";
+
+// Material-UI Icons for Autocomplete
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
@@ -21,25 +32,25 @@ function Dashboard() {
       theme: "#FC5B5C",
       label: "Total Document",
       dataKey: "totalDocuments",
-      logo: <DescriptionOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <DescriptionOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#219653",
       label: "Checked Document",
       dataKey: "checkedDocuments",
-      logo: <TaskAltOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <TaskAltOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#F98A6C",
       label: "Error Part",
       dataKey: "errorParts",
-      logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#5C83E5",
       label: "Tagset Root",
       dataKey: "tagsetRoots",
-      logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }} />,
     },
   ];
 
@@ -279,6 +290,11 @@ function Dashboard() {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const tagsetgroup = [{ title: "AjarnNok" }, { title: "AjarnJack" }];
+  const [tagset, setTagset] = useState("AjarnNok");
+
+  const handleChange = (event) => {
+    setTagset(event.target.value);
+  };
 
   return (
     <SideBar>
@@ -293,32 +309,18 @@ function Dashboard() {
                 <FilterAltOutlinedIcon sx={{ mr: 1 }} />
                 Add Filter
               </Fab> */}
-            <Autocomplete
-              multiple
-              id="checkboxes-tags-demo"
-              options={tagsetgroup}
-              disableCloseOnSelect
-              getOptionLabel={(option) => option.title}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox
-                    icon={icon}
-                    checkedIcon={checkedIcon}
-                    style={{ marginRight: 8 }}
-                    checked={selected}
-                  />
-                  {option.title}
-                </li>
-              )}
+            <FormControl
               style={{ width: "auto", minWidth: 200, background: "#fff" }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Choose Tagset"
-                  placeholder="Tagset"
-                />
-              )}
-            />
+            >
+              <InputLabel id="demo-simple-select-label">Tagset</InputLabel>
+              <Select value={tagset} label="Tagset" onChange={handleChange}>
+                {tagsetgroup.map((option, index) => (
+                  <MenuItem key={index} value={option.title}>
+                    {option.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
 
           <div className="cardsGroup">
@@ -328,9 +330,7 @@ function Dashboard() {
                 className="card"
                 sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
               >
-                <div className="cardLogo" 
-                
-                style={{ color: card.theme }}>
+                <div className="cardLogo" style={{ color: card.theme }}>
                   {card.logo}
                 </div>
                 <div className="cardContent">

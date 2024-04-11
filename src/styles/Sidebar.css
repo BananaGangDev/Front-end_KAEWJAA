@@ -6,8 +6,13 @@
     background: #FFF8F1; 
   }
 
-.body_container {
+.body_container-closed{
     flex: 1;
+    width: calc(100% - 5rem);
+  }
+.body_container{
+    flex: 1;
+    width: calc(100% - 15rem);
   }
 .closed{
   margin-left: 2.8em;

@@ -22,7 +22,7 @@ function sidebar(props) {
       width: "15rem",
     },
     closed: {
-      width: "2rem",
+      width: "5rem",
     },
   };
 
