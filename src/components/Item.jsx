@@ -13,7 +13,8 @@ function Item({to,icon, name}) {
         },
         false:{
             opacity: 0,
-            display: 'none'
+            display: 'none',
+            width: 0
         }
     }
   return (

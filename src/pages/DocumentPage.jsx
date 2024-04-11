@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Dropdown, FormControl, InputGroup, Modal } from 'react-bootstrap';
 import { BsPlus, BsFileEarmarkText, BsFolderPlus, BsPencil, BsTrash } from 'react-icons/bs';
-import '../styles/Page.css';
 
 function DocumentPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
