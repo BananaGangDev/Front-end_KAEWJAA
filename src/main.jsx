@@ -23,7 +23,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/import" element={<ImportDefault />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/concordance" element={<Concordance />} />
-          <Route path="/concordance/input" element={<ConcordanceInput />} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>

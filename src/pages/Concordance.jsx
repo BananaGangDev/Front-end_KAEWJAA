@@ -282,7 +282,7 @@ function Concordance() {
       <Link to="/document">
           <ArrowBackIcon id="backArrow" />
         </Link>
-        <div className="headerContext">Concordance</div>
+        <div className="headerContext">Concordancer</div>
       </div>
       <hr id="line" />
       <Stack
