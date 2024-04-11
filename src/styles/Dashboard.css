@@ -15,22 +15,24 @@
 .dashboardpage .cardsGroup .card{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     background-color: #fff;
     padding: 0.6em;
     border-radius: 1.1em;
 }
-.dashboardpage .cardLogo{
-    font-size: 1em;
+.dashboardpage .cardContent{
+    padding-left: 0.5em;
 }
-.dashboardpage .cardData{
+.dashboardpage .cardkey{
+    font-size: 1.3em; 
+}
+/* .dashboardpage .cardData{
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     align-items: end;
     font-size: 0.8em;
-}
+} */
 .dashboardpage .cardLabel{
     display: flex;
     flex-direction: column;
@@ -42,7 +44,7 @@
 .dashboardpage .btn-container{
     display: flex;
     justify-content: end;
-    margin: 1em;
+    margin: 1em ;
 }
 .dashboardpage .filter-btn{
     display: flex;

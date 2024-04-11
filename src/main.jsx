@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client'
 import LoginForm from '/src/pages/LoginForm.jsx';
 import ResetPassword from '/src/pages/ResetPassword.jsx';
 import ImportDefault from '/src/pages/ImportDefault.jsx';
-import './index.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Concordance from "./pages/Concordance";
+import './index.css'
 import './styles/main.css';
 
 import DocumentPage from './pages/DocumentPage';

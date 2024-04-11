@@ -1,0 +1,31 @@
+.InputConcordancePage {
+    font-family: "IBM Plex Sana Thai Looped", sans-serif;
+    color: black;
+    background: #FFF8F1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2em 2em 0 2em;
+    /* align-items: center; */
+  }
+#midLine {
+  margin: 0 1em 0 1em;
+
+  }
+  .InputConcordancePage .body {
+  display: flex;
+  
+  justify-content: space-between;
+  height: 70%;
+  margin: 1em;
+  
+}
+
+.footer{
+  display: flex;
+  justify-content: end;
+}
+
+#btn-next{
+  background-color: #fcae3a;
+}

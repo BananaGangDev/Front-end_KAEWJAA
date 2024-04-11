@@ -1,25 +1,31 @@
-import React, { useState } from "react";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import { TableVirtuoso } from "react-virtuoso";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import { unstable_useNumberInput as useNumberInput } from "@mui/base/unstable_useNumberInput";
 import { styled } from "@mui/system";
 import { unstable_useForkRef as useForkRef } from "@mui/utils";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
-import AbcOutlinedIcon from "@mui/icons-material/AbcOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import {Alert, Autocomplete, Stack} from "@mui/material";
+import { Link } from 'react-router-dom';
+
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const CompactNumberInput = React.forwardRef(function CompactNumberInput(
   props,
@@ -49,28 +55,6 @@ const CompactNumberInput = React.forwardRef(function CompactNumberInput(
     </StyledInputRoot>
   );
 });
-
-const blue = {
-  100: "#DAECFF",
-  200: "#80BFFF",
-  400: "#3399FF",
-  500: "#007FFF",
-  600: "#0072E5",
-  700: "#0059B2",
-};
-
-const grey = {
-  50: "#F3F6F9",
-  100: "#E5EAF2",
-  200: "#DAE2ED",
-  300: "#C7D0DD",
-  400: "#B0B8C4",
-  500: "#9DA8B7",
-  600: "#6B7A90",
-  700: "#434D5B",
-  800: "#303740",
-  900: "#1C2025",
-};
 
 const StyledInputRoot = styled("div")(
   ({ theme }) => `
@@ -134,22 +118,13 @@ const StyledStepperButton = styled("button")(
 `
 );
 
-const Layout = styled("div")`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  column-gap: 1rem;
-`;
-
-const Pre = styled("pre")`
-  font-size: 0.75rem;
-`;
-
-
-
-
 function createData(id, detailFile, leftContext, rightContext, pointFocus) {
   return { id, detailFile, leftContext, rightContext, pointFocus };
+}
+
+function checkInput(fileName, pointFocus) {
+  console.log(fileName.length !== 0 && pointFocus !== "");
+  return fileName.length !== 0 && pointFocus !== "";
 }
 
 function Concordance() {
@@ -159,12 +134,10 @@ function Concordance() {
   const [dataAnalysis, setDataAnalysis] = useState([null, null, null]);
 
   // detail | leftContext | rightContext
-const [data, setData] = useState([[]]);
+  const [data, setData] = useState([[]]);
 
   const [searchData, setSearchData] = useState({
     search: "",
-    type: "KWIC",
-    lenght: 10,
   });
   let information = `Simple ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `;
 
@@ -188,8 +161,8 @@ const [data, setData] = useState([[]]);
       align: "right",
     },
     {
-      width: searchData.type === "KWIC" ? 50 :300,
-      label: searchData.type,
+      width: 50,
+      label: "KWIC",
       dataKey: "pointFocus",
       align: "center",
     },
@@ -251,126 +224,137 @@ const [data, setData] = useState([[]]);
       </React.Fragment>
     );
   }
+  const [checkedValues, setCheckedValues] = useState([]);
+  const [statusInput, setStatusInput] = useState();
 
-  const handleSearch = () => {
-    setSearch(true);
-    setData([
-      ["641074xxxx.pdf", "The cat climbed", " the top of"],
-      ["641074xxxx.pdf", "The students gathere", "protest against the"],
-      ["641074xxxx.pdf", "sent a letter", "her grandmother. I"],
-      ["641074xxxx.pdf", "into the pool", "cool off. He"],
-      ["641074xxxx.pdf", "brings a book ", "read on the"],
-      ["641074xxxx.pdf", "They are planning", "move to a"],
-      ["641074xxxx.pdf", "planning to move ", "a new city"],
-      ["641074xxxx.pdf", "chef added salt", "enhance the flavor"],
-      ["641074xxxx.pdf", "The cat climbed", " the top of"],
-      ["641074xxxx.pdf", "The students gathere", "protest against the"],
-      ["641074xxxx.pdf", "sent a letter", "her grandmother. I"],
-      ["641074xxxx.pdf", "into the pool", "cool off. He"],
-      ["641074xxxx.pdf", "brings a book ", "read on the"],
-      ["641074xxxx.pdf", "They are planning", "move to a"],
-      ["641074xxxx.pdf", "planning to move ", "a new city"],
-      ["641074xxxx.pdf", "chef added salt", "enhance the flavor"],
-    ]);
-    setWordFocus(searchData.search);
+  const clickSearch = () => {
+    setStatusInput(checkInput(checkedValues, searchData.search))
+    //check value
+    if (statusInput) {
+      console.log("Pass");
+      setSearch(true);
+      setWordFocus(searchData.search);
+      // set data ส่งให้API
+      setData([
+        ["641074xxxx.pdf", "The cat climbed", " the top of"],
+        ["641074xxxx.pdf", "The students gathere", "protest against the"],
+        ["641074xxxx.pdf", "sent a letter", "her grandmother. I"],
+        ["641074xxxx.pdf", "into the pool", "cool off. He"],
+        ["641074xxxx.pdf", "brings a book ", "read on the"],
+        ["641074xxxx.pdf", "They are planning", "move to a"],
+        ["641074xxxx.pdf", "planning to move ", "a new city"],
+        ["641074xxxx.pdf", "chef added salt", "enhance the flavor"],
+      ]);
+      setWordFocus(searchData.search);
+    } else {
+      setSearch(false);
+    }
   };
-  
 
+  const fileName = [
+    "The Shawshank Redemption",
+    "The Godfather",
+    "The Dark Knight",
+    "12 Angry Men",
+    "Schindler's List",
+    "Pulp Fiction",
+  ];
+
+  //setting alert 5sec
+  const [showAlert, setShowAlert] = useState(true);
+  useEffect(() => {
+    if (showAlert) {
+      const timeoutId = setTimeout(() => {
+        setShowAlert(false);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showAlert]);
+
+  const handleFilename = (event, newValue) => {
+    setCheckedValues(newValue);
+    console.log("Chhosed file name ", checkedValues);
+  };
   return (
     <div className="Concordancepage">
       <div className="header">
-        <ArrowBackIcon id="backArrow" />
+      <Link to="/document">
+          <ArrowBackIcon id="backArrow" />
+        </Link>
         <div className="headerContext">Concordance</div>
       </div>
       <hr id="line" />
+      <Stack
+        id="alert-error-input"
+        style={{ display: showAlert&&statusInput ? "block" : "none" }}
+      >
+        <Alert variant="filled" severity="error">
+          Data input invalid.
+        </Alert>
+      </Stack>
       <div className="body">
         <div className="filter-concordance">
           {/* box analysis */}
           <div className="box data-analysis">
-            {/* {`Simple  ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `} */}
-            {search ? 
-              `Simple  ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `
+            {search
+              ? `Simple  ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `
               : "No Data"}
             <div className="info-icon">{/* <InfoOutlinedIcon /> */}</div>
           </div>
 
-          {/* input filter */}
-          {/* wordSearch ->  searchData.search */}
-          <div className="box input-wrapper">
-            <AbcOutlinedIcon
-              id="search-icon"
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+          <Autocomplete
+    multiple
+    className="filename-input"
+    options={['All', ...fileName]}
+    groupBy={(option) => (option === 'All' ? null : 'Files')}
+    getOptionLabel={(option) => option}
+    limitTags={2}
+    disableCloseOnSelect
+    onChange={handleFilename}
+    renderOption={(props, option, { selected }) => (
+        <li {...props}>
+            <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
             />
-            <TextField
-              id="filled-basic"
-              placeholder="Word Search"
+            {option}
+        </li>
+    )}
+    renderInput={(params) => (
+        <TextField {...params} label="Choose File" placeholder="File" />
+    )}
+/>
+
+
+          <Paper component="form" className="SearchBox">
+            <InputBase
+              required
+              sx={{ ml: 2, flex: 1 }}
+              placeholder="Search"
               value={searchData.search}
-              variant="standard"
               onChange={(event) =>
                 setSearchData((prevState) => ({
                   ...prevState,
                   search: event.target.value,
                 }))
               }
-            />
-          </div>
-
-          {/* type(Context/ KWIC) ->  searchData.type */}
-          <div className="box input-wrapper">
-            <Select
-              variant="standard"
-              id="option-search"
-              className="box input-wrapper"
-              value={searchData.type}
-              placeholder="Search"
-              onChange={(event) =>
-                setSearchData((prevState) => ({
-                  ...prevState,
-                  type: event.target.value,
-                }))
-              }
-            >
-              <MenuItem value={"KWIC"}>KWIC</MenuItem>
-              <MenuItem value={"Context"}>Context</MenuItem>
-            </Select>
-          </div>
-
-          {/* Number */}
-          {/* length ->  searchData.lenght */}
-          <div className="box input-wrapper word-num">
-            <Layout>
-              <Pre>Number of word: {searchData.lenght}</Pre>
-
-              <CompactNumberInput
-                aria-label="Compact number input"
-                placeholder="Type a number…"
-                value={searchData.lenght}
-                min={1}
-                onChange={(event, value) =>
-                  setSearchData((prevState) => ({
-                    ...prevState,
-                    lenght: value,
-                  }))
+              onKeyDown={(event) => {
+                if (event.key == "Enter") {
+                  clickSearch();
                 }
-              />
-            </Layout>
-          </div>
-
-          <button 
-          className="btn-search"
-          onClick={handleSearch}
-          >
-            <SearchIcon
-              id="search-icon"
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              }}
             />
-            Search
-          </button>
-
-          <div className="box folderName">
-            <DescriptionOutlinedIcon />
-            CN342(666)_TU....
-          </div>
+            <IconButton
+              type="button"
+              className="btn-search"
+              onClick={clickSearch}
+            >
+              <SearchIcon />
+            </IconButton>
+          </Paper>
         </div>
 
         <Paper style={{ height: 500, width: "100%" }}>

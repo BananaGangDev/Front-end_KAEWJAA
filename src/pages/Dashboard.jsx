@@ -5,7 +5,6 @@ import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
-import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import Paper from "@mui/material/Paper";
 import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
@@ -22,25 +21,25 @@ function Dashboard() {
       theme: "#FC5B5C",
       label: "Total Document",
       dataKey: "totalDocuments",
-      logo: <DescriptionOutlinedIcon />,
+      logo: <DescriptionOutlinedIcon sx={{ fontSize: 40 }}/>,
     },
     {
       theme: "#219653",
       label: "Checked Document",
       dataKey: "checkedDocuments",
-      logo: <TaskAltOutlinedIcon />,
+      logo: <TaskAltOutlinedIcon sx={{ fontSize: 40 }}/>,
     },
     {
       theme: "#F98A6C",
       label: "Error Part",
       dataKey: "errorParts",
-      logo: <WarningAmberOutlinedIcon />,
+      logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }}/>,
     },
     {
       theme: "#5C83E5",
       label: "Tagset Root",
       dataKey: "tagsetRoots",
-      logo: <TurnedInNotOutlinedIcon />,
+      logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }}/>,
     },
   ];
 
@@ -327,13 +326,15 @@ function Dashboard() {
               <Paper
                 key={index}
                 className="card"
-                sx={{ border: `solid 1px ${card.theme}`, width: 220 }}
+                sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
               >
-                <div className="cardLogo" style={{ color: card.theme }}>
+                <div className="cardLogo" 
+                
+                style={{ color: card.theme }}>
                   {card.logo}
                 </div>
                 <div className="cardContent">
-                  <div className="card">{data[card.dataKey]} </div>
+                  <div className="cardkey">{data[card.dataKey]} </div>
                   <div className="cardLabel">{card.label} </div>
                 </div>
               </Paper>
