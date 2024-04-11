@@ -1,9 +1,9 @@
-.ImportFilePage {
+/* .ImportFilePage {
   background-color: #FFF8F1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* จัดให้เนื้อหาเริ่มจากด้านบน */
+  justify-content: flex-start;
   width: 100vw;
   height: 100vh;
 }
@@ -13,11 +13,9 @@ h1 {
   font-size: 60px;
   margin-top: 0;
   text-align: center;
-  /* margin-bottom: 20px; */
 }
 
 .ButtonFrame {
-  /* background-color: #FC5B5C; */
   width: 100vw;
 }
 
@@ -34,7 +32,6 @@ h1 {
   cursor: pointer;
   font-size: 20px;
   font-weight : bold;
-  /* margin: 10px 0px 10px; */
   margin-left: 200px;
   transition: background-color 0.3s ease;
 }
@@ -61,4 +58,75 @@ h1 {
 .LinkMode.active {
   background-color: #FC5B5C;
   color: #ffffff;
+} */
+
+.ImportFilePage {
+  background-color: #FFF8F1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.h1-class {
+  font-family: 'Dangrek', sans-serif;
+  /* background-color: #FC5B5C; */
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+.ButtonFrame {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ImportFilePage .FileMode,
+.ImportFilePage .LinkMode {
+  font-family: 'Fredoka', sans-serif;
+  text-align: center;
+  width: 145px;
+  height: 40px;
+  background: white;
+  color: #FC5B5C;
+  border: 2px solid #FC5B5C;
+  outline: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px,10px,10px, 0;
+}
+
+.FileMode:hover,
+.LinkMode:hover,
+.FileMode.active,
+.LinkMode.active {
+  background-color: #FC5B5C;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .ImportFilePage {
+  align-items: center;
+  }
+}
+
+.content-container {
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.ImportFilePage input,
+.ImportFilePage button {
+  width: calc(100% - 20px);
+  margin: 10px 0;
 }

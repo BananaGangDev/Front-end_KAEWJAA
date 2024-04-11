@@ -14,11 +14,14 @@ const ResetPassword = () => {
   return (
     <div className="reset-password-container">
       <form onSubmit={handleResetPassword}>
-      <h1>Reset Password</h1>
+        <div className='reset-h1'>
+          <h1>Reset Password</h1>
+        </div>
         <div>
           <label>Old Password</label>
-          <div className="input-box1">
+          <div className="old">
             <input
+              className='input-old'
                 type="password"
                 placeholder="Old password"
                 required
@@ -29,8 +32,9 @@ const ResetPassword = () => {
         </div>
         <div>
           <label>New Password</label>
-          <div className="input-box2">
+          <div className="new">
             <input
+              className="input-new"
               type="password"
               placeholder="New password"
               required
@@ -41,8 +45,9 @@ const ResetPassword = () => {
         </div>
         <div>
           <label>Confirm New Password</label>
-          <div className="input-box3">
+          <div className="confirm">
             <input
+              className="input-confirm"
               type="password"
               placeholder="New password"
               required
@@ -51,7 +56,9 @@ const ResetPassword = () => {
             />
           </div>
         </div>
-        <button type="submit">Reset password</button>
+        <div className='reset-submit'>
+          <button type="submit">Reset password</button>
+        </div>
       </form>
     </div>
   );

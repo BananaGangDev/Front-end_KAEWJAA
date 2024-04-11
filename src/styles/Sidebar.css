@@ -1,24 +1,21 @@
 
-.Sidebar {
+/* body {
     display: block !important;
-    min-width: 320px;
-}
+} */
 
 .App {
     display: flex;
     font-family: "IBM Plex Sana Thai Looped", sans-serif; 
     color: black;
     background: #FFF8F1; 
-    /* height: 100vh; */
+    height: 100vh;
   }
 
 .body_container {
-  flex: 1;
-  width: calc(100% - 282px);
+    flex: 1;
   }
-.body_container-closed{
-  margin-left: 3em;
-  width: 100%;
+.closed{
+  margin-left: 2.8em;
 }
 .sidebar_container {
     height: 100vh;

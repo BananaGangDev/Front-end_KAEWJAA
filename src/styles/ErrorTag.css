@@ -1,0 +1,126 @@
+.text-editor {
+    background: #fff8f1;
+    width: 100vw;
+    height: 100vh;
+    /* display: table-column; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center;  */
+    margin: 0;               
+    padding: 0; 
+}
+
+.errortag-header {
+    height: 5%;
+    /* background-color: aquamarine; */
+    display: grid;
+    grid-template-columns: 2ch auto;
+    align-items: center;
+    gap: 50px;
+    padding: 10px;
+}
+
+.errortag-backicon {
+    /* background-color: brown; */
+    height: 100%;
+    padding-left: 10px;
+}
+
+.errortag-filename {
+    /* background-color: blueviolet; */
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.main-bar {
+    /* background-color: violet; */
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    gap: 10px;
+}
+
+.main-bar button {
+    height: 100%;
+}
+
+.errortag-container {
+    /* background-color: burlywood; */
+    height: 55%;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 5%;
+}
+
+.errortag-text {
+    width: 50vw;
+    height: 100%;
+    display: flex;
+    background-color: white;
+    color: #515151;
+    border: 2px solid rgba(0, 0, 0, .1);
+    border-radius: 20px;
+    padding: 0 10px;
+}
+
+.errortag-tagset {
+    background-color: antiquewhite;
+    width: 30vw;
+    height: 100%;
+}
+
+.errortag-footer {
+    /* background-color: violet; */
+    height: 22%;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 5%;
+}
+
+.correction {
+    width: 50vw;
+    height: 100%;
+    background-color: white;
+    color: #515151;
+    border: 2px solid rgba(0, 0, 0, .1);
+    border-radius: 20px;
+    padding: 0 10px;
+}
+
+.footer-bar {
+    /* background-color: antiquewhite; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30vw;
+    height: 100%;
+    gap: 10%;
+}
+
+.errortag-submit-btn {
+    width: 70%;
+    height: 40%;
+    border-radius: 20px;
+    /* background-color: #2B40FF; */
+    background-color: #5F5AB8;
+}
+
+.errortag-remove-btn {
+    width: 70%;
+    height: 40%;
+    border-radius: 20px;
+    background-color: #FC5B5C;
+}

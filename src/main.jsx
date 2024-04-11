@@ -11,6 +11,7 @@ import './styles/main.css';
 
 import DocumentPage from './pages/DocumentPage';
 import TagsetPage from './pages/TagsetPage';
+import Errortag from '/src/pages/ErrorTag.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -18,11 +19,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Routes>
           <Route exact path="/" element={<LoginForm />} />
           <Route path="/document" element={<DocumentPage />} />
-          <Route path="tagset" element={<TagsetPage />} />
+          <Route path="/tagset" element={<TagsetPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/import" element={<ImportDefault />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/concordance" element={<Concordance />} />
+          <Route path="/errortag" element={<Errortag />} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>
