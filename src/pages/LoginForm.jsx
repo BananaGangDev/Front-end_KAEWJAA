@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '/src/assets/kaewja-logo.jpg';
 import { Link } from 'react-router-dom';
 
+
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +26,7 @@ const LoginForm = () => {
 
   if (isLoggedIn) {
     console.log("Login successfully!!!");
-    navigate('/import');
+    navigate('/document');
   }
 
   return (

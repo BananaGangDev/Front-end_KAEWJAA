@@ -145,16 +145,29 @@
     margin-top: 10px;
 } */
 
+/* body {
+    background: linear-gradient(to top, #ffa043 20%, #FBDA80, #fff3b7);
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+} */
 
 .wrapper {
+    background: linear-gradient(to top, #ffa043 20%, #FBDA80, #fff3b7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    min-width: 500px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, .2);
+    width: 100vw;
+    height: 100vh;
+    /* background: transparent; */
+    /* border: 2px solid rgba(255, 255, 255, .2);
     backdrop-filter: blur(300px);
-    border-radius: 20px;
-    padding: 30px 40px;
-    margin: auto;
+    border-radius: 20px; */
+    /* padding: 30px 40px; */
+    /* margin: auto; */
 }
 
 .logo-container {
@@ -162,7 +175,7 @@
 }
 
 .logo {
-    width: 30%;
+    width: 10%;
     height: auto;
     min-width: 150px;
     border-radius: 50%;
@@ -172,7 +185,7 @@
 
 .wrapper button {
     font-family: 'Fredoka', sans-serif;
-    width: calc(100% - 300px);
+    width: 15%;
     height: 50px;
     background: white;
     color: #FC5B5C;
@@ -200,14 +213,20 @@
     color: black;
 }
 
+.input-box1, .input-box2 {
+    width: 100vw;
+    height: 10vh;
+}
+
 .input-box1 input, .input-box2 input {
-    width: calc(100% - 60px);
+    width: 40%;
+    height: 20%;
     padding: 20px 45px 20px 20px;
     background-color: white;
     color: #515151;
+    margin-bottom: 10px;
     border: 2px solid rgba(0, 0, 0, .2);
     border-radius: 20px;
-    margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
@@ -215,8 +234,12 @@
       width: 80%;
       padding: 20px;
     } 
-  }  
+}  
 
 .wrapper h1 {
     font-size: 40px;
+}
+
+.forgot p {
+    font-size: 20px;
 }
