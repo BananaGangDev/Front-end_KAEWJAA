@@ -70,12 +70,14 @@
     border: 2px solid rgba(0, 0, 0, .1);
     border-radius: 20px;
     padding: 0 10px;
+    font-size: 24px;
 }
 
 .errortag-tagset {
     background-color: antiquewhite;
     width: 30vw;
     height: 100%;
+    font-size: 24px;
 }
 
 .errortag-footer {
@@ -97,6 +99,7 @@
     border: 2px solid rgba(0, 0, 0, .1);
     border-radius: 20px;
     padding: 0 10px;
+    font-size: 24px;
 }
 
 .footer-bar {
@@ -116,6 +119,7 @@
     border-radius: 20px;
     /* background-color: #2B40FF; */
     background-color: #5F5AB8;
+    font-size: 30px;
 }
 
 .errortag-remove-btn {
@@ -123,4 +127,5 @@
     height: 40%;
     border-radius: 20px;
     background-color: #FC5B5C;
+    font-size: 30px;
 }
