@@ -154,6 +154,10 @@ body {
   border: none;
 }
 
+.tagset-create-button:focus {
+  outline: none;
+}
+
 .tagset-description {
   font-family: Fredoka;
   text-align: center;
