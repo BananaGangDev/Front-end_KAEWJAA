@@ -58,7 +58,7 @@ function Dashboard() {
     totalDocuments: 100,
     checkedDocuments: 80,
     errorParts: 10,
-    tagsetRoots: 50,
+    tagsetRoots: 2,
   };
 
   const dashboard_Data = [

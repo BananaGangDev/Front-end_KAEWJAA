@@ -22,7 +22,7 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { Alert, Autocomplete, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
-import '../styles/Concordance.css'
+import "../styles/Concordance.css";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -277,9 +277,23 @@ function Concordance() {
   }, [showAlert]);
 
   const handleFilename = (event, newValue) => {
+    if (newValue.includes("All")) {
+      setCheckedValues([...fileName]);
+    } else {
+      setCheckedValues(newValue.filter((option) => option !== "All"));
+    }
+
     setCheckedValues(newValue);
     console.log("Chhosed file name ", checkedValues);
   };
+
+  const isChecked = (option) => {
+    return (
+      checkedValues.includes(option) ||
+      (checkedValues.includes("All") && option !== "All")
+    );
+  };
+
   return (
     <div className="Concordancepage">
       <div className="header">
@@ -303,10 +317,9 @@ function Concordance() {
           <div className="box data-analysis">
             {search ? (
               <>
-                Simple 
-                <div className="focus">  {wordFocus}</div>・
-                {dataAnalysis[0]} ・ {dataAnalysis[1]} per million token •{" "}
-                {dataAnalysis[2]}
+                Simple
+                <div className="focus"> {wordFocus}</div>・{dataAnalysis[0]} ・{" "}
+                {dataAnalysis[1]} per million token • {dataAnalysis[2]}
               </>
             ) : (
               "No Data"
@@ -323,14 +336,9 @@ function Concordance() {
             limitTags={2}
             disableCloseOnSelect
             onChange={handleFilename}
-            renderOption={(props, option, { selected }) => (
+            renderOption={(props, option) => (
               <li {...props}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
+                <Checkbox checked={isChecked(option)} />
                 {option}
               </li>
             )}
