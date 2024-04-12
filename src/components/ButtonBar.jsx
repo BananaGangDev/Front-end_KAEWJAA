@@ -32,3 +32,28 @@ function ButtonBar({ setShowImportModal, setShowCreateModal }) {
 }
 
 export default ButtonBar;
+
+
+// import React from 'react';
+// import { Button, Dropdown } from 'react-bootstrap';
+// import '../styles/Page.css';
+
+// function ButtonBar() {
+//   return (
+//     <div className="button-bar">
+//       <Button className="corpus-button">Corpus</Button>
+//       <Button className="concordancer-button" href="/concordance">Concordancer</Button>
+//       <Dropdown>
+//         <Dropdown.Toggle className="sort-button" id="sort-dropdown">
+//           Sort by
+//         </Dropdown.Toggle>
+//         <Dropdown.Menu>
+//           <Dropdown.Item>Date</Dropdown.Item>
+//           <Dropdown.Item>Name</Dropdown.Item>
+//         </Dropdown.Menu>
+//       </Dropdown>
+//     </div>
+//   );
+// }
+
+// export default ButtonBar;
