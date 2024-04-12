@@ -1,25 +1,31 @@
-import React, { useState } from "react";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import { TableVirtuoso } from "react-virtuoso";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import { unstable_useNumberInput as useNumberInput } from "@mui/base/unstable_useNumberInput";
 import { styled } from "@mui/system";
 import { unstable_useForkRef as useForkRef } from "@mui/utils";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
-import { Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { Alert, Autocomplete, Stack } from "@mui/material";
+import { Link } from "react-router-dom";
+import '../styles/Concordance.css'
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const CompactNumberInput = React.forwardRef(function CompactNumberInput(
   props,
@@ -49,28 +55,6 @@ const CompactNumberInput = React.forwardRef(function CompactNumberInput(
     </StyledInputRoot>
   );
 });
-
-const blue = {
-  100: "#DAECFF",
-  200: "#80BFFF",
-  400: "#3399FF",
-  500: "#007FFF",
-  600: "#0072E5",
-  700: "#0059B2",
-};
-
-const grey = {
-  50: "#F3F6F9",
-  100: "#E5EAF2",
-  200: "#DAE2ED",
-  300: "#C7D0DD",
-  400: "#B0B8C4",
-  500: "#9DA8B7",
-  600: "#6B7A90",
-  700: "#434D5B",
-  800: "#303740",
-  900: "#1C2025",
-};
 
 const StyledInputRoot = styled("div")(
   ({ theme }) => `
@@ -134,51 +118,29 @@ const StyledStepperButton = styled("button")(
 `
 );
 
-const Layout = styled("div")`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  column-gap: 1rem;
-`;
-
-const Pre = styled("pre")`
-  font-size: 0.75rem;
-`;
-
-// detail | leftContext | rightContext
-const DATA = [
-  ["641074xxxx.pdf", 159, 6.0],
-  ["641074xxxx.pdf", 237, 9.0],
-  ["641074xxxx.pdf", 262, 16.0],
-  ["641074xxxx.pdf", 305, 3.7],
-  ["641074xxxx.pdf", 356, 16.0],
-  ["641074xxxx.pdf", 159, 6.0],
-  ["641074xxxx.pdf", 237, 9.0],
-  ["641074xxxx.pdf", 262, 16.0],
-  ["641074xxxx.pdf", 305, 3.7],
-  ["641074xxxx.pdf", 356, 16.0],
-  ["641074xxxx.pdf", 159, 6.0],
-  ["641074xxxx.pdf", 237, 9.0],
-  ["641074xxxx.pdf", 262, 16.0],
-  ["641074xxxx.pdf", 305, 3.7],
-  ["641074xxxx.pdf", 356, 16.0],
-];
-
+//data
 function createData(id, detailFile, leftContext, rightContext, pointFocus) {
   return { id, detailFile, leftContext, rightContext, pointFocus };
 }
 
+function checkInput(fileName, pointFocus) {
+  console.log(fileName.length !== 0 && pointFocus !== "");
+  return fileName.length !== 0 && pointFocus !== "";
+}
+
 function Concordance() {
-  //Value Input
-  const [optionSearch, setOptionSearch] = useState("KWIC");
-  const handelOptionSearch = (event) => {
-    setOptionSearch(event.target.value);
-  };
-  const [wordFocus, setWord] = useState("to");
-  const [amount, setAmount] = useState("10,123");
-  const [perMillion, setPerMillion] = useState("12,345");
-  const [lengthSearch, setLength] = useState(10); // State สำหรับ CompactNumberInput
-  let information = `Simple ${wordFocus} ・${amount} ・ ${perMillion} per million token • 1.2% `;
+  const [search, setSearch] = useState(false);
+  const [wordFocus, setWordFocus] = useState("");
+  //amount | perMillion | perCent
+  const [dataAnalysis, setDataAnalysis] = useState([16, 123000, 98]);
+
+  // detail | leftContext | rightContext
+  const [data, setData] = useState([[]]);
+
+  const [searchData, setSearchData] = useState({
+    search: "",
+  });
+  let information = `Simple ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `;
 
   const columns = [
     {
@@ -201,7 +163,7 @@ function Concordance() {
     },
     {
       width: 50,
-      label: optionSearch,
+      label: "KWIC",
       dataKey: "pointFocus",
       align: "center",
     },
@@ -213,8 +175,8 @@ function Concordance() {
     },
   ];
 
-  const rows = Array.from({ length: DATA.length }, (_, index) => {
-    return createData(index + 1, ...DATA[index], wordFocus);
+  const rows = Array.from({ length: data.length }, (_, index) => {
+    return createData(index + 1, ...data[index], wordFocus);
   });
 
   const VirtuosoTableComponents = {
@@ -233,6 +195,7 @@ function Concordance() {
       <TableBody {...props} ref={ref} />
     )),
   };
+
   //Header
   function fixedHeaderContent() {
     return (
@@ -241,12 +204,8 @@ function Concordance() {
           <TableCell
             key={column.dataKey}
             variant="head"
-            // align={column.numeric || false ? 'right' : 'left'}
             align={column.align}
             style={{ width: column.width }}
-            // sx={{
-            //   backgroundColor: '#FBDA80',
-            // }}
           >
             {column.label}
           </TableCell>
@@ -254,7 +213,6 @@ function Concordance() {
       </TableRow>
     );
   }
-
   //Context
   function rowContent(_index, row) {
     return (
@@ -267,75 +225,146 @@ function Concordance() {
       </React.Fragment>
     );
   }
+  const [checkedValues, setCheckedValues] = useState([]);
+  const [statusInput, setStatusInput] = useState();
 
+  const clickSearch = () => {
+    setStatusInput(checkInput(checkedValues, searchData.search));
+    //check value
+    if (statusInput) {
+      console.log("Pass");
+      setSearch(true);
+      setWordFocus(searchData.search);
+      // set data ส่งให้API
+      setData([
+        ["641074xxx1.pdf", "The cat climbed", " the top of"],
+        ["641074xxx2.pdf", "The students gathere", "protest against the"],
+        ["641074xxx2.pdf", "sent a letter", "her grandmother. I"],
+        ["641074xxx3.pdf", "into the pool", "cool off. He"],
+        ["641074xxx4.pdf", "brings a book ", "read on the"],
+        ["641074xxx5.pdf", "They are planning", "move to a"],
+        ["641074xxx6.pdf", "planning to move ", "a new city"],
+        ["641074xxx6.pdf", "chef added salt", "enhance the flavor"],
+        ["641074xxx7.pdf", "planning to move ", "a new city"],
+        ["641074xxx7.pdf", "chef added salt", "enhance the flavor"],
+      ]);
+      setWordFocus(searchData.search);
+    } else {
+      setSearch(false);
+    }
+  };
+
+  const fileName = [
+    "641074xxx1.pdf",
+    "641074xxx2.pdf",
+    "641074xxx3.pdf",
+    "641074xxx4.pdf",
+    "641074xxx5.pdf",
+    "641074xxx6.pdf",
+    "641074xxx7.pdf",
+  ];
+
+  //setting alert 5sec
+  const [showAlert, setShowAlert] = useState(true);
+  useEffect(() => {
+    if (showAlert) {
+      const timeoutId = setTimeout(() => {
+        setShowAlert(false);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showAlert]);
+
+  const handleFilename = (event, newValue) => {
+    setCheckedValues(newValue);
+    console.log("Chhosed file name ", checkedValues);
+  };
   return (
-    <div className="page">
+    <div className="Concordancepage">
       <div className="header">
-        <ArrowBackIcon id="backArrow" />
-        <div className="headerContext">Concordance</div>
-        
+        <Link to="/document">
+          <ArrowBackIcon id="backArrow" />
+        </Link>
+        <div className="headerContext">Concordancer</div>
       </div>
       <hr id="line" />
+      <Stack
+        id="alert-error-input"
+        style={{ display: showAlert && statusInput ? "block" : "none" }}
+      >
+        <Alert variant="filled" severity="error">
+          Data input invalid.
+        </Alert>
+      </Stack>
       <div className="body">
         <div className="filter-concordance">
           {/* box analysis */}
           <div className="box data-analysis">
-            {information}{" "}
-            <div className="info-icon">
-              <InfoOutlinedIcon />{" "}
-            </div>
+            {search ? (
+              <>
+                Simple 
+                <div className="focus">  {wordFocus}</div>・
+                {dataAnalysis[0]} ・ {dataAnalysis[1]} per million token •{" "}
+                {dataAnalysis[2]}
+              </>
+            ) : (
+              "No Data"
+            )}
+            <div className="info-icon">{/* <InfoOutlinedIcon /> */}</div>
           </div>
 
-          {/* input filter */}
-          <div className="box input-wrapper">
-            <SearchIcon
-              id="search-icon"
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
-            />
-            <TextField
-              id="filled-basic"
-              placeholder="Search"
-              variant="standard"
-            />
-          </div>
+          <Autocomplete
+            multiple
+            className="filename-input"
+            options={["All", ...fileName]}
+            groupBy={(option) => (option === "All" ? null : "Files")}
+            getOptionLabel={(option) => option}
+            limitTags={2}
+            disableCloseOnSelect
+            onChange={handleFilename}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField {...params} label="Choose File" placeholder="File" />
+            )}
+          />
 
-          <div className="box input-wrapper">
-            {/* <InputLabel >Age</InputLabel> */}
-            <Select
-              variant="standard"
-              id="option-search"
-              className="box input-wrapper"
-              value={optionSearch}
+          <Paper component="form" className="SearchBox">
+            <InputBase
+              required
+              sx={{ ml: 2, flex: 1 }}
               placeholder="Search"
-              onChange={handelOptionSearch}
+              value={searchData.search}
+              onChange={(event) =>
+                setSearchData((prevState) => ({
+                  ...prevState,
+                  search: event.target.value,
+                }))
+              }
+              onKeyDown={(event) => {
+                if (event.key == "Enter") {
+                  clickSearch();
+                }
+              }}
+            />
+            <IconButton
+              type="button"
+              className="btn-search"
+              onClick={clickSearch}
             >
-              <MenuItem value={"KWIC"}>KWIC</MenuItem>
-              <MenuItem value={"Context"}>Context</MenuItem>
-            </Select>
-          </div>
-
-          {/* Number */}
-
-          <div className="box input-wrapper">
-            <Layout>
-              <Pre>Number of word: {lengthSearch ?? " "}</Pre>
-              <CompactNumberInput
-                aria-label="Compact number input"
-                placeholder="Type a number…"
-                readOnly
-                value={lengthSearch}
-                min={0}
-                onChange={(event, val) => setLength(val)}
-              />
-            </Layout>
-          </div>
-
-          <button className="btn-search">Search</button>
-
-          <div className="box folderName">
-            <DescriptionOutlinedIcon />
-            Folder name
-          </div>
+              <SearchIcon />
+            </IconButton>
+          </Paper>
         </div>
 
         <Paper style={{ height: 500, width: "100%" }}>

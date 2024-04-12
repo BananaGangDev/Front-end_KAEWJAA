@@ -1,0 +1,64 @@
+.dashboardpage {
+    font-family: "IBM Plex Sana Thai Looped", sans-serif;
+    color: black;
+    background: #FFF8F1;
+    display: flex;
+    flex-direction: column;
+    padding: 2em 2em 0 2em;
+    /* align-items: center; */
+  }
+.dashboardpage .cardsGroup{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.dashboardpage .cardsGroup .card{
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    align-items: center;
+    background-color: #fff;
+    padding: 0.6em;
+    border-radius: 1.1em;
+}
+.dashboardpage .cardContent{
+    padding-left: 0.5em;
+}
+.dashboardpage .cardkey{
+    font-size: 1.3em; 
+}
+/* .dashboardpage .cardData{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    font-size: 0.8em;
+} */
+.dashboardpage .cardLabel{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.dashboardpage .btn-container{
+    display: flex;
+    justify-content: end;
+    margin: 1em ;
+}
+.dashboardpage .filter-btn{
+    display: flex;
+    width: auto;
+    background-color: #fff;
+    font-size: 1.2em;
+    padding: 0.8em;
+    margin: 0.5em;
+    border-radius: 1.1em;
+}
+.dashboardpage .tooltip{
+    background-color: #fff;
+    padding: 0.5em;
+    border-radius: 16px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+
+}

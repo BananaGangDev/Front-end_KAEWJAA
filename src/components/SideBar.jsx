@@ -22,7 +22,7 @@ function sidebar(props) {
       width: "15rem",
     },
     closed: {
-      width: "3rem",
+      width: "2rem",
     },
   };
 
@@ -46,6 +46,9 @@ function sidebar(props) {
   };
 
   return (
+    <div className="Sidebar">
+
+    
     <div className="App">
       <motion.div
       data-open={open}
@@ -126,7 +129,7 @@ function sidebar(props) {
                 <div className="UserDetail_container">USERNAME:</div>
               </motion.h3>
 
-              <Item icon={<DescriptionIcon />} name="Document" to="/" />
+              <Item icon={<DescriptionIcon />} name="Document" to="/document" />
               <Item icon={<DashboardIcon />} name="Dashboard" to="/dashboard" />
               <Item icon={<LocalOfferIcon />} name="Tagset" to="/tagset" />
               
@@ -141,10 +144,11 @@ function sidebar(props) {
         </motion.div>
       </motion.div>
 
-      <div className={`body_container ${open ? "" : "closed"}`}>
+      <div className={`body_container${open ? "" : "-closed"}`}>
         {props.children}
       </div>
 
+    </div>
     </div>
   );
 }

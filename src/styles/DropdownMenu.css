@@ -1,0 +1,25 @@
+.dropdown-menu {
+    background-color: white; 
+    color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    border: 1px solid #ced4da; 
+    border-radius: 0.25rem; 
+  }
+  
+  .dropdown-item {
+    width: 100%;
+    border-bottom: 1px solid #ced4da; /* เพิ่มเส้นขอบระหว่างตัวเลือก */
+  }
+  
+  .dropdown-item:last-child {
+    border-bottom: none; /* ไม่ให้มีเส้นขอบท้ายที่ตัวเลือกสุดท้าย */
+  }
+  
+  .dropdown-item:focus, .dropdown-item:hover {
+    background-color: #f1f1f1 !important;
+    color: black;
+  }
+  
+  
