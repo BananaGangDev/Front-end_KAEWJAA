@@ -86,7 +86,7 @@ function DocumentPage() {
               </Dropdown.Item>
               <Dropdown.Item href="/import">Import File</Dropdown.Item>
             </Dropdown.Menu>
-          </Dropdown>;
+          </Dropdown>
         </Row>
         {/* เริ่มต้นแถบตัวเลือกสร้างไฟล์หรือโฟลเดอร์ */}
         <Modal show={showCreateModal || showImportModal} onHide={() => setShowCreateModal(false)}>
