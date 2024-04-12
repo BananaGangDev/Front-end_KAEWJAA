@@ -16,6 +16,8 @@ function DocumentPage() {
   // const [selectedItem, setSelectedItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState({});
   const [items, setItems] = useState([]);
+  
+  const [showDropdown, setShowDropdown] = useState(false);
 
 
   const handleCreate = (name, description) => {
@@ -65,15 +67,26 @@ function DocumentPage() {
               </Dropdown>
             </div>
           </Col>
-          <Dropdown>
-          <Dropdown.Toggle className="new-button" id="dropdown-basic">
-            <BsPlus />
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => setShowCreateModal(true)}>Create File</Dropdown.Item>
-            <Dropdown.Item href="/import">Import File</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+          <Dropdown show={showDropdown} onClose={() => setShowDropdown(false)}>
+            <Dropdown.Toggle
+              className="new-button"
+              id="dropdown-basic"
+              onClick={() => setShowDropdown(!showDropdown)}
+            >
+              <BsPlus />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item
+                onClick={() => {
+                  setShowCreateModal(true);
+                  setShowDropdown(false); // เมื่อเลือก Create File ให้ปิด Dropdown
+                }}
+              >
+                Create File
+              </Dropdown.Item>
+              <Dropdown.Item href="/import">Import File</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>;
         </Row>
         {/* เริ่มต้นแถบตัวเลือกสร้างไฟล์หรือโฟลเดอร์ */}
         <Modal show={showCreateModal || showImportModal} onHide={() => setShowCreateModal(false)}>
