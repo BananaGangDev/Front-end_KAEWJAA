@@ -40,8 +40,17 @@ body {
     border: none;
   }
 
+  .button-bar button {
+    outline: none; /* ลบเส้นขอบเมื่อปุ่มได้รับ focus */
+  }
+  
+
+  .button-bar > :not(:last-child) {
+    margin-right: 10px;
+  }
+
   .corpus-button {
-    padding: 0.1em 1.0em;
+    padding: 0.2em 1.0em;
     border: none;
     background-color: #FC5B5C;
   }
@@ -50,11 +59,19 @@ body {
     padding: 0.1em 1.0em;
     border: none;
     background-color: #FC5B5C;
+    border-radius: 9px;
+    color: #FFF8F1;
   }
+
+  .concordancer-button:hover {
+    background-color: #FC5B5C;
+    color: #FFF8F1;
+  }
+  
   
   .sort-button {
     border: none;
-    padding: 0.1em 1.0em;
+    padding: 0.2em 1.0em;
     background-color: #FC5B5C;
   }
   
@@ -80,6 +97,7 @@ body {
   }
   
   .new-button:focus {
+    outline: none;
     background-color: #fa4a4a;
   }
   

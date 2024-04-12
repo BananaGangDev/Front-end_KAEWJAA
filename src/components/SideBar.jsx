@@ -129,7 +129,7 @@ function sidebar(props) {
                 <div className="UserDetail_container">USERNAME:</div>
               </motion.h3>
 
-              <Item icon={<DescriptionIcon />} name="Document" to="/" />
+              <Item icon={<DescriptionIcon />} name="Document" to="/document" />
               <Item icon={<DashboardIcon />} name="Dashboard" to="/dashboard" />
               <Item icon={<LocalOfferIcon />} name="Tagset" to="/tagset" />
               

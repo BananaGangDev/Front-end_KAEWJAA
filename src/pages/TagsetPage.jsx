@@ -5,6 +5,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { BsPlus } from 'react-icons/bs';
 import '../styles/Page.css';
 import '../styles/tagsetHeader.css';
+import SideBar from "../components/SideBar";
 
 function TagsetPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -47,40 +48,42 @@ function TagsetPage() {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <h1 className="tagset-title">Tagset</h1>
-        </Col>
-      </Row>
-      <Row className="tagset-header">
-        <Col className="header-column">Name</Col>
-        <Col className="header-column">Description</Col>
-        <Col className="header-column">Total tagset: {tagsets.length + (newTagset ? 1 : 0)}</Col>
-      </Row>
-      <div>
-        <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateModal(true)}>
-          <BsPlus/>
-        </Button>
-        <CreateTagsetModal
-          show={showCreateModal}
-          setShowCreateModal={setShowCreateModal}
-          // handleCreate={handleCreateClick}
-          onCreateTagset={handleCreateClick}
-          tagName={tagName}
-          setTagName={setTagName}
-          tagDescription={tagDescription}
-          setTagDescription={setTagDescription}
-        />
-        {/* แสดง Tagsets ทั้งหมด */}
-        {tagsets.map((tagset) => (
-          <TagsetAccordion key={tagset.id} name={tagset.name} description={tagset.description} />
-        ))}
-        {newTagset && newTagset.id && (
-          <TagsetAccordion key={newTagset.id} name={newTagset.name} description={newTagset.description} />
-        )}
-      </div>
-    </Container>
+    <SideBar>
+      <Container>
+        <Row>
+          <Col>
+            <h1 className="tagset-title">Tagset</h1>
+          </Col>
+        </Row>
+        <Row className="tagset-header">
+          <Col className="header-column">Name</Col>
+          <Col className="header-column">Description</Col>
+          <Col className="header-column">Total tagset: {tagsets.length + (newTagset ? 1 : 0)}</Col>
+        </Row>
+        <div>
+          <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateModal(true)}>
+            <BsPlus/>
+          </Button>
+          <CreateTagsetModal
+            show={showCreateModal}
+            setShowCreateModal={setShowCreateModal}
+            // handleCreate={handleCreateClick}
+            onCreateTagset={handleCreateClick}
+            tagName={tagName}
+            setTagName={setTagName}
+            tagDescription={tagDescription}
+            setTagDescription={setTagDescription}
+          />
+          {/* แสดง Tagsets ทั้งหมด */}
+          {tagsets.map((tagset) => (
+            <TagsetAccordion key={tagset.id} name={tagset.name} description={tagset.description} />
+          ))}
+          {newTagset && newTagset.id && (
+            <TagsetAccordion key={newTagset.id} name={newTagset.name} description={newTagset.description} />
+          )}
+        </div>
+      </Container>
+    </SideBar>
   );
 }
 
