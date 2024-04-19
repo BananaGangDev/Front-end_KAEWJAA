@@ -1,20 +1,98 @@
-import React from 'react';
-import { Accordion, Card, Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import EditIcon from '@mui/icons-material/Edit';
+import Card from '@mui/material/Card';
 
 function TagsetAccordion({ name, description }) {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editedName, setEditedName] = useState(name);
+  const [editedDescription, setEditedDescription] = useState(description);
+  const [originalName, setOriginalName] = useState(name);
+  const [originalDescription, setOriginalDescription] = useState(description);
+
+  const handleBookmarkClick = () => {
+    setIsBookmarked(!isBookmarked);
+  };
+
+  const handleEditClick = () => {
+    setEditedName(name);
+    setEditedDescription(description);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = () => {
+    // Perform update operation here with editedName and editedDescription
+    // For example, updateDatabaseFunction(editedName, editedDescription);
+    setShowEditModal(false);
+    setOriginalName(editedName);
+    setOriginalDescription(editedDescription);
+  };
+
+  const handleCloseModal = () => {
+    setShowEditModal(false);
+    setEditedName(originalName);
+    setEditedDescription(originalDescription);
+  };
+
   return (
-    <Accordion>
-      <Card>
-        <Card.Header>
-          <Accordion.Toggle as={Button} variant="link" eventKey="0">
-            {name}
-          </Accordion.Toggle>
-        </Card.Header>
-        <Accordion.Collapse eventKey="0">
-          <Card.Body>{description}</Card.Body>
-        </Accordion.Collapse>
+    <div>
+      <Card className='tagset-accordion' style={{ backgroundColor: "#E7E5FF" }}>
+        <AccordionSummary>
+          <div className='tagset-content'>{originalName}</div>
+          <div className='tagset-content'>{originalDescription}</div>
+          <div className='tagset-button'>
+            <BookmarkIcon
+              onClick={handleBookmarkClick}
+              style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
+            />
+            <EditIcon onClick={handleEditClick} />
+          </div>
+        </AccordionSummary>
       </Card>
-    </Accordion>
+
+      {/* Edit Modal */}
+      <Modal className='create-modal' show={showEditModal} onHide={handleCloseModal}>
+        <Modal.Header>
+          <Modal.Title>Edit Tagset</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                placeholder="Edit tagset name"
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={editedDescription}
+                onChange={(e) => setEditedDescription(e.target.value)}
+                placeholder="Edit tagset description"
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSaveEdit}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 }
 

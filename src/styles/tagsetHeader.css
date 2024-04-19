@@ -3,9 +3,25 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 0;
+    margin-bottom: 10px;
 }  
+  
 .header-column {
     flex: 1;
     text-align: center;
 }
-  
+
+.tagset-accordion {
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.tagset-button {
+    display: inline-flex;
+}
+
+.tagset-content {
+    margin-inline: auto;
+    margin-left: 5%;
+}

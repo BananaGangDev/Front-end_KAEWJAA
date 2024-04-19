@@ -8,6 +8,7 @@ import '../styles/tagsetHeader.css';
 import '../styles/CreateModal.css';
 import SideBar from "../components/SideBar";
 
+
 function TagsetPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [tagsets, setTagsets] = useState([]); // เก็บข้อมูล Tagsets ทั้งหมด
@@ -15,17 +16,17 @@ function TagsetPage() {
   const [tagName, setTagName] = useState('');
   const [tagDescription, setTagDescription] = useState('');
 
-  useEffect(() => {
-    const fetchTagsets = async () => {
-      // ปรับแต่ง API call นี้ให้เหมาะกับระบบของคุณ
-      const response = await fetch('https://documentation.softwareag.com/webmethods/compendiums/v10-11/C_API_Management/api-mgmt-comp/co-api_tagging.html');
-      const data = await response.json();
+  // useEffect(() => {
+  //   const fetchTagsets = async () => {
+  //     // ปรับแต่ง API call นี้ให้เหมาะกับระบบของคุณ
+  //     const response = await fetch('https://documentation.softwareag.com/webmethods/compendiums/v10-11/C_API_Management/api-mgmt-comp/co-api_tagging.html');
+  //     const data = await response.json();
 
-      setTagsets(data);
-    };
+  //     setTagsets(data);
+  //   };
 
-    fetchTagsets();
-  }, []);
+  //   fetchTagsets();
+  // }, []);
 
   const handleCreateClick = () => {
     // ตรวจสอบว่าชื่อ Tagset และคำอธิบายไม่เป็นค่าว่าง
