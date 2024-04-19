@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '/src/assets/kaewja-logo.jpg';
 import { Link } from 'react-router-dom';
 
+
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -12,20 +13,20 @@ const LoginForm = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    if (username === 'abc' && password === 'def') {
+    if (username === 'ajarnnok' && password === 'errortagger') {
       setIsLoggedIn(true);
     } 
-    else if (username !== 'abc') {
+    else if (username !== 'ajarnnok') {
       alert('Username is incorrect!');
     }
-    else if (password !== 'def') {
+    else if (password !== 'errortagger') {
       alert('Password is incorrect')
     }
   };
 
   if (isLoggedIn) {
     console.log("Login successfully!!!");
-    navigate('/import');
+    navigate('/document');
   }
 
   return (
@@ -59,10 +60,10 @@ const LoginForm = () => {
             </div>
 
             <div className="forgot">
-              <p>Forgot your password? <Link to="reset-password">Click Here</Link> </p>
+              <p>Forgot your password? <Link className='forgot-link' to="reset-password">Click Here</Link> </p>
             </div>
 
-            <button type='submit'>Login</button>
+            <button type='submit' onClick={handleLogin}>Login</button>
         </form>
     </div>
     </>

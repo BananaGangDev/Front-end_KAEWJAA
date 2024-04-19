@@ -7,8 +7,8 @@ function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, 
   };
 
   return (
-    <Modal show={show} onHide={() => setShowCreateModal(false)}>
-      <Modal.Header closeButton>
+    <Modal className='create-modal' show={show} onHide={() => setShowCreateModal(false)}>
+      <Modal.Header>
         <Modal.Title>Create New Tagset</Modal.Title>
       </Modal.Header>
       <Modal.Body>
