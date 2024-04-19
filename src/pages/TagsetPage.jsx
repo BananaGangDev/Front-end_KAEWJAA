@@ -69,7 +69,6 @@ function TagsetPage() {
           <CreateTagsetModal
             show={showCreateModal}
             setShowCreateModal={setShowCreateModal}
-            // handleCreate={handleCreateClick}
             onCreateTagset={handleCreateClick}
             tagName={tagName}
             setTagName={setTagName}
