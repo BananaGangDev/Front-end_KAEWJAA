@@ -23,100 +23,8 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { Alert, Autocomplete, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import "../styles/Concordance.css";
+import API from '/src/api.jsx';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-const CompactNumberInput = React.forwardRef(function CompactNumberInput(
-  props,
-  ref
-) {
-  const {
-    getRootProps,
-    getInputProps,
-    getIncrementButtonProps,
-    getDecrementButtonProps,
-    value,
-  } = useNumberInput(props);
-
-  const inputProps = getInputProps();
-
-  inputProps.ref = useForkRef(inputProps.ref, ref);
-
-  return (
-    <StyledInputRoot {...getRootProps()}>
-      <StyledStepperButton className="increment" {...getIncrementButtonProps()}>
-        <ArrowDropUpRoundedIcon />
-      </StyledStepperButton>
-      <StyledStepperButton className="decrement" {...getDecrementButtonProps()}>
-        <ArrowDropDownRoundedIcon />
-      </StyledStepperButton>
-      <HiddenInput {...inputProps} />
-    </StyledInputRoot>
-  );
-});
-
-const StyledInputRoot = styled("div")(
-  ({ theme }) => `
-    display: grid;
-    grid-template-columns: 2rem;
-    grid-template-rows: 2rem 2rem;
-    grid-template-areas:
-      "increment"
-      "decrement";
-    row-gap: 1px;
-    overflow: auto;
-    border-radius: 8px;
-    border-style: solid;
-    border-width: 1px;
-    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-    border-color: ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
-    box-shadow: 0px 2px 4px ${
-      theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
-    };
-  `
-);
-
-const HiddenInput = styled("input")`
-  visibility: hidden;
-  position: absolute;
-`;
-
-const StyledStepperButton = styled("button")(
-  ({ theme }) => `
-  display: flex;
-  flex-flow: nowrap;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.875rem;
-  box-sizing: border-box;
-  border: 0;
-  padding: 0;
-  color: inherit;
-  background: ${theme.palette.mode === "dark" ? grey[900] : grey[50]};
-
-  &:hover {
-    cursor: pointer;
-    background: ${theme.palette.mode === "dark" ? blue[700] : blue[500]};
-    color: ${grey[50]};
-  }
-
-  &:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 0 3px ${
-      theme.palette.mode === "dark" ? blue[700] : blue[200]
-    };
-  }
-
-  &.increment {
-    grid-area: increment;
-  }
-
-  &.decrement {
-    grid-area: decrement;
-  }
-`
-);
 
 //data
 function createData(id, detailFile, leftContext, rightContext, pointFocus) {
@@ -132,7 +40,7 @@ function Concordance() {
   const [search, setSearch] = useState(false);
   const [wordFocus, setWordFocus] = useState("");
   //amount | perMillion | perCent
-  const [dataAnalysis, setDataAnalysis] = useState([16, 123000, 98]);
+  const [dataAnalysis, setDataAnalysis] = useState([]);
 
   // detail | leftContext | rightContext
   const [data, setData] = useState([[]]);
@@ -140,17 +48,16 @@ function Concordance() {
   const [searchData, setSearchData] = useState({
     search: "",
   });
-  let information = `Simple ${wordFocus} ・${dataAnalysis[0]} ・ ${dataAnalysis[1]} per million token • ${dataAnalysis[2]} `;
 
   const columns = [
     {
-      width: 50,
+      width: 20,
       label: "ID",
       dataKey: "id",
       align: "center",
     },
     {
-      width: 100,
+      width: 90,
       label: "Detail",
       dataKey: "detailFile",
       align: "left",
@@ -162,7 +69,7 @@ function Concordance() {
       align: "right",
     },
     {
-      width: 50,
+      width: 40,
       label: "KWIC",
       dataKey: "pointFocus",
       align: "center",
@@ -225,44 +132,73 @@ function Concordance() {
       </React.Fragment>
     );
   }
-  const [checkedValues, setCheckedValues] = useState([]);
+  const [choosedFile, setChoosedFile] = useState([]);
   const [statusInput, setStatusInput] = useState();
 
-  const clickSearch = () => {
-    setStatusInput(checkInput(checkedValues, searchData.search));
-    //check value
-    if (statusInput) {
+  //clickSearch to link post API
+  const clickSearch = async () => {
+    // check value
+    if (checkInput(choosedFile, searchData.search)) {
       console.log("Pass");
       setSearch(true);
       setWordFocus(searchData.search);
-      // set data ส่งให้API
-      setData([
-        ["641074xxx1.pdf", "The cat climbed", " the top of"],
-        ["641074xxx2.pdf", "The students gathere", "protest against the"],
-        ["641074xxx2.pdf", "sent a letter", "her grandmother. I"],
-        ["641074xxx3.pdf", "into the pool", "cool off. He"],
-        ["641074xxx4.pdf", "brings a book ", "read on the"],
-        ["641074xxx5.pdf", "They are planning", "move to a"],
-        ["641074xxx6.pdf", "planning to move ", "a new city"],
-        ["641074xxx6.pdf", "chef added salt", "enhance the flavor"],
-        ["641074xxx7.pdf", "planning to move ", "a new city"],
-        ["641074xxx7.pdf", "chef added salt", "enhance the flavor"],
-      ]);
-      setWordFocus(searchData.search);
+      
+      try {
+        
+        const response = (await API.post(`/concordancer/concordancer?point_focus=${searchData.search}`, choosedFile)).data;
+
+        setWordFocus(response.pointFocus);
+        setData(response.Data)
+        setDataAnalysis([response.num_words,response.permillion,response.percent])
+        console.log('PostAPI', data);
+      } catch (error) {
+        console.error('Error posting data to API:', error);
+      }
+      
+      
+      // setData([
+      //   ["641074xxx1.pdf", "The cat climbed", " the top of"],
+      //   ["641074xxx2.pdf", "The students gathere", "protest against the"],
+      //   ["641074xxx2.pdf", "sent a letter", "her grandmother. I"],
+      //   ["641074xxx3.pdf", "into the pool", "cool off. He"],
+      //   ["641074xxx4.pdf", "brings a book ", "read on the"],
+      //   ["641074xxx5.pdf", "They are planning", "move to a"],
+      //   ["641074xxx6.pdf", "planning to move ", "a new city"],
+      //   ["641074xxx6.pdf", "chef added salt", "enhance the flavor"],
+      //   ["641074xxx7.pdf", "planning to move ", "a new city"],
+      //   ["641074xxx7.pdf", "chef added salt", "enhance the flavor"],
+      // ]);
     } else {
       setSearch(false);
     }
   };
+  
 
-  const fileName = [
-    "641074xxx1.pdf",
-    "641074xxx2.pdf",
-    "641074xxx3.pdf",
-    "641074xxx4.pdf",
-    "641074xxx5.pdf",
-    "641074xxx6.pdf",
-    "641074xxx7.pdf",
-  ];
+  const [fileName, setFileName] = useState([]);
+
+  //Get file name
+  useEffect(() => {
+    const fetchFilename = async () => {
+      try {
+        const response = await API.get(`/concordancer/get_filename`);
+        setFileName(response.data.filename)
+      } catch (error) {
+        console.error('Error fetching filename:', error);
+      }
+    };
+    fetchFilename();
+  }, []);
+  
+  
+  // const fileName = [
+  //   "641074xxx1.pdf",
+  //   "641074xxx2.pdf",
+  //   "641074xxx3.pdf",
+  //   "641074xxx4.pdf",
+  //   "641074xxx5.pdf",
+  //   "641074xxx6.pdf",
+  //   "641074xxx7.pdf",
+  // ];
 
   //setting alert 5sec
   const [showAlert, setShowAlert] = useState(true);
@@ -278,19 +214,19 @@ function Concordance() {
 
   const handleFilename = (event, newValue) => {
     if (newValue.includes("All")) {
-      setCheckedValues([...fileName]);
+      setChoosedFile([...fileName]);
     } else {
-      setCheckedValues(newValue.filter((option) => option !== "All"));
+      setChoosedFile(newValue.filter((option) => option !== "All"));
     }
 
-    setCheckedValues(newValue);
-    console.log("Chhosed file name ", checkedValues);
+    setChoosedFile(newValue);
+    // console.log("Choosed file name ", choosedFile);
   };
 
   const isChecked = (option) => {
     return (
-      checkedValues.includes(option) ||
-      (checkedValues.includes("All") && option !== "All")
+      choosedFile.includes(option) ||
+      (choosedFile.includes("All") && option !== "All")
     );
   };
 
