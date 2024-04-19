@@ -243,3 +243,7 @@
 .forgot p {
     font-size: 20px;
 }
+
+.forgot-link {
+    color: blue;
+}
