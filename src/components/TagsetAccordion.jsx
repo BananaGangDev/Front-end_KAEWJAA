@@ -7,13 +7,11 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
 
-function TagsetAccordion({ name, description }) {
+function TagsetAccordion({ id, name, description, onUpdate }) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedName, setEditedName] = useState(name);
   const [editedDescription, setEditedDescription] = useState(description);
-  const [originalName, setOriginalName] = useState(name);
-  const [originalDescription, setOriginalDescription] = useState(description);
 
   const handleBookmarkClick = () => {
     setIsBookmarked(!isBookmarked);
@@ -27,24 +25,20 @@ function TagsetAccordion({ name, description }) {
 
   const handleSaveEdit = () => {
     // Perform update operation here with editedName and editedDescription
-    // For example, updateDatabaseFunction(editedName, editedDescription);
+    onUpdate(id, editedName, editedDescription);
     setShowEditModal(false);
-    setOriginalName(editedName);
-    setOriginalDescription(editedDescription);
   };
 
   const handleCloseModal = () => {
     setShowEditModal(false);
-    setEditedName(originalName);
-    setEditedDescription(originalDescription);
   };
 
   return (
     <div>
-      <Card className='tagset-accordion' style={{ backgroundColor: "#E7E5FF" }}>
+      <Card className='tagset-accordion' style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
         <AccordionSummary>
-          <div className='tagset-content'>{originalName}</div>
-          <div className='tagset-content'>{originalDescription}</div>
+          <div className='tagset-content'>{name}</div>
+          <div className='tagset-content'>{description}</div>
           <div className='tagset-button'>
             <BookmarkIcon
               onClick={handleBookmarkClick}
