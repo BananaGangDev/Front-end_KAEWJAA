@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CreateTagsetModal from '../components/CreateTagsetModal';
 import TagsetAccordion from '../components/TagsetAccordion';
 import { Container, Row, Col, Button } from 'react-bootstrap';
@@ -45,6 +45,11 @@ function TagsetPage() {
     setTagsets(updatedTagsets);
   };
 
+  const handleDeleteTagset = (id) => {
+    const updatedTagsets = tagsets.filter(tagset => tagset.id !== id);
+    setTagsets(updatedTagsets);
+  };
+
   return (
     <SideBar>
       <Container>
@@ -55,7 +60,7 @@ function TagsetPage() {
         </Row>
         <Row className="tagset-header">
           <Col className="header-column">Name</Col>
-          <Col className="header-column">Description</Col>
+          <Col className="header-column-description">Description</Col>
           <Col className="header-column">Total tagset: {tagsets.length}</Col>
         </Row>
         <div>
@@ -78,6 +83,7 @@ function TagsetPage() {
               name={tagset.name}
               description={tagset.description}
               onUpdate={handleUpdateTagset}
+              onDelete={handleDeleteTagset} // ส่งฟังก์ชัน handleDeleteTagset ไปยัง TagsetAccordion
             />
           ))}
         </div>

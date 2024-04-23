@@ -11,6 +11,12 @@
     text-align: center;
 }
 
+.header-column-description {
+    flex: 1;
+    text-align: center;
+    padding-left: 60px;
+}
+
 .tagset-accordion {
     justify-content: space-between;
     width: 80%;
