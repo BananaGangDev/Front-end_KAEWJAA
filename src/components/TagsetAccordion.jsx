@@ -102,6 +102,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Card from '@mui/material/Card';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+
+
+
 function TagsetAccordion({ id, name, description, onUpdate, onDelete }) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -145,8 +153,11 @@ function TagsetAccordion({ id, name, description, onUpdate, onDelete }) {
 
   return (
     <div>
-      <Card className='tagset-accordion' style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
-        <AccordionSummary>
+      <Accordion
+        className='tagset-accordion'
+        style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <div className='tagset-content'>{name}</div>
           <div className='tagset-content'>{description}</div>
           <div className='tagset-button'>
@@ -158,7 +169,13 @@ function TagsetAccordion({ id, name, description, onUpdate, onDelete }) {
             <DeleteIcon onClick={handleDeleteClick} />
           </div>
         </AccordionSummary>
-      </Card>
+        <AccordionActions>
+          <div className='tagset-child-button'>
+            <CreateNewFolderIcon />
+            <NoteAddIcon />
+          </div>
+        </AccordionActions>
+      </Accordion>
 
       {/* Edit Modal */}
       <Modal className='create-modal' show={showEditModal} onHide={handleCloseModal}>

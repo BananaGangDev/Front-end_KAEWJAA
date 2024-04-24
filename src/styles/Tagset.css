@@ -31,3 +31,8 @@
     margin-inline: auto;
     margin-left: 5%;
 }
+
+.tagset-child-button {
+    display: inline-flex;
+    padding-right: 30px;
+}
