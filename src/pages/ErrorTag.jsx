@@ -1,194 +1,17 @@
-// import { useState, useRef, useEffect } from 'react';
-// import '/src/styles/ErrorTag.css';
-// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-// import { v4 as uuidv4 } from 'uuid';
-
-// function TextEditor() {
-//   const textAreaRef = useRef(null);
-//   const [text, setText] = useState('Hello world, I am a student from Thammasat University');
-//   const [correction, setCorrection] = useState('');
-//   const [selectedText, setSelectedText] = useState('');
-//   const [startSelection, setStartSelection] = useState(0);
-//   const [endSelection, setEndSelection] = useState(0);
-//   const [tags, setTags] = useState([]);
-//   const highlightColor = '#ffff00';
-
-//   // const textInputRef = useRef(null); // Reference to the text input element
-
-//   // const handleTextChange = (e) => {
-//   //   setText(e.target.value);
-//   // };
-//   const handleMouseDown = () => {
-//     if (!textAreaRef.current) return;
-//     setStartSelection(textAreaRef.current.selectionStart);
-//   };
-
-//   const handleMouseUp = () => {
-//     if (!textAreaRef.current) return;
-//     setEndSelection(textAreaRef.current.selectionEnd);
-//     const selected = text.slice(startSelection, textAreaRef.current.selectionEnd);
-//     setSelectedText(selected);
-//   };
-
-//   const handleSelectionChange = (e) => {
-//     const selectedText = textAreaRef.current.value.slice(textAreaRef.current.selectionStart, textAreaRef.current.selectionEnd);
-//     setSelectedText(selectedText);
-//   };
-
-//   const handleCorrectionChange = (e) => {
-//     setCorrection(e.target.value);
-//   };
-
-//   const handleSubmit = () => {
-//     // console.log('Text to submit:', text);
-//     // console.log('Correction:', correction);
-//     // console.log('Selected Text:', selectedText);
-//     // // Add the tag to the state
-//     // setTags([...tags, { text: selectedText, correction }]);
-//     if (selectedText) {
-//       const newTag = { id: uuidv4(), text: selectedText, correction };
-//       setTags(prevTags => [...prevTags, newTag]);
-//       setCorrection('');
-//       setSelectedText('');
-//     }
-//   };
-
-//   const handleSave = () => {
-//     if (text.length > 0) {
-
-//       const savedText = text;
-//       console.log('Saved text:', savedText);
-
-//       if (tags.length > 0) {
-//         const savedTags = tags;
-//         console.log('Saved tags:', savedTags);
-//       }
-
-//       alert('Text saved successfully!');
-//     } else {
-//       alert('No text to save!');
-//     }
-//   };
-
-//   const handleExport = () => {
-//     if (text.length > 0) {
-
-//       const exportedText = text;
-//       console.log('Exported text:', exportedText);
-
-//       // แปลงแท็ก (ถ้ามี) เป็นรูปแบบที่ต้องการ
-//       if (tags.length > 0) {
-//         const exportedTags = tags;
-//         console.log('Exported tags:', exportedTags);
-//       }
-
-//       alert('Text exported successfully! Please download the file.');
-//     } else {
-//       alert('No text to export!');
-//     }
-//   };
-
-//   // const logTag = (selectedText, correction) => {
-//   //   const timestamp = new Date().toISOString();
-//   //   setTagHistory([...tagHistory, {
-//   //     selectedText,
-//   //     correction,
-//   //     timestamp,
-//   //   }]);
-//   // };
-
-//   const handleRemoveTag = (tagId) => {
-//     // setCorrection('');
-//     // Additional remove logic if needed
-//     setTags(tags.filter(tag => tag.id !== tagId));
-//   };
-
-//   const displayHighlightedText = (text, selectedText) => {
-//     const parts = text.split(new RegExp(`(${selectedText})`, 'gi'));
-//     return parts.map((part, i) =>
-//       part.toLowerCase() === selectedText.toLowerCase() ? (
-//         <span key={i} style={{ backgroundColor: highlightColor }}>{part}</span>
-//       ) : (
-//         part
-//       )
-//     );
-//   };
-
-//   return (
-//     <div className="text-editor">
-//       <div className='errortag-header'>
-//         <ArrowBackIcon className='errortag-backicon' />
-//         <div className='errortag-filename'>file name</div>
-//       </div>
-//       <div className='main-bar'>
-//         <button onClick={handleSave}>Save</button>
-//         <button onClick={handleExport}>Export</button>
-//         {/* <button>Saved</button> */}
-//       </div>
-//       <div className='errortag-container'>
-//         <textarea
-//             className='errortag-text'
-//             value={text}
-//             readOnly
-//             placeholder="Text will be there"
-//             ref={textAreaRef}
-//             onMouseDown={handleMouseDown}
-//             onChange={handleSelectionChange}
-//           />
-//         <div className="errortag-tagset">Tagset components</div>
-//       </div>
-//       <div className='errortag-footer'>
-//         <input
-//           className='correction'
-//           type='text'
-//           value={correction}
-//           onChange={handleCorrectionChange}
-//           placeholder="Correction"
-//         />
-//         <div className='footer-bar'>
-//           <button className='errortag-submit-btn' onClick={handleSubmit}>Submit</button>
-//           <button className='errortag-remove-btn' onClick={handleRemoveTag}>Remove</button>
-//         </div>
-//         {/* <span>{correction.length}/100</span> */}
-//       </div>
-//       {/* {selectedText && ( // Render highlight only if text is selected
-//         <span className="text-highlight" style={{ backgroundColor: '#ffff00' }}>
-//           {selectedText}
-//         </span>
-//       )}
-
-//       {tags.length > 0 && ( // Render tags if there are any
-//         <div className="errortag-tags">
-//           {tags.map((tag) => (
-//             <div
-//               key={tag.id}
-//               className="errortag-tag"
-//             >
-//               {tag.text}
-//               <button onClick={() => handleRemoveTag(tag.id)}>x</button>
-//             </div>
-//           ))}
-//         </div>
-//       )} */}
-//     </div>
-//   );
-// }
-
-// export default TextEditor;
-
-import { useState, useRef, useEffect } from 'react';
-import '/src/styles/ErrorTag.css';
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import React, { useState, useEffect } from 'react';
+// import ArrowBackIcon from "@mui/icons-material/ArrowBackIcon";
 import { v4 as uuidv4 } from 'uuid';
 import SideBar from '../components/SideBar';
+import api from '/src/api.jsx';
+import '/src/styles/ErrorTag.css';
 
 function TextEditor() {
-  const [text, setText] = useState('I are a student from Thammasat University');
+  const [text, setText] = useState('I am a student from Thammasat University');
   const [correction, setCorrection] = useState('');
   const [selectedText, setSelectedText] = useState('');
-  const [highlightRange, setHighlightRange] = useState(null);
   const [tags, setTags] = useState([]);
-  const editorRef = useRef(null);
+  const [selectedRange, setSelectedRange] = useState({ start: 0, end: 0 });
+  const [logs, setLogs] = useState([]);
   const highlightColor = '#ffff00';
 
   const handleSelectText = () => {
@@ -199,7 +22,10 @@ function TextEditor() {
       const end = range.endOffset;
       if (start !== end) {
         setSelectedText(selection.toString());
-        setHighlightRange({ start, end });
+        setSelectedRange({ start, end });
+      } else {
+        setSelectedText('');
+        setSelectedRange({ start: 0, end: 0 });
       }
     }
   };
@@ -209,46 +35,162 @@ function TextEditor() {
   };
 
   const handleSubmit = () => {
-    // if (selectedText) {
-    //   const newTag = { id: uuidv4(), text: selectedText, correction };
-    //   setTags([...tags, newTag]);
-    //   setCorrection('');
-    //   setSelectedText('');
-    // }
-    alert("Successfully edited");
+    if (selectedText && correction) {
+      const newLogId = uuidv4();
+      const newLog = {
+        id: newLogId,
+        text: selectedText,
+        correction,
+        isHighlighted: false,
+      };
+      setLogs([...logs, newLog]);
+      setCorrection('');
+      setSelectedText('');
+      setSelectedRange({ start: 0, end: 0 });
+      // Implement logic to store the log (e.g., send to server)
+      console.log('Submitted log:', newLog);
+    }
   };
 
-  const displayHighlightedText = () => {
-    if (!highlightRange) return text;
-    const { start, end } = highlightRange;
-    return (
-      <>
-        {text.substring(0, start)}
-        <span style={{ backgroundColor: highlightColor }}>
-          {text.substring(start, end)}
-        </span>
-        {text.substring(end)}
-      </>
-    );
+
+  const handleRemove = () => {
+    if (selectedText) {
+
+      const selectedTextIds = logs.filter((log) => log.text === selectedText).map((log) => log.id);
+
+      const updatedLogs = logs.filter((log) => !selectedTextIds.includes(log.id));
+      console.log('Removing log entry with ID:', selectedTextIds);
+      setLogs(updatedLogs);
+      console.log(updatedLogs);
+      // Remove log entries for the selected text
+      // const updatedLogs = logs.filter((log) => {
+      //   if (log.text === selectedText) {
+      //     return false;
+      //   }
+      //   return true;
+      // });
+      // setLogs(updatedLogs);
+
+      // Also remove the highlight for the selected text
+      setLogs(logs.map((log) => (log.isHighlighted && log.text === selectedText ? { ...log, isHighlighted: false } : log)));
+
+      setSelectedText('');
+      setSelectedRange({ start: 0, end: 0 });
+    }
+  };
+
+
+  const handleSave = () => {
+    // Implement logic to save the logs
+    console.log('Saving logs...');
+    localStorage.setItem('errorTagLogs', JSON.stringify(logs));
+    alert('Logs saved successfully!');
   };
 
   // Fetch tagsets on component mount
+  // useEffect(() => {
+  //   const fetchTagsets = async () => {
+  //     try {
+  //       const response = await api.get(`/tagsets/labels?tagset_id=1`);
+  //       if (response.status !== 200) {
+  //         throw new Error(`API request failed with status ${response.status}`);
+  //       }
+  //       const tagset = response.data;
+  //       const formattedData = JSON.stringify(tagset, null, 2);
+  //       console.log('Fetched tagsets:', formattedData);
+  //       // const data = await response.json();
+  //       setTags(tagset);
+  //     } catch (error) {
+  //       console.error('Error fetching tagsets:', error);
+  //     }
+  //   };
+  //   fetchTagsets();
+  // }, []);
   useEffect(() => {
     const fetchTagsets = async () => {
       try {
-        const response = await fetch(`/tagsets/?tagset_id=1`);
-        const data = await response.json();
-        if (data) {
-          setTagsets(data);
-        } else {
-          console.error('Error fetching tagsets');
+        const response = await api.get(`/tagsets/labels?tagset_id=1`);
+        if (response.status !== 200) {
+          throw new Error(`API request failed with status ${response.status}`);
         }
+        const tagset = response.data;
+        console.log(tagset);
+
+        const nestedTags = {}; // Map to store all tags with key as label_name and value as tag object including children
+        tagset.forEach(tag => {
+          nestedTags[tag.label_name] = { ...tag, children: [] };
+        });
+
+        // Link children with their respective parents
+        tagset.forEach(tag => {
+          if (tag.label_parent !== 'ROOT' && nestedTags[tag.label_parent]) {
+            nestedTags[tag.label_parent].children.push(nestedTags[tag.label_name]);
+          }
+        });
+        const rootTags = tagset.filter(tag => tag.label_parent === 'ROOT').map(tag => nestedTags[tag.label_name]);
+        setTags(rootTags);
+
+        console.log(rootTags);
+
+        // create a nested structure
+        // const processedTags = {};
+        // tagset.forEach(tag => {
+        //   if (tag.label_parent === 'ROOT') {
+        //     processedTags[tag.label_name] = { ...tag, children: [] };
+        //   } else {
+        //     if (processedTags[tag.label_parent]) {
+        //       processedTags[tag.label_parent].children.push({ ...tag, children: [] });
+        //     } else {
+        //       // handle case where the parent might not yet be in the processedTags map
+        //       processedTags[tag.label_parent] = { children: [{ ...tag, children: [] }] };
+        //     }
+        //   }
+        // });
+
+        // console.log(processedTags);
+
+        // setTags(processedTags);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching tagsets:', error);
       }
     };
     fetchTagsets();
   }, []);
+
+  // Function to recursively render tagset hierarchy
+  // const renderTags = (parentLabel, tags) => {
+  //   if (!tags || tags.length === 0) {
+  //     return null;
+  //   }
+
+  //   return (
+  //     <ul key={parentLabel}>
+  //       {tags.map((tag) => (
+  //         <li className='tagset-li' key={tag.label_id}>
+  //           {tag.label_name} - {tag.label_description}
+  //           {renderTags(tag.label_name, tags.filter((t) => t.label_parent === tag.label_name))}
+  //         </li>
+  //       ))}
+  //     </ul>
+  //   );
+  // };
+  const renderTags = (tagData) => {
+    if (!tagData || tagData.children.length === 0) {
+      // return null;
+      return <li key={tagData.label_id}>{tagData.label_name} - {tagData.label_description}</li>
+    }
+
+    return (
+      <ul>
+        <li key={tagData.label_id}>
+          {tagData.label_name} - {tagData.label_description}
+          <ul>
+            {tagData.children.map(child => renderTags(child))}
+          </ul>
+        </li>
+      </ul>
+    );
+  };
 
   return (
     <SideBar>
@@ -258,47 +200,73 @@ function TextEditor() {
           <div className='errortag-filename'>file110424</div>
         </div>
         <div className='main-bar'>
-          <button onClick={handleSubmit}>Save</button>
-          <button onClick={handleSubmit}>Export</button>
+          <button onClick={handleSubmit}>Submit</button>
+          <button onClick={handleSave}>Save</button>
         </div>
         <div className='errortag-container'>
           <div
-            ref={editorRef}
-            contentEditable
             className='errortag-text'
             onMouseUp={handleSelectText}
-            // style={{ height: '300px', width: '100%', border: '1px solid black', padding: '10px', overflowY: 'auto' }}
+          // dangerouslySetInnerHTML={{ __html: text }}
           >
-            {displayHighlightedText()}
+            {selectedRange.start > 0 && selectedRange.end > 0 && (
+              <>
+                {text.slice(0, selectedRange.start)}
+                <span style={{ backgroundColor: highlightColor }}>
+                  {text.slice(selectedRange.start, selectedRange.end)}
+                </span>
+                {text.slice(selectedRange.end)}
+              </>
+            )}
+            {text}
           </div>
           <div className="errortag-tagset">
-            <h2>Tagsets</h2>
+            {/* <h3>Tagsets</h3>
+            {tags.length > 0 ? (
+              <ul>
+                {tags.map((tag) => (
+                  <li className='tagset-li' key={tag.label_id}>{`${tag.label_name} - ${tag.label_description}`}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No tagsets found.</p>
+            )} */}
+            {/* <h3>Tagsets</h3>
+            {tags.length > 0 ? (
+              renderTags('ROOT', Object.values(tags)) // Render top-level tags (ROOT children)
+            ) : (
+              <p>No tagsets found.</p>
+            )} */}
+            <h3>Tagsets</h3>
+            {/* {Object.keys(tags).length > 0 ? (
+              Object.values(tags).map(rootTag => renderTags(rootTag))
+            ) : (
+              <p>No tagsets found.</p>
+            )} */}
+            <ul>
               {tags.length > 0 ? (
-                <ul>
-                  {tags.map((tagset) => (
-                    <li key={tagset.id}>{tagset.tagset_name}</li>
-                  ))}
-                </ul>
+                tags.map(rootTag => renderTags(rootTag))
               ) : (
                 <p>No tagsets found.</p>
               )}
+            </ul>
           </div>
-        </div>
-        <div className='errortag-footer'>
-          <input
-            className='correction'
-            type='text'
-            value={correction}
-            onChange={handleCorrectionChange}
-            placeholder="Correction"
-          />
-          <div className='footer-bar'>
-            <button className='errortag-submit-btn' onClick={handleSubmit}>Submit</button>
-            <button className='errortag-remove-btn' onClick={handleSubmit}>Remove</button>
+          <div className='errortag-footer'>
+            <input
+              className='correction'
+              type='text'
+              value={correction}
+              onChange={handleCorrectionChange}
+              placeholder="Enter correction"
+            />
+            <div className='footer-bar'>
+              <button className='errortag-submit-btn' onClick={handleSubmit}>Submit</button>
+              <button className='errortag-remove-btn' onClick={handleRemove}>Remove</button>
+            </div>
           </div>
         </div>
       </div>
-    </SideBar>
+    </SideBar >
   );
 }
 
