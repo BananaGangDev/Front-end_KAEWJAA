@@ -253,14 +253,14 @@ function Concordance() {
         <div className="headerContext">Concordancer</div>
       </div>
       <hr id="line" />
-      <Stack
+      {/* <Stack
         id="alert-error-input"
         style={{ display: showAlert && statusInput ? "block" : "none" }}
       >
         <Alert variant="filled" severity="error">
           Data input invalid.
         </Alert>
-      </Stack>
+      </Stack> */}
       <div className="body">
         <div className="filter-concordance">
           {/* box analysis */}
