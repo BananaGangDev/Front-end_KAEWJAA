@@ -6,11 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { TableVirtuoso } from "react-virtuoso";
-import { unstable_useNumberInput as useNumberInput } from "@mui/base/unstable_useNumberInput";
-import { styled } from "@mui/system";
-import { unstable_useForkRef as useForkRef } from "@mui/utils";
-import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
-import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
@@ -18,10 +13,9 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { Alert, Autocomplete, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 import "../styles/Concordance.css";
 import API from '/src/api.jsx';
 
@@ -30,6 +24,7 @@ import API from '/src/api.jsx';
 function createData(id, detailFile, leftContext, rightContext, pointFocus) {
   return { id, detailFile, leftContext, rightContext, pointFocus };
 }
+const containsWhitespace = str => /\s/.test(str);
 
 function checkInput(fileName, pointFocus) {
   console.log(fileName.length !== 0 && pointFocus !== "");
@@ -57,10 +52,10 @@ function Concordance() {
       align: "center",
     },
     {
-      width: 90,
+      width: 100,
       label: "Detail",
       dataKey: "detailFile",
-      align: "left",
+      align: "center",
     },
     {
       width: 300,
@@ -69,7 +64,7 @@ function Concordance() {
       align: "right",
     },
     {
-      width: 40,
+      width: 10,
       label: "KWIC",
       dataKey: "pointFocus",
       align: "center",
@@ -112,7 +107,7 @@ function Concordance() {
             key={column.dataKey}
             variant="head"
             align={column.align}
-            style={{ width: column.width }}
+            style={{ width: column.width ,}}
           >
             {column.label}
           </TableCell>
@@ -125,7 +120,12 @@ function Concordance() {
     return (
       <React.Fragment>
         {columns.map((column) => (
-          <TableCell key={column.dataKey} variant="body" align={column.align}>
+          <TableCell key={column.dataKey} variant="body" 
+          align={column.align}
+          style={{ width: column.width, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+
+          
+          >
             {row[column.dataKey]}
           </TableCell>
         ))}
@@ -138,21 +138,27 @@ function Concordance() {
   //clickSearch to link post API
   const clickSearch = async () => {
     // check value
-    if (checkInput(choosedFile, searchData.search)) {
+    setData([])
+    setDataAnalysis([])
+    
+    if(containsWhitespace(searchData.search)){
+      alert("Please enter only one word")
+    }else{if (checkInput(choosedFile, searchData.search)) {
       console.log("Pass");
       setSearch(true);
       setWordFocus(searchData.search);
       
       try {
-        
-        const response = (await API.post(`/concordancer/concordancer?point_focus=${searchData.search}`, choosedFile)).data;
-
-        setWordFocus(response.pointFocus);
-        setData(response.Data)
-        setDataAnalysis([response.num_words,response.permillion,response.percent])
-        console.log('PostAPI', data);
+        const response = await API.post(`/concordancer/concordancer?point_focus=${searchData.search}`, choosedFile);
+        const responseData = response.data;
+        setWordFocus(responseData.pointFocus);
+        setData(responseData.Data);
+        setDataAnalysis([responseData.num_words, responseData.permillion, responseData.percent]);
+        console.log('PostAPI', responseData);
       } catch (error) {
-        console.error('Error posting data to API:', error);
+        setChoosedFile([])
+        alert(error.response.data.detail);
+        
       }
       
       
@@ -170,7 +176,8 @@ function Concordance() {
       // ]);
     } else {
       setSearch(false);
-    }
+    }}
+    
   };
   
 
@@ -213,14 +220,14 @@ function Concordance() {
   }, [showAlert]);
 
   const handleFilename = (event, newValue) => {
-    if (newValue.includes("All")) {
+    if (newValue === "All") {
       setChoosedFile([...fileName]);
     } else {
       setChoosedFile(newValue.filter((option) => option !== "All"));
     }
 
     setChoosedFile(newValue);
-    // console.log("Choosed file name ", choosedFile);
+    console.log("Choosed file name ", choosedFile);
   };
 
   const isChecked = (option) => {
@@ -229,6 +236,13 @@ function Concordance() {
       (choosedFile.includes("All") && option !== "All")
     );
   };
+  useEffect(() => {
+    if (search && dataAnalysis.length > 0) {
+      // ทำตามการเปลี่ยนแปลงใน dataAnalysis
+      console.log('Data Analysis:', dataAnalysis);
+    }
+  }, [search, dataAnalysis]);
+  
 
   return (
     <div className="Concordancepage">
@@ -251,23 +265,24 @@ function Concordance() {
         <div className="filter-concordance">
           {/* box analysis */}
           <div className="box data-analysis">
-            {search ? (
-              <>
-                Simple
-                <div className="focus"> {wordFocus}</div>・{dataAnalysis[0]} ・{" "}
-                {dataAnalysis[1]} per million token • {dataAnalysis[2]}
-              </>
-            ) : (
-              "No Data"
-            )}
+            {dataAnalysis.length !== 0 ? (
+              <div>
+                <span>Word of search : </span><span className="focus"> {wordFocus} </span>
+                <li>word count : {dataAnalysis[0]}</li>  
+                <li>{dataAnalysis[1]} per million token</li>  
+                <li>{dataAnalysis[2]} percent token</li>  
+                 
+              </div>
+            ) : search ? <CircularProgress id="loading"/> : ("")
+            }
             <div className="info-icon">{/* <InfoOutlinedIcon /> */}</div>
           </div>
 
           <Autocomplete
             multiple
             className="filename-input"
-            options={["All", ...fileName]}
-            groupBy={(option) => (option === "All" ? null : "Files")}
+            options={[...fileName]}
+            // groupBy={(option) => (option === "All" ? null : "Files")}
             getOptionLabel={(option) => option}
             limitTags={2}
             disableCloseOnSelect
