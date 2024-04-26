@@ -1,52 +1,92 @@
-import { useState, useEffect } from 'react';
-import CreateTagsetModal from '../components/CreateTagsetModal';
+import React, { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
 import TagsetAccordion from '../components/TagsetAccordion';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import CreateTagsetModal from '../components/CreateTagsetModal';
+import { Container, Row, Col } from 'react-bootstrap';
 import { BsPlus } from 'react-icons/bs';
-import '../styles/Page.css';
-import '../styles/tagsetHeader.css';
-import '../styles/CreateModal.css';
 import SideBar from "../components/SideBar";
+import { v4 as uuidv4 } from 'uuid';
+import '../styles/Page.css';
+import '../styles/Tagset.css';
+import '../styles/CreateModal.css';
 
 function TagsetPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [tagsets, setTagsets] = useState([]); // เก็บข้อมูล Tagsets ทั้งหมด
-  const [newTagset, setNewTagset] = useState(null); // เก็บ Tagset ใหม่ที่ถูกสร้าง
+  const [tagsets, setTagsets] = useState([]);
   const [tagName, setTagName] = useState('');
   const [tagDescription, setTagDescription] = useState('');
+  const [rootTagsets, setRootTagsets] = useState([]);
+  const [nestedTagsets, setNestedTagsets] = useState({});
 
-  useEffect(() => {
-    const fetchTagsets = async () => {
-      // ปรับแต่ง API call นี้ให้เหมาะกับระบบของคุณ
-      const response = await fetch('https://documentation.softwareag.com/webmethods/compendiums/v10-11/C_API_Management/api-mgmt-comp/co-api_tagging.html');
-      const data = await response.json();
-
-      setTagsets(data);
-    };
-
-    fetchTagsets();
-  }, []);
 
   const handleCreateClick = () => {
-    // ตรวจสอบว่าชื่อ Tagset และคำอธิบายไม่เป็นค่าว่าง
     if (tagName.trim() === '' || tagDescription.trim() === '') {
       alert('Please enter name and description.');
     } else {
-      const newTagsetId = Math.random().toString(36).substring(7); // สร้าง id สุ่ม
-
-      setNewTagset({
+      const newTagsetId = uuidv4();
+      const newTagset = {
         id: newTagsetId,
         name: tagName,
         description: tagDescription,
-      });
-
-      // นำข้อมูลไปสร้าง Tagset จริง ๆ แล้วบันทึกข้อมูลลงในระบบ
-      console.log('Creating tagset with name:', tagName, 'and description:', tagDescription);
-      // ปิดโมดอล
+        label_parent: 'ROOT', // กำหนด label_parent เป็น 'ROOT' สำหรับ Root Tagsets
+      };
+      setTagsets([...tagsets, newTagset]);
+      if (newTagset.label_parent === 'ROOT') {
+        setRootTagsets([...rootTagsets, newTagset]); // เพิ่ม Root Tagset
+      } else {
+        setNestedTagsets(prevState => ({
+          ...prevState,
+          [newTagset.label_parent]: [
+            ...(prevState[newTagset.label_parent] || []),
+            newTagset
+          ]
+        }));
+      }
       setShowCreateModal(false);
-      // ส่วนที่เหลือคือการสร้าง Tagset จริง ๆ แล้วบันทึกข้อมูลลงในระบบ
+      setTagName('');
+      setTagDescription('');
     }
   };
+  
+  
+  const handleUpdateTagset = (id, editedName, editedDescription) => {
+    const updatedTagsets = tagsets.map(tagset => {
+      if (tagset.id === id) {
+        return {
+          ...tagset,
+          name: editedName,
+          description: editedDescription,
+        };
+      }
+      return tagset;
+    });
+    setTagsets(updatedTagsets);
+  };
+  
+  const handleDeleteTagset = (id) => {
+    const updatedTagsets = tagsets.filter(tagset => tagset.id !== id);
+    setTagsets(updatedTagsets);
+  };
+  
+
+  const handleCreateNestedTagset = (parentTagsetId) => {
+    const newNestedTagsetId = uuidv4();
+    const newNestedTagset = {
+      id: newNestedTagsetId,
+      name: 'Nested Tagset', // กำหนดชื่อ Tagset ของ Nested Tagset
+      description: 'Description of Nested Tagset', // กำหนดคำอธิบายของ Nested Tagset
+      label_parent: parentTagsetId, // กำหนด label_parent เป็น parentTagsetId
+    };
+    setTagsets([...tagsets, newNestedTagset]); // เพิ่ม Nested Tagset เข้าไปใน tagsets
+    setNestedTagsets(prevState => ({
+      ...prevState,
+      [parentTagsetId]: [
+        ...(prevState[parentTagsetId] || []),
+        newNestedTagset
+      ]
+    }));
+  };
+  
 
   return (
     <SideBar>
@@ -58,8 +98,8 @@ function TagsetPage() {
         </Row>
         <Row className="tagset-header">
           <Col className="header-column">Name</Col>
-          <Col className="header-column">Description</Col>
-          <Col className="header-column">Total tagset: {tagsets.length + (newTagset ? 1 : 0)}</Col>
+          <Col className="header-column-description">Description</Col>
+          <Col className="header-column">Total tagset: {tagsets.length}</Col>
         </Row>
         <div>
           <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateModal(true)}>
@@ -68,24 +108,29 @@ function TagsetPage() {
           <CreateTagsetModal
             show={showCreateModal}
             setShowCreateModal={setShowCreateModal}
-            // handleCreate={handleCreateClick}
             onCreateTagset={handleCreateClick}
             tagName={tagName}
             setTagName={setTagName}
             tagDescription={tagDescription}
             setTagDescription={setTagDescription}
           />
-          {/* แสดง Tagsets ทั้งหมด */}
-          {tagsets.map((tagset) => (
-            <TagsetAccordion key={tagset.id} name={tagset.name} description={tagset.description} />
+          {/* ส่งฟังก์ชันไปยัง Tagset Accordions */}
+          {rootTagsets.map((tagset) => (
+            <TagsetAccordion
+              key={tagset.id}
+              id={tagset.id}
+              name={tagset.name}
+              description={tagset.description}
+              onUpdate={handleUpdateTagset}
+              onDelete={handleDeleteTagset} // ส่ง handleDeleteTagset ไปยัง TagsetAccordion
+              onCreateNestedTagset={() => handleCreateNestedTagset(tagset.id)}
+              nestedTagsets={nestedTagsets[tagset.id] || []}
+            />
           ))}
-          {newTagset && newTagset.id && (
-            <TagsetAccordion key={newTagset.id} name={newTagset.name} description={newTagset.description} />
-          )}
         </div>
       </Container>
     </SideBar>
-  );
+  );  
 }
 
 export default TagsetPage;
