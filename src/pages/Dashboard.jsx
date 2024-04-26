@@ -1,19 +1,25 @@
-import React, { StrictMode } from "react";
+import React, { StrictMode, useState } from "react";
 import SideBar from "../components/SideBar";
-import Fab from "@mui/material/Fab";
+
+// Material-UI Icons
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
+
+// Material-UI Components
 import Paper from "@mui/material/Paper";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
+// Nivo Components
 import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveBar } from "@nivo/bar";
-import Checkbox from "@mui/material/Checkbox";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
+import API from "/src/api.jsx";
 
 function Dashboard() {
   const Cards = [
@@ -21,33 +27,33 @@ function Dashboard() {
       theme: "#FC5B5C",
       label: "Total Document",
       dataKey: "totalDocuments",
-      logo: <DescriptionOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <DescriptionOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#219653",
       label: "Checked Document",
       dataKey: "checkedDocuments",
-      logo: <TaskAltOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <TaskAltOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#F98A6C",
       label: "Error Part",
       dataKey: "errorParts",
-      logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#5C83E5",
       label: "Tagset Root",
       dataKey: "tagsetRoots",
-      logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }}/>,
+      logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }} />,
     },
   ];
-
-  const data = {
+  //API
+  const cardData = {
     totalDocuments: 100,
     checkedDocuments: 80,
     errorParts: 10,
-    tagsetRoots: 50,
+    tagsetRoots: 2,
   };
 
   const dashboard_Data = [
@@ -64,7 +70,7 @@ function Dashboard() {
     {
       id: "Infelicities (Z)",
       label: "Infelicities (Z)",
-      value: 1.3,
+      value: 100,
     },
     {
       id: "Lexico-G(X)",
@@ -79,7 +85,7 @@ function Dashboard() {
     {
       id: "Form (F)",
       label: "Form (F)",
-      value: 26.3,
+      value: 102,
     },
   ];
 
@@ -276,9 +282,12 @@ function Dashboard() {
     />
   );
 
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const tagsetgroup = [{ title: "AjarnNok" }, { title: "AjarnJack" }];
+  const [tagset, setTagset] = useState("");
+
+  const handleChange = (event) => {
+    setTagset(event.target.value);
+  };
 
   return (
     <SideBar>
@@ -289,68 +298,54 @@ function Dashboard() {
         <hr id="line" />
         <div className="body">
           <div className="btn-container ">
-            {/* <Fab variant="extended" className="filter-btn">
-                <FilterAltOutlinedIcon sx={{ mr: 1 }} />
-                Add Filter
-              </Fab> */}
-            <Autocomplete
-              multiple
-              id="checkboxes-tags-demo"
-              options={tagsetgroup}
-              disableCloseOnSelect
-              getOptionLabel={(option) => option.title}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox
-                    icon={icon}
-                    checkedIcon={checkedIcon}
-                    style={{ marginRight: 8 }}
-                    checked={selected}
-                  />
-                  {option.title}
-                </li>
-              )}
+            <FormControl
               style={{ width: "auto", minWidth: 200, background: "#fff" }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Choose Tagset"
-                  placeholder="Tagset"
-                />
-              )}
-            />
+            >
+              <InputLabel id="demo-simple-select-label">Tagset</InputLabel>
+              <Select value={tagset} label="Tagset" onChange={handleChange}>
+                {tagsetgroup.map((option, index) => (
+                  <MenuItem key={index} value={option.title}>
+                    {option.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
-
-          <div className="cardsGroup">
-            {Cards.map((card, index) => (
-              <Paper
-                key={index}
-                className="card"
-                sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
-              >
-                <div className="cardLogo" 
-                
-                style={{ color: card.theme }}>
-                  {card.logo}
-                </div>
-                <div className="cardContent">
-                  <div className="cardkey">{data[card.dataKey]} </div>
-                  <div className="cardLabel">{card.label} </div>
-                </div>
-              </Paper>
-            ))}
-          </div>
-          <StrictMode>
-            <div className="PieChart" style={{ height: "400px" }}>
-              <MyResponsivePie data={dashboard_Data} />
+          {tagset !== "" && (
+            <div className="cardsGroup">
+              {Cards.map((card, index) => (
+                <Paper
+                  key={index}
+                  className="card"
+                  sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
+                >
+                  <div className="cardLogo" style={{ color: card.theme }}>
+                    {card.logo}
+                  </div>
+                  <div className="cardContent">
+                    <div className="cardkey">{cardData[card.dataKey]} </div>
+                    <div className="cardLabel">{card.label} </div>
+                  </div>
+                </Paper>
+              ))}
             </div>
-            <div className="Line" style={{ height: "400px" }}>
-              <MyResponsiveLine data={line_Data} />
-            </div>
-            <div className="BarChart" style={{ height: "400px" }}>
-              <MyResponsiveBar data={bar_Data} />
-            </div>
-          </StrictMode>
+          )}
+          {tagset !== "" && (
+            <React.StrictMode>
+              <div className="PieChart" style={{ height: "400px" }}>
+                <MyResponsivePie data={dashboard_Data} />
+              </div>
+              <div className="Line" style={{ height: "400px" }}>
+                <MyResponsiveLine data={line_Data} />
+              </div>
+              <div className="BarChart" style={{ height: "400px" }}>
+                <MyResponsiveBar data={bar_Data} />
+              </div>
+            </React.StrictMode>
+          )}
+          {tagset == "" && (
+            <div className="chooseTagAlert">Please choose tagset. </div>
+          )}
         </div>
       </div>
       {console.log(line_Data)}

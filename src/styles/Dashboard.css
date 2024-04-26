@@ -1,5 +1,5 @@
 .dashboardpage {
-    font-family: "IBM Plex Sana Thai Looped", sans-serif;
+    font-family: Dangrek, sans-serif;
     color: black;
     background: #FFF8F1;
     display: flex;
@@ -61,4 +61,13 @@
     border-radius: 16px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 
+}
+
+.dashboardpage .chooseTagAlert{
+    color: #fff;
+    font-size: 2em;
+    background-color: #b9b9b9;
+    text-align: center;
+    border-radius: 1em;
+    padding: 10%;
 }

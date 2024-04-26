@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SideBar from "../components/SideBar";
 import '/src/styles/ResetPassword.css'; 
 
 const ResetPassword = () => {
@@ -12,6 +13,7 @@ const ResetPassword = () => {
   };
 
   return (
+    <SideBar>
     <div className="reset-password-container">
       <form onSubmit={handleResetPassword}>
         <div className='reset-h1'>
@@ -61,6 +63,7 @@ const ResetPassword = () => {
         </div>
       </form>
     </div>
+    </SideBar>
   );
 };
 
