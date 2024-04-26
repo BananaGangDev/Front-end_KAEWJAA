@@ -1,17 +1,18 @@
 .Concordancepage {
-  font-family: "IBM Plex Sana Thai Looped", sans-serif;
-  color: black !important;
-  background: #FFF8F1;
+  /* font-family: 'Dangrek', sans-serif; */
+  font-family: Dangrek, sans-serif;
+  color: black ;
   height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 2em 2em 0 2em;
-  /* align-items: center; */
+  
 }
 
 .headerContext {
   font-size: 4em;
   text-align: center;
+  font-weight: bold;
 }
 
 .header #backArrow {
@@ -53,21 +54,22 @@
   /* width: 95%; */
 }
 
+#loading{
+  color: #FDC02F;
+}
+
 .box {
   display: flex;
   background-color: #FFF;
   color: black;
   border-radius: 15px;
   border: 0;
-  padding: 1em;
-  height: 3rem;
+  padding: 0.5em 1em 0.5em 1em;
+  height: 5.5rem;
   margin: 7px;
 }
 
 .data-analysis {
-  /* width: auto; */
-  /* min-width: 250px;
-  max-width: 500px; */
   width: 20%;
   display: flex;
   border: 2px solid #FDC02F;
@@ -102,7 +104,6 @@
 }
 
 .focus{
-  padding-left: 1em;
   color: #ff3e3e;
 }
 
@@ -132,6 +133,7 @@ table {
 tfoot th:first-child {
   border-bottom-left-radius: 5em;
 }
+
 
 /* thead th:last-child {
     border-top-right-radius: 5em;

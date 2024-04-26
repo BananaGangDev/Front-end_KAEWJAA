@@ -3,8 +3,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, setTagName, tagDescription, setTagDescription }) {
   const handleCreateClick = () => {
-    onCreateTagset();
-  };
+    onCreateTagset(tagName, tagDescription);
+  };  
 
   return (
     <Modal className='create-modal' show={show} onHide={() => setShowCreateModal(false)}>
