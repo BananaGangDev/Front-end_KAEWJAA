@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import LoginForm from '/src/pages/LoginForm.jsx';
-import ResetPassword from '/src/pages/ResetPassword.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
 import ImportDefault from '/src/pages/ImportDefault.jsx';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";

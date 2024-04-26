@@ -136,8 +136,8 @@ function sidebar(props) {
             </div>
             <div className="group ">
             
-            <Item icon={<LockResetIcon />} name="Reset Password" to="/resetpwd" />
-            <Item icon={<LogoutIcon />} name="Logout" to="/logout" />
+            <Item icon={<LockResetIcon />} name="Reset Password" to="/reset-password" />
+            <Item icon={<LogoutIcon />} name="Logout" to="/" />
           </div>
           </div>
           
