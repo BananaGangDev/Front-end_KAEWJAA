@@ -20,7 +20,7 @@ function FileUploadComponent() {
       formData.append('file', file);
 
       try {
-        const response = await api.post(`/sysupload-file/`, formData);
+        const response = await api.post(`/sys/upload`, formData);
 
         alert('File uploaded successfully!');
         console.log(response.data);
