@@ -1,4 +1,5 @@
 .FileCom {
+  /* background-color: aquamarine; */
   width: 100vw;
   height: 500px;
   display: flex;
@@ -6,8 +7,13 @@
   align-items: center;
 }
 
+
+.drop-container {
+  text-align: start;
+}
+
 .choose-container {
-  width: 100%;
+  width: 50vw;
   border-collapse: collapse;
   border: 2px dashed #ccc;
   padding: 20px;
@@ -16,15 +22,25 @@
 }
 
 .file-text-container input {
-  width: calc(100% - 60px);
-  padding: 20px 45px 20px 20px;
+  height: 10vh;
+  padding: 20px 0px 20px 20px;
   background-color: white;
   color: #515151;
   border: 2px solid rgba(0, 0, 0, .2);
+  /* display: flex;
+  text-align: start;
+  align-items: flex-start;
+  justify-content: flex-start; */
 }
 
-.FileCom button {
-  width: 50px;
+.submit-button {
+  /* background-color: antiquewhite; */
+  width: 20vw;
+  margin-left: 30%;
+}
+
+.submit-button button {
+  width: 10px;
   height: 50px;
   background: #FC5B5C;
   color: white;
@@ -36,6 +52,5 @@
   font-size: 20px;
   font-weight: bold;
   margin-top: 50px;
-  margin-left: 800px;
   transition: background-color 0.3s ease;
 }

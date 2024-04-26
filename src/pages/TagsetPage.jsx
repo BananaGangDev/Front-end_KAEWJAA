@@ -5,6 +5,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { BsPlus } from 'react-icons/bs';
 import '../styles/Page.css';
 import '../styles/tagsetHeader.css';
+import '../styles/CreateModal.css';
 import SideBar from "../components/SideBar";
 
 function TagsetPage() {
