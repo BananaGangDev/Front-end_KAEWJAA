@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset }) {
-  const [tagName, setTagName] = useState('');
-  const [tagDescription, setTagDescription] = useState('');
-
+function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, setTagName, tagDescription, setTagDescription }) {
   const handleCreateClick = async () => {
-    const trimmedTagName = tagName.trim(); // ตรวจสอบและตัดช่องว่างหน้าและหลังออก
-    const trimmedTagDescription = tagDescription.trim(); // ตรวจสอบและตัดช่องว่างหน้าและหลังออก
+    const trimmedTagName = tagName.trim();
+    const trimmedTagDescription = tagDescription.trim();
 
-    if (trimmedTagName && trimmedTagDescription) { // ตรวจสอบค่าที่ถูกตัดแล้วว่ามีค่าหรือไม่
+    if (trimmedTagName && trimmedTagDescription) {
       onCreateTagset(trimmedTagName, trimmedTagDescription);
     } else {
       alert('Please enter valid tag name and description.');
     }
-  };  
+  };
 
   return (
     <Modal className='create-modal' show={show} onHide={() => setShowCreateModal(false)}>

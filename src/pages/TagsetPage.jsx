@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Container, Row, Col } from 'react-bootstrap';
-import TagsetAccordion from '../components/TagsetAccordion';
 import CreateTagsetModal from '../components/CreateTagsetModal';
 import { BsPlus } from 'react-icons/bs';
 import SideBar from "../components/SideBar";
@@ -9,7 +8,7 @@ import api from '/src/api.jsx';
 import '../styles/Page.css';
 import '../styles/Tagset.css';
 import '../styles/CreateModal.css';
-import axios from 'axios';
+
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
@@ -21,52 +20,66 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionActions from '@mui/material/AccordionActions';
 import Card from '@mui/material/Card';
+import Swal from 'sweetalert2';
 
 function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedTagset }) {
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [tagsets, setTagsets] = useState([]);
   const [tagName, setTagName] = useState('');
   const [tagDescription, setTagDescription] = useState('');
   const [tags, setTags] = useState([]);
   const [totalTagsets, setTotalTagsets] = useState(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [selectedTagsetId, setSelectedTagsetId] = useState('');
+  const [editedName, setEditedName] = useState('');
+  const [editedDescription, setEditedDescription] = useState('');
 
   const handleBookmarkClick = () => {
     setIsBookmarked(!isBookmarked);
   };
 
+  const handleEditModalShow = (tagsetId, tagName, tagDescription) => {
+    setSelectedTagsetId(tagsetId);
+    setEditedName(tagName);
+    setEditedDescription(tagDescription);
+    setShowEditModal(true);
+  };
+
+  const handleDeleteModalShow = (tagsetId, tagName) => {
+    setSelectedTagsetId(tagsetId);
+    setShowDeleteModal(true);
+  };
+
   useEffect(() => {
-    const fetchTagsets = async () => {
-      try {
-        const response = await api.get(`/tagsets/labels?tagset_id=1`);
-        if (response.status !== 200) {
-          throw new Error(`API request failed with status ${response.status}`);
-        }
-        const tagset = response.data;
-        console.log(tagset);
-
-        const nestedTags = {};
-        tagset.forEach(tag => {
-          nestedTags[tag.label_name] = { ...tag, children: [], isOpen: false };
-        });
-
-        tagset.forEach(tag => {
-          if (tag.label_parent !== 'ROOT' && nestedTags[tag.label_parent]) {
-            nestedTags[tag.label_parent].children.push(nestedTags[tag.label_name]);
-          }
-        });
-        const rootTags = tagset.filter(tag => tag.label_parent === 'ROOT').map(tag => nestedTags[tag.label_name]);
-        setTags(rootTags);
-
-        console.log(rootTags);
-
-        setTotalTagsets(tagset.length);
-      } catch (error) {
-        console.error('Error fetching tagsets:', error);
-      }
-    };
     fetchTagsets();
   }, []);
+
+  const fetchTagsets = async () => {
+    try {
+      const response = await api.get(`/tagsets/labels?tagset_id=1`);
+      if (response.status !== 200) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const tagset = response.data;
+      const nestedTags = {};
+      tagset.forEach(tag => {
+        nestedTags[tag.label_name] = { ...tag, children: [], isOpen: false };
+      });
+
+      tagset.forEach(tag => {
+        if (tag.label_parent !== 'ROOT' && nestedTags[tag.label_parent]) {
+          nestedTags[tag.label_parent].children.push(nestedTags[tag.label_name]);
+        }
+      });
+      const rootTags = tagset.filter(tag => tag.label_parent === 'ROOT').map(tag => nestedTags[tag.label_name]);
+      setTags(rootTags);
+      setTotalTagsets(tagset.length);
+    } catch (error) {
+      console.error('Error fetching tagsets:', error);
+    }
+  };
 
   const toggleTag = (tag) => {
     tag.isOpen = !tag.isOpen;
@@ -82,12 +95,12 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
           <div className='tagset-content'>
             {tagData.children.length > 0 && <ExpandMoreIcon />} {tagData.label_name} - {tagData.label_description}
             <div className='tagset-action-button'>
-            <BookmarkBorderOutlinedIcon
-              onClick={handleBookmarkClick}
-              style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
-              />
-              <EditOutlinedIcon />
-              <DeleteOutlinedIcon />
+              {/* <BookmarkBorderOutlinedIcon
+                onClick={handleBookmarkClick}
+                style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
+              /> */}
+              <EditOutlinedIcon onClick={() => handleEditModalShow(tagData.label_id, tagData.label_name, tagData.label_description)} />
+              <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(tagData.label_id, tagData.label_name)} />
             </div>
           </div>
         </div>
@@ -100,70 +113,97 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
     );
   };
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
   const createTagset = async (tagName, tagDescription) => {
     try {
-      const response = await axios.post('/tagsets/labels/create', {
+      const response = await api.post('/tagsets/labels/create', {
         label_name: tagName,
         label_description: tagDescription,
         label_level: 0,
         label_parent: 'ROOT',
-        created_in_tagset: 0,
-        created_by: 0,
-        created_date: new Date().toISOString(),
+        created_in_tagset: 1,
+        created_by: 1,
+        created_date: new Date().toISOString().split('T')[0],
       });
-      if (response.status === 200) {
-        alert('Tagset created successfully!');
-        // ดึงข้อมูล Tagset ใหม่หลังจากสร้างเสร็จ
+      if (response.status === 201) {
+        // alert('Tagset created successfully!');
+        Toast.fire({
+          icon: "success",
+          title: "Tagset created successfully!"
+        });
         fetchTagsets();
+
       } else {
         throw new Error(`Failed to create tagset: ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error creating tagset:', error);
-      alert('Failed to create tagset. Please try again later.');
+      Toast.fire({
+        icon: "error",
+        title: "Failed to create tagset. Please try again later."
+      });
     }
   };
-  
-  // ฟังก์ชั่นสำหรับการแก้ไข Tagset
+
   const updateTagset = async (tagsetId, tagName, tagDescription) => {
     try {
-      const response = await axios.put('/tagsets/update', {
-        tagset_id: tagsetId,
-        tagset_name: tagName,
-        description: tagDescription,
+      const response = await api.put('tagsets/labels/update', {
+        label_id: tagsetId,
+        label_name: tagName,
+        label_level: 0,
+        label_parent: "ROOT",
+        label_description: tagDescription,
       });
       if (response.status === 200) {
-        alert('Tagset updated successfully!');
-        // ดึงข้อมูล Tagset ใหม่หลังจากแก้ไขเสร็จ
+        Toast.fire({
+          icon: "success",
+          title: "Tagset updated successfully!"
+        });
         fetchTagsets();
       } else {
         throw new Error(`Failed to update tagset: ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error updating tagset:', error);
-      alert('Failed to update tagset. Please try again later.');
+      Toast.fire({
+        icon: "error",
+        title: "Failed to update tagset. Please try again later."
+      });
     }
   };
-  
-  // ฟังก์ชั่นสำหรับการลบ Tagset
+
   const deleteTagset = async (tagsetId) => {
     try {
-      const response = await axios.delete(`/tagsets/labels/delete?label_id=${tagsetId}`);
+      const response = await api.delete(`/tagsets/labels/delete?label_id=${tagsetId}`);
       if (response.status === 200) {
-        alert('Tagset deleted successfully!');
-        // ดึงข้อมูล Tagset ใหม่หลังจากลบเสร็จ
+        Toast.fire({
+          icon: "success",
+          title: "Tagset deleted successfully!"
+        });
         fetchTagsets();
       } else {
         throw new Error(`Failed to delete tagset: ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error deleting tagset:', error);
-      alert('Failed to delete tagset. Please try again later.');
+      Toast.fire({
+        icon: "error",
+        title: "Failed to delete tagset. Please try again later."
+      });
     }
   };
-  
-  // อัปเดตฟังก์ชั่น handleCreateClick เพื่อใช้งาน createTagset
+
   const handleCreateClick = async () => {
     if (typeof tagName === 'string' && tagName.trim() !== '' && typeof tagDescription === 'string' && tagDescription.trim() !== '') {
       try {
@@ -178,20 +218,20 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
       alert('Please enter valid tag name and description.');
     }
   };
-  
-  // อัปเดตฟังก์ชั่น handleEditClick ใน TagsetPage เพื่อใช้งาน updateTagset
-  const handleEditClick = async (tagsetId, newTagName, newTagDescription) => {
+
+  const handleEditConfirm = async () => {
     try {
-      await updateTagset(tagsetId, newTagName, newTagDescription);
+      await updateTagset(selectedTagsetId, editedName, editedDescription);
+      setShowEditModal(false);
     } catch (error) {
       console.error('Error updating tagset:', error);
     }
   };
-  
-  // อัปเดตฟังก์ชั่น handleDeleteClick ใน TagsetPage เพื่อใช้งาน deleteTagset
-  const handleDeleteClick = async (tagsetId) => {
+
+  const handleDeleteConfirm = async () => {
     try {
-      await deleteTagset(tagsetId);
+      await deleteTagset(selectedTagsetId);
+      setShowDeleteModal(false);
     } catch (error) {
       console.error('Error deleting tagset:', error);
     }
@@ -214,15 +254,6 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
           <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateModal(true)}>
             <BsPlus />
           </Button>
-          <CreateTagsetModal
-            show={showCreateModal}
-            setShowCreateModal={setShowCreateModal}
-            onCreateTagset={handleCreateClick}
-            tagName={tagName}
-            setTagName={setTagName}
-            tagDescription={tagDescription}
-            setTagDescription={setTagDescription}
-          />
         </div>
       </Container>
       <div className='tagset-accordion'>
@@ -232,6 +263,72 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
           <p style={{ textAlign: "center" }}>Loading Tagset...</p>
         )}
       </div>
+
+      {/* Edit Modal */}
+      <Modal className='create-modal' show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header>
+          <Modal.Title>Edit Tagset</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                placeholder="Edit tagset name"
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={editedDescription}
+                onChange={(e) => setEditedDescription(e.target.value)}
+                placeholder="Edit tagset description"
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleEditConfirm}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal className='create-modal' show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header>
+          <Modal.Title>Delete Tagset</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDeleteConfirm}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <CreateTagsetModal
+        show={showCreateModal}
+        setShowCreateModal={setShowCreateModal}
+        onCreateTagset={handleCreateClick}
+        tagName={tagName}
+        setTagName={setTagName}
+        tagDescription={tagDescription}
+        setTagDescription={setTagDescription}
+      />
     </SideBar>
   );
 }
