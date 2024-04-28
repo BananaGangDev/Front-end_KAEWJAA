@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, setTagName, tagDescription, setTagDescription }) {
-  const handleCreateClick = () => {
-    onCreateTagset(tagName, tagDescription);
+function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset }) {
+  const [tagName, setTagName] = useState('');
+  const [tagDescription, setTagDescription] = useState('');
+
+  const handleCreateClick = async () => {
+    const trimmedTagName = tagName.trim(); // ตรวจสอบและตัดช่องว่างหน้าและหลังออก
+    const trimmedTagDescription = tagDescription.trim(); // ตรวจสอบและตัดช่องว่างหน้าและหลังออก
+
+    if (trimmedTagName && trimmedTagDescription) { // ตรวจสอบค่าที่ถูกตัดแล้วว่ามีค่าหรือไม่
+      onCreateTagset(trimmedTagName, trimmedTagDescription);
+    } else {
+      alert('Please enter valid tag name and description.');
+    }
   };  
 
   return (
