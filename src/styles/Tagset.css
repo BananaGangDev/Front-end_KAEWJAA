@@ -48,3 +48,15 @@
     display: inline-flex;
     padding-top: 8px;
 }
+
+.tagset-action-button {
+    /* display: flex; */
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .tagset-action-button > * {
+    margin-left: 5px;
+    cursor: pointer;
+  }

@@ -12,7 +12,7 @@ import '../styles/CreateModal.css';
 
 import Swal from 'sweetalert2';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+// import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
@@ -22,7 +22,7 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [tagsets, setTagsets] = useState([]);
+  // const [tagsets, setTagsets] = useState([]);
   const [tags, setTags] = useState([]);
   const [totalTagsets, setTotalTagsets] = useState(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -33,13 +33,13 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
   const [editedParent, setEditedParent] = useState('');
   const [tagName, setTagName] = useState('');
   const [tagLevel, setTagLevel] = useState('');
-  const [tagParent, setTagParent] = useState('');
+  // const [tagParent, setTagParent] = useState('');
   const [tagParent_Name, setTagParent_Name] = useState('');
   const [tagDescription, setTagDescription] = useState('');
 
-  const handleBookmarkClick = () => {
-    setIsBookmarked(!isBookmarked);
-  };
+  // const handleBookmarkClick = () => {
+  //   setIsBookmarked(!isBookmarked);
+  // };
 
   const handleShowCreateModal = (tagData) => {
     setShowCreateModal(true);
@@ -62,13 +62,6 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
     setEditedDescription(label_description);
     setShowEditModal(true);
   };
-
-  // const handleEditModalShow = (tagsetId, tagName, tagDescription) => {
-  //   setSelectedTagsetId(tagsetId);
-  //   setEditedName(tagName);
-  //   setEditedDescription(tagDescription);
-  //   setShowEditModal(true);
-  // };
 
   const handleDeleteModalShow = (tagsetId, tagName) => {
     setSelectedTagsetId(tagsetId);
@@ -104,10 +97,17 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
     }
   };
 
+
   const toggleTag = (tag) => {
+    // ตรวจสอบว่าคลิกเกิดขึ้นที่ไอคอน <ExpandMoreIcon /> เท่านั้น
+    if (!event.target.classList.contains('MuiSvgIcon-root')) {
+      return;
+    }
+  
     tag.isOpen = !tag.isOpen;
     setTags([...tags]);
   }
+  
 
   const renderTags = (tagData) => {
     return (
@@ -116,11 +116,10 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
           onClick={() => toggleTag(tagData)}
           style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
           <div className='tagset-content'>
-            {tagData.children.length > 0 && <ExpandMoreIcon />} {tagData.label_name} - {tagData.label_description}
+            {tagData.children.length > 0 && <ExpandMoreIcon style={{cursor: "pointer"}} />} {tagData.label_name} - {tagData.label_description}
             <div className='tagset-action-button'>
               <AddBoxOutlinedIcon onClick={() => handleShowCreateModal(tagData)}/>
               <EditOutlinedIcon onClick={() => handleEditModalShow(tagData)} />
-              {/* <EditOutlinedIcon onClick={() => handleEditModalShow(tagData.label_id, tagData.label_name, tagData.label_description)} /> */}
               <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(tagData.label_id, tagData.label_name)} />
             </div>
           </div>
@@ -158,7 +157,6 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
         created_date: new Date().toISOString().split('T')[0],
       });
       if (response.status === 201) {
-        // alert('Tagset created successfully!');
         Toast.fire({
           icon: "success",
           title: "Tagset created successfully!"
@@ -406,7 +404,6 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
         </Modal.Footer>
       </Modal>
 
-
       <CreateTagsetModal
         show={showCreateModal}
         setShowCreateModal={setShowCreateModal}
@@ -415,7 +412,6 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
         setTagName={setTagName}
         tagDescription={tagDescription}
         setTagDescription={setTagDescription}
-        // parentTagsetData={/* ระบุ parentTagsetData ที่ต้องการส่งเข้าไป */}
       />
 
       <CreateRootTagsetModal
@@ -426,9 +422,7 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
         setTagName={setTagName}
         tagDescription={tagDescription}
         setTagDescription={setTagDescription}
-        // parentTagsetData={/* ระบุ parentTagsetData ที่ต้องการส่งเข้าไป */}
       />
-
     </SideBar>
   );
 }
