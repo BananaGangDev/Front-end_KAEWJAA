@@ -46,5 +46,5 @@
 
 .tagset-action-button {
     display: inline-flex;
-    /* text-align: right; */
+    padding-top: 8px;
 }
