@@ -12,6 +12,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionActions from '@mui/material/AccordionActions';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Card from '@mui/material/Card';
 
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 
@@ -60,48 +61,21 @@ function TagsetAccordion({ id, name, description, onUpdate, onDelete, onCreateNe
 
   return (
     <div className='tagset-accordion'>
-      <Accordion 
+      <Card 
         style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {/* for tagset at lebel_level = 0 */}
-          <div className='tagset-content'>{name}</div>
-          <div className='tagset-content'>{description}</div>
-          <div className='tagset-button'>
-              <BookmarkBorderOutlinedIcon
-              onClick={handleBookmarkClick}
-              style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
-              />
-              <EditOutlinedIcon onClick={handleEditClick} />
-              <DeleteOutlinedIcon onClick={handleDeleteClick} />
-          </div>
+          <AccordionSummary>
+            <div className='tagset-content'>{name}</div>
+            <div className='tagset-content'>{description}</div>
+            <div className='tagset-button'>
+                <BookmarkBorderOutlinedIcon
+                onClick={handleBookmarkClick}
+                style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
+                />
+                <EditOutlinedIcon onClick={handleEditClick} />
+                <DeleteOutlinedIcon onClick={handleDeleteClick} />
+            </div>
           </AccordionSummary>
-          <AccordionDetails>
-            <Accordion style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-              >
-                {/* for tagset at lebel_level = 1 */}
-              </AccordionSummary>
-              <AccordionDetails>
-                  <Accordion style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
-                      <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      >
-                      {/* for tagset at lebel_level = 2 */}
-                      </AccordionSummary>
-                      <AccordionDetails>
-                      <Card style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
-                          <AccordionSummary
-                          >
-                          {/* for tagset at lebel_level = 3 */}
-                          </AccordionSummary>
-                      </Card>
-                      </AccordionDetails>
-                  </Accordion>
-              </AccordionDetails>
-            </Accordion>
-          </AccordionDetails>
-        </Accordion>
+        </Card >
 
       {/* Edit Modal */}
       <Modal className='create-modal' show={showEditModal} onHide={handleCloseModal}>

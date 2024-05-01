@@ -50,16 +50,11 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
   };
 
   const handleEditModalShow = (tagData) => {
-    const label_id = tagData.label_id;
-    const label_name = tagData.label_name;
-    const label_level = tagData.label_level;
-    const label_parent = tagData.label_parent;
-    const label_description = tagData.label_description;
-    setSelectedTagsetId(label_id);
-    setEditedName(label_name);
-    setEditedLevel(label_level);
-    setEditedParent(label_parent);
-    setEditedDescription(label_description);
+    setSelectedTagsetId(tagData.label_id);
+    setEditedName(tagData.label_name);
+    setEditedLevel(tagData.label_level);
+    setEditedParent(tagData.label_parent);
+    setEditedDescription(tagData.label_description);
     setShowEditModal(true);
   };
 
@@ -96,7 +91,6 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
       console.error('Error fetching tagsets:', error);
     }
   };
-
 
   const toggleTag = (tag) => {
     // ตรวจสอบว่าคลิกเกิดขึ้นที่ไอคอน <ExpandMoreIcon /> เท่านั้น
@@ -327,6 +321,11 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
         <Row>
           <Col>
             <h1 className="tagset-title">Tagset</h1>
+            <div>
+              <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateRootModal(true)}>
+                <BsPlus />
+              </Button>
+            </div>
           </Col>
         </Row>
         <Row className="tagset-header">
@@ -334,11 +333,11 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
           <Col className="header-column-description">Description</Col>
           <Col className="header-column">Total tagset: {totalTagsets}</Col>
         </Row>
-        <div>
+        {/* <div>
           <Button className='tagset-create-button' variant="primary" onClick={() => setShowCreateRootModal(true)}>
             <BsPlus />
           </Button>
-        </div>
+        </div> */}
       </Container>
       <div className='tagset-accordion'>
         {tags.length > 0 ? (
