@@ -1,4 +1,4 @@
-import React, { StrictMode, useState } from "react";
+import React, { StrictMode, useState, useEffect } from "react";
 import SideBar from "../components/SideBar";
 
 // Material-UI Icons
@@ -41,12 +41,12 @@ function Dashboard() {
       dataKey: "errorParts",
       logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }} />,
     },
-    {
-      theme: "#5C83E5",
-      label: "Tagset Root",
-      dataKey: "tagsetRoots",
-      logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }} />,
-    },
+    // {
+    //   theme: "#5C83E5",
+    //   label: "Tagset Root",
+    //   dataKey: "tagsetRoots",
+    //   logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }} />,
+    // },
   ];
   //API
   const cardData = {
@@ -56,20 +56,51 @@ function Dashboard() {
     tagsetRoots: 2,
   };
 
+  const graphData =  [
+    {
+      "root_name": "F",
+      "data": [
+        {
+          "child_name": "FS",
+          "child_description": "Spelling error",
+          "count": 6,
+          "percent": "33.33333333333333"
+        },
+        {
+          "child_name": "FM",
+          "child_description": "Morphological error",
+          "count": 6,
+          "percent": "33.33333333333333"
+        }
+      ]
+    },
+    {
+      "root_name": "G",
+      "data": [
+        {
+          "child_name": "GA",
+          "child_description": "Artical",
+          "count": 6,
+          "percent": "33.33333333333333"
+        }
+      ]
+    }
+  ]
+
   const dashboard_Data = [
     {
       id: "Lexis (L)",
-      label: "Lexis (L)",
-      value: 7.5,
+      label: "Lexis (L) label",
+      value: 120,
     },
     {
       id: "Word(W)",
       label: "Word(W)",
-      value: 10.5,
+      value: 50,
     },
     {
       id: "Infelicities (Z)",
-      label: "Infelicities (Z)",
+      label: "Infelicities (Z) label",
       value: 100,
     },
     {
@@ -80,7 +111,7 @@ function Dashboard() {
     {
       id: "Grammar (G)",
       label: "Grammar (G)",
-      value: 21.8,
+      value: 90,
     },
     {
       id: "Form (F)",
@@ -89,63 +120,106 @@ function Dashboard() {
     },
   ];
 
-  const line_Data = [
-    {
-      id: "Errortager",
-      data: dashboard_Data.map((item) => ({
-        x: item.id,
-        y: item.value,
-      })),
-    },
-  ];
-
-  const bar_Data = dashboard_Data.map((item) => ({
-    Value: item.id,
-    Errortagger: item.value,
+  const pie_Data = graphData.map(parent => ({
+    id: parent.root_name,
+    value: parent.data.reduce((total, child) => total + parseFloat(child.percent), 0).toFixed(2),
+    tooltip: parent.data.map(child => ({ id: child.child_name, num: child.percent }))
   }));
 
-  const MyResponsiveLine = ({ data }) => (
-    <ResponsiveLine
-      data={data}
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-      xScale={{ type: "point" }}
-      yScale={{
-        type: "linear",
-        min: "auto",
-        max: "auto",
-        stacked: true,
-        reverse: false,
-      }}
-      yFormat=" >-.2f"
-      axisTop={null}
-      axisRight={null}
-      axisBottom={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: "Error",
-        legendOffset: 36,
-        legendPosition: "middle",
-        truncateTickAt: 0,
-      }}
-      axisLeft={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: "Amount",
-        legendOffset: -40,
-        legendPosition: "middle",
-        truncateTickAt: 0,
-      }}
-      pointSize={10}
-      pointColor={{ from: "color", modifiers: [] }}
-      pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
-      pointLabelYOffset={-12}
-      enableTouchCrosshair={true}
-      useMesh={true}
-    />
-  );
+  // const bar_Data = graphData.map((parent) => ({
+  //   Value: parent.root_name,
+  //   Errortagger: parent.data.reduce((total, child) => total + parseFloat(child.count), 0).toFixed(2),
+  //   tooltipBar: parent.data.map(child => ({id: child.child_name, num: child.count}))
+  // }));    
+  const bar_Data = graphData.map((parent) => ({
+    Root: parent.root_name,
+    Errortagger: parent.data.reduce((total, child) => total + parseFloat(child.count), 0).toFixed(2),
+    tooltipBar: parent.data.map(child => ({id: child.child_name, num: child.count}))
+  }));    
+  console.log(bar_Data)
+
+
+  // const line_Data = [
+  //   {
+  //     id: "Errortager",
+  //     data: dashboard_Data.map((item) => ({
+  //       x: item.id,
+  //       y: item.value,
+  //     })),
+  //   },
+  // ];
+
+  
+  
+  const PieTooltip = ({ datum }) => {
+    // ค้นหาข้อมูลของ slice จาก pie_Data โดยใช้ id ของ datum
+    const tooltipData = pie_Data.find(item => item.id === datum.id);
+    console.log(datum)
+    
+    return (
+      <div className='pietooltip'>
+        <p>{datum.id}</p>
+        {/* ถ้าพบข้อมูลใน tooltipData ให้แสดง tooltip */}
+        {tooltipData && tooltipData.tooltip.map(child => (
+          <p key={child.id}>{child.id}: {parseFloat(child.num).toFixed(2)}%</p>
+        ))}
+      </div>
+    );
+  };
+
+  const BarTooltip = () => {
+    const datum =bar_Data
+    return (
+      <div className='bartooltip'>
+        <p>{datum.Value}</p>
+      </div>
+    );
+
+  };
+  // console.log('bar', bar_Data)
+
+  // const MyResponsiveLine = ({ data }) => (
+  //   <ResponsiveLine
+  //     data={data}
+  //     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+  //     xScale={{ type: "point" }}
+  //     yScale={{
+  //       type: "linear",
+  //       min: "auto",
+  //       max: "auto",
+  //       stacked: true,
+  //       reverse: false,
+  //     }}
+  //     yFormat=" >-.2f"
+  //     axisTop={null}
+  //     axisRight={null}
+  //     axisBottom={{
+  //       tickSize: 5,
+  //       tickPadding: 5,
+  //       tickRotation: 0,
+  //       legend: "Error",
+  //       legendOffset: 36,
+  //       legendPosition: "middle",
+  //       truncateTickAt: 0,
+  //     }}
+  //     axisLeft={{
+  //       tickSize: 5,
+  //       tickPadding: 5,
+  //       tickRotation: 0,
+  //       legend: "Amount",
+  //       legendOffset: -40,
+  //       legendPosition: "middle",
+  //       truncateTickAt: 0,
+  //     }}
+  //     pointSize={10}
+  //     pointColor={{ from: "color", modifiers: [] }}
+  //     pointBorderWidth={2}
+  //     pointBorderColor={{ from: "serieColor" }}
+  //     pointLabelYOffset={-12}
+  //     enableTouchCrosshair={true}
+  //     useMesh={true}
+  //   />
+  // );
 
   const MyResponsivePie = ({ data }) => (
     <ResponsivePie
@@ -170,26 +244,6 @@ function Dashboard() {
         from: "color",
         modifiers: [["darker", 2]],
       }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
       legends={[
         {
           anchor: "bottom",
@@ -215,6 +269,7 @@ function Dashboard() {
           ],
         },
       ]}
+      tooltip={({ datum }) => <PieTooltip datum={datum} />} 
     />
   );
 
@@ -222,34 +277,12 @@ function Dashboard() {
     <ResponsiveBar
       data={data}
       keys={["Errortagger"]}
-      indexBy="Value"
+      indexBy="Root"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
       colors={{ scheme: "nivo" }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "#38bcb2",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "#eed312",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      axisTop={null}
-      axisRight={null}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
@@ -275,19 +308,37 @@ function Dashboard() {
         modifiers: [["darker", 1.6]],
       }}
       role="application"
-      ariaLabel="Nivo bar chart demo"
-      barAriaLabel={(e) =>
-        e.id + ": " + e.formattedValue + " in Value: " + e.indexValue
-      }
+      tooltip={(e) => (
+        <div className="bartooltip">
+          <p>{e.data.Root}</p>
+        </div>
+      )}
     />
   );
+  
 
-  const tagsetgroup = [{ title: "AjarnNok" }, { title: "AjarnJack" }];
+
+
+  const [tagsetgroup, setTagsetgroup] = useState([{ title: "AjarnNok", id: 123 }, { title: "AjarnJack", id: 645}])
   const [tagset, setTagset] = useState("");
 
   const handleChange = (event) => {
     setTagset(event.target.value);
   };
+
+  //Get tag name
+  // useEffect(() => {
+  //   const fetchFilename = async () => {
+  //     try {
+  //       const response = await API.get(`/tagsets/all`);
+  //       console.log("API: ", response.data)
+  //       // setTagsetgroup(response.data)
+  //     } catch (error) {
+  //       console.error('Error fetching filename:', error);
+  //     }
+  //   };
+  //   fetchFilename();
+  // }, []);
 
   return (
     <SideBar>
@@ -333,11 +384,11 @@ function Dashboard() {
           {tagset !== "" && (
             <React.StrictMode>
               <div className="PieChart" style={{ height: "400px" }}>
-                <MyResponsivePie data={dashboard_Data} />
+                <MyResponsivePie data={pie_Data} />
               </div>
-              <div className="Line" style={{ height: "400px" }}>
+              {/* <div className="Line" style={{ height: "400px" }}>
                 <MyResponsiveLine data={line_Data} />
-              </div>
+              </div> */}
               <div className="BarChart" style={{ height: "400px" }}>
                 <MyResponsiveBar data={bar_Data} />
               </div>
@@ -348,7 +399,7 @@ function Dashboard() {
           )}
         </div>
       </div>
-      {console.log(line_Data)}
+      {/* {console.log(line_Data)} */}
     </SideBar>
   );
 }

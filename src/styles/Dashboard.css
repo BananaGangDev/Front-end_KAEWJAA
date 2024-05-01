@@ -71,3 +71,10 @@
     border-radius: 1em;
     padding: 10%;
 }
+/* style={{ background: 'white', padding: '10px' }} */
+.pietooltip{
+    background-color: #fff;
+    padding: 0.3em;
+    /* border-radius: 1em; */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
