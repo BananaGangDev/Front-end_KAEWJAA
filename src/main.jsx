@@ -12,6 +12,7 @@ import './styles/main.css';
 import DocumentPage from './pages/DocumentPage';
 import TagsetPage from './pages/TagsetPage';
 import Errortag from '/src/pages/ErrorTag.jsx';
+import ChooseTagsetPage from './pages/ChooseTagsetPage.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/concordance" element={<Concordance />} />
           <Route path="/errortag" element={<Errortag />} />
+          <Route path="/choosetagset" element={<ChooseTagsetPage />} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>

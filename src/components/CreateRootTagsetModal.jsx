@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, setTagName, tagDescription, setTagDescription, parentTagsetData }) {
+function CreateRootTagsetModal({ show, setShowCreateRootModal, onCreateTagset, tagName, setTagName, tagDescription, setTagDescription, parentTagsetData }) {
   const handleCreateClick = async () => {
-    // if (!parentTagsetData) {
-    //   alert('Please select a parent tagset.');
-    //   return;
-    // }
   
     const trimmedTagName = tagName.trim();
     const trimmedTagDescription = tagDescription.trim();
@@ -19,7 +15,7 @@ function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, 
   };
 
   return (
-    <Modal className='create-modal' show={show} onHide={() => setShowCreateModal(false)}>
+    <Modal className='create-modal' show={show} onHide={() => setShowCreateRootModal(false)}>
       <Modal.Header>
         <Modal.Title>Create New Tagset</Modal.Title>
       </Modal.Header>
@@ -47,11 +43,11 @@ function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, 
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowCreateModal(false)}>Cancel</Button>
+        <Button variant="secondary" onClick={() => setShowCreateRootModal(false)}>Cancel</Button>
         <Button variant="primary" onClick={handleCreateClick}>Create</Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default CreateTagsetModal;
+export default CreateRootTagsetModal;

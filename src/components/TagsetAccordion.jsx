@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import AccordionSummary from '@mui/material/AccordionSummary';
 // import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionActions from '@mui/material/AccordionActions';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Card from '@mui/material/Card';
+
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 
 
@@ -58,27 +61,21 @@ function TagsetAccordion({ id, name, description, onUpdate, onDelete, onCreateNe
 
   return (
     <div className='tagset-accordion'>
-      <Accordion
-        style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <div className='tagset-content'>{name}</div>
-          <div className='tagset-content'>{description}</div>
-          <div className='tagset-button'>
-            <BookmarkBorderOutlinedIcon
-              onClick={handleBookmarkClick}
-              style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
-            />
-            <EditOutlinedIcon onClick={handleEditClick} />
-            <DeleteOutlinedIcon onClick={handleDeleteClick} />
-          </div>
-        </AccordionSummary>
-        <AccordionActions>
-          <div className='tagset-child-button'>
-            <CreateNewFolderOutlinedIcon />
-          </div>
-        </AccordionActions>
-      </Accordion>
+      <Card 
+        style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
+          <AccordionSummary>
+            <div className='tagset-content'>{name}</div>
+            <div className='tagset-content'>{description}</div>
+            <div className='tagset-button'>
+                <BookmarkBorderOutlinedIcon
+                onClick={handleBookmarkClick}
+                style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
+                />
+                <EditOutlinedIcon onClick={handleEditClick} />
+                <DeleteOutlinedIcon onClick={handleDeleteClick} />
+            </div>
+          </AccordionSummary>
+        </Card >
 
       {/* Edit Modal */}
       <Modal className='create-modal' show={showEditModal} onHide={handleCloseModal}>
