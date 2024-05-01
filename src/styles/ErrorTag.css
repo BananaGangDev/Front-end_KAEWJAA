@@ -130,3 +130,9 @@
     background-color: #FC5B5C;
     font-size: 30px;
 }
+
+.toggle-click {
+    background-color: #E7E5FF;
+    color: black;
+    margin: 5px;
+}

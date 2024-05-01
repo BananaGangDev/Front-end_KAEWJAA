@@ -9,10 +9,11 @@ function TextEditor() {
   const [text, setText] = useState('I am a student from Thammasat University');
   const [correction, setCorrection] = useState('');
   const [selectedText, setSelectedText] = useState('');
+  const [selectedTag, setSelectedTag] = useState(''); // For storing the selected tag
   const [tags, setTags] = useState([]);
   const [selectedRange, setSelectedRange] = useState({ start: 0, end: 0 });
   const [logs, setLogs] = useState([]);
-  const highlightColor = '#ffff00';
+  // const highlightColor = '#ffff00';
 
   const handleSelectText = () => {
     const selection = window.getSelection();
@@ -35,20 +36,25 @@ function TextEditor() {
   };
 
   const handleSubmit = () => {
-    if (selectedText && correction) {
+    if (selectedText && selectedTag && correction) {
       const newLogId = uuidv4();
       const newLog = {
         id: newLogId,
         text: selectedText,
         correction,
-        isHighlighted: false,
+        tag: selectedTag,
+        // isHighlighted: false,
       };
       setLogs([...logs, newLog]);
       setCorrection('');
       setSelectedText('');
       setSelectedRange({ start: 0, end: 0 });
+      setSelectedTag('');
       // Implement logic to store the log (e.g., send to server)
       console.log('Submitted log:', newLog);
+
+      const updatedText = updateTextWithTag(text, selectedRange, selectedTag, correction);
+      setText(updatedText);
     }
   };
 
@@ -56,23 +62,10 @@ function TextEditor() {
   const handleRemove = () => {
     if (selectedText) {
 
-      const selectedTextIds = logs.filter((log) => log.text === selectedText).map((log) => log.id);
+      const updatedText = removeTagFromText(text, selectedRange);
+      setText(updatedText);
 
-      const updatedLogs = logs.filter((log) => !selectedTextIds.includes(log.id));
-      console.log('Removing log entry with ID:', selectedTextIds);
-      setLogs(updatedLogs);
-      console.log(updatedLogs);
-      // Remove log entries for the selected text
-      // const updatedLogs = logs.filter((log) => {
-      //   if (log.text === selectedText) {
-      //     return false;
-      //   }
-      //   return true;
-      // });
-      // setLogs(updatedLogs);
-
-      // Also remove the highlight for the selected text
-      setLogs(logs.map((log) => (log.isHighlighted && log.text === selectedText ? { ...log, isHighlighted: false } : log)));
+      console.log(updatedText);
 
       setSelectedText('');
       setSelectedRange({ start: 0, end: 0 });
@@ -87,25 +80,6 @@ function TextEditor() {
     alert('Logs saved successfully!');
   };
 
-  // Fetch tagsets on component mount
-  // useEffect(() => {
-  //   const fetchTagsets = async () => {
-  //     try {
-  //       const response = await api.get(`/tagsets/labels?tagset_id=1`);
-  //       if (response.status !== 200) {
-  //         throw new Error(`API request failed with status ${response.status}`);
-  //       }
-  //       const tagset = response.data;
-  //       const formattedData = JSON.stringify(tagset, null, 2);
-  //       console.log('Fetched tagsets:', formattedData);
-  //       // const data = await response.json();
-  //       setTags(tagset);
-  //     } catch (error) {
-  //       console.error('Error fetching tagsets:', error);
-  //     }
-  //   };
-  //   fetchTagsets();
-  // }, []);
   useEffect(() => {
     const fetchTagsets = async () => {
       try {
@@ -116,12 +90,11 @@ function TextEditor() {
         const tagset = response.data;
         console.log(tagset);
 
-        const nestedTags = {}; // Map to store all tags with key as label_name and value as tag object including children
+        const nestedTags = {}; 
         tagset.forEach(tag => {
-          nestedTags[tag.label_name] = { ...tag, children: [] };
+          nestedTags[tag.label_name] = { ...tag, children: [], isOpen: false };
         });
 
-        // Link children with their respective parents
         tagset.forEach(tag => {
           if (tag.label_parent !== 'ROOT' && nestedTags[tag.label_parent]) {
             nestedTags[tag.label_parent].children.push(nestedTags[tag.label_name]);
@@ -132,24 +105,6 @@ function TextEditor() {
 
         console.log(rootTags);
 
-        // create a nested structure
-        // const processedTags = {};
-        // tagset.forEach(tag => {
-        //   if (tag.label_parent === 'ROOT') {
-        //     processedTags[tag.label_name] = { ...tag, children: [] };
-        //   } else {
-        //     if (processedTags[tag.label_parent]) {
-        //       processedTags[tag.label_parent].children.push({ ...tag, children: [] });
-        //     } else {
-        //       // handle case where the parent might not yet be in the processedTags map
-        //       processedTags[tag.label_parent] = { children: [{ ...tag, children: [] }] };
-        //     }
-        //   }
-        // });
-
-        // console.log(processedTags);
-
-        // setTags(processedTags);
       } catch (error) {
         console.error('Error fetching tagsets:', error);
       }
@@ -157,38 +112,23 @@ function TextEditor() {
     fetchTagsets();
   }, []);
 
-  // Function to recursively render tagset hierarchy
-  // const renderTags = (parentLabel, tags) => {
-  //   if (!tags || tags.length === 0) {
-  //     return null;
-  //   }
+  const toggleTag = (tag) => {
+    tag.isOpen = !tag.isOpen;
+    setTags([...tags]);
+  }
 
-  //   return (
-  //     <ul key={parentLabel}>
-  //       {tags.map((tag) => (
-  //         <li className='tagset-li' key={tag.label_id}>
-  //           {tag.label_name} - {tag.label_description}
-  //           {renderTags(tag.label_name, tags.filter((t) => t.label_parent === tag.label_name))}
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   );
-  // };
   const renderTags = (tagData) => {
-    if (!tagData || tagData.children.length === 0) {
-      // return null;
-      return <li key={tagData.label_id}>{tagData.label_name} - {tagData.label_description}</li>
-    }
-
     return (
-      <ul>
-        <li key={tagData.label_id}>
+      <div key={tagData.label_id}>
+        <button className='toggle-click' onClick={() => toggleTag(tagData)}>
           {tagData.label_name} - {tagData.label_description}
-          <ul>
+        </button>
+        {tagData.isOpen && tagData.children.length > 0 && (
+          <div style={{ marginLeft: '40px' }}>
             {tagData.children.map(child => renderTags(child))}
-          </ul>
-        </li>
-      </ul>
+          </div>
+        )}
+      </div>
     );
   };
 
@@ -221,35 +161,12 @@ function TextEditor() {
             {text}
           </div>
           <div className="errortag-tagset">
-            {/* <h3>Tagsets</h3>
-            {tags.length > 0 ? (
-              <ul>
-                {tags.map((tag) => (
-                  <li className='tagset-li' key={tag.label_id}>{`${tag.label_name} - ${tag.label_description}`}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>No tagsets found.</p>
-            )} */}
-            {/* <h3>Tagsets</h3>
-            {tags.length > 0 ? (
-              renderTags('ROOT', Object.values(tags)) // Render top-level tags (ROOT children)
-            ) : (
-              <p>No tagsets found.</p>
-            )} */}
             <h3>Tagsets</h3>
-            {/* {Object.keys(tags).length > 0 ? (
-              Object.values(tags).map(rootTag => renderTags(rootTag))
-            ) : (
-              <p>No tagsets found.</p>
-            )} */}
-            <ul>
               {tags.length > 0 ? (
                 tags.map(rootTag => renderTags(rootTag))
               ) : (
                 <p>No tagsets found.</p>
               )}
-            </ul>
           </div>
           <div className='errortag-footer'>
             <input
