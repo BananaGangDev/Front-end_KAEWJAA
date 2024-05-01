@@ -36,7 +36,7 @@ body {
 }
   
   .button-bar {
-    font-family: Fredoka;
+    /* font-family: Fredoka; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,18 +97,24 @@ body {
     border: none;
     width: 40px;
     height: 40px;
-    padding: 5px 5px;
+    /* padding: 5px 5px; */
     font-size: 30px;
     border-radius: 35px;
     position: absolute;
     bottom: 100px; 
     right: 100px; 
-    border: none;
+
   }
   
   .new-button:focus {
     outline: none;
     background-color: #fa4a4a;
+  }
+
+  .new-button:hover {
+    outline: none;
+    background-color: #fa4a4a;
+    color: #ffffff;
   }
   
   .item-list {
@@ -141,6 +147,15 @@ body {
     font-family: Fredoka, sans-serif;
     font-weight: bold;
   }
+  .file-name{
+    font-family: Fredoka, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+  }
+  
   
   .item-actions {
     display: flex;

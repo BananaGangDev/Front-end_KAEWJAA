@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown, FormControl, InputGroup, Modal } from 'react-bootstrap';
 import { BsPlus, BsFileEarmarkText, BsFolderPlus, BsPencil, BsTrash } from 'react-icons/bs';
 import SideBar from "../components/SideBar";
@@ -34,6 +35,7 @@ function ChooseTagsetPage () {
   const anchorRef = React.useRef(null);
 
   const [tags, setTags] = useState([]);
+  
   const [selectedTagset, setSelectedTagset] = useState('');
   const [selectedTagsetId, setSelectedTagsetId] = useState('');
   const [selectedTagsetname, setSelectedTagsetname] = useState('');
@@ -45,6 +47,12 @@ function ChooseTagsetPage () {
   const [folderName, setFolderName] = useState('');
   const [folderDescription, setFolderDescription] = useState('');
 
+  const navigate = useNavigate();
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const handleBookmarkClick = () => {
+    setIsBookmarked(!isBookmarked);
+  };
 
 
   useEffect(() => {
@@ -220,6 +228,9 @@ function ChooseTagsetPage () {
     }
   };
 
+ const tagsetpage = async (tagsetid) => {
+  navigate('/tagset?tagset_id='+tagsetid);
+ }
 
   return (
     <SideBar>
@@ -243,12 +254,14 @@ function ChooseTagsetPage () {
         <Row className="item-list">
           <div className='tagset-accordion'>
             {tags.map((item) => (
+              
               <Card key={item.tagset_id} style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
                   <AccordionSummary>
-                    <div className='tagset-content'>{item.tagset_name}</div>
-                    <div className='tagset-content'>{item.description}</div>
+                    <div className='tagset-content' onClick={() => tagsetpage(item.tagset_id)}>{item.tagset_name}</div>
+                    <div className='tagset-content'onClick={() => tagsetpage(item.tagset_id)}>{item.description}</div>
                     <div className='tagset-button'>
                         {/* <BookmarkBorderOutlinedIcon
+                        onClick={handleBookmarkClick}
                         style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
                         /> */}
                         <EditOutlinedIcon onClick={() => handleEditModalShow(item)}/>
@@ -293,7 +306,7 @@ function ChooseTagsetPage () {
 
         <Modal className='create-modal' show={showCreateModal} onHide={() => setShowCreateModal(false)}>
           <Modal.Header>
-            <Modal.Title>Create New File</Modal.Title>
+            <Modal.Title>Create New Tagset</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <InputGroup className="mb-3">
