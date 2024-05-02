@@ -43,8 +43,8 @@ function CreateRootTagsetModal({ show, setShowCreateRootModal, onCreateTagset, t
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowCreateRootModal(false)}>Cancel</Button>
-        <Button variant="primary" onClick={handleCreateClick}>Create</Button>
+        <Button className='tagset-cancel' variant="secondary" onClick={() => setShowCreateRootModal(false)}>Cancel</Button>
+        <Button className='tagset-confirm' variant="primary" onClick={handleCreateClick}>Create</Button>
       </Modal.Footer>
     </Modal>
   );

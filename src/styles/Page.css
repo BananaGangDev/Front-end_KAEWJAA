@@ -49,11 +49,19 @@
     margin-right: 10px;
   }
 
-  .corpus-button {
+.corpus-button {
     padding: 0.2em 1.0em;
     border: none;
     background-color: #FC5B5C;
-  }
+    color: #FFF8F1;
+}
+
+.corpus-button:hover {
+  padding: 0.2em 1.0em;
+  border: none;
+  background-color: #FC5B5C;
+  color: #FFF8F1;
+}
 
   .concordancer-button {
     padding: 0.1em 1.0em;

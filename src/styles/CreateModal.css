@@ -11,6 +11,10 @@
 
   display: flex;
   flex-direction: column; /* เพื่อให้ส่วนของ Modal เรียงในแนวดิ่ง */
+  border-width: 10px;
+  /* border-color: #FFF8F1; */
+  border: 10px solid #FFF8F1;
+  color: black;
 }
 
 .create-modal {
@@ -21,8 +25,11 @@
   font-size: 16px;
 }
 
+.create-modal h4 {
+  color: black;
+}
+
 .create-modal button {
-  background-color: black; 
   /* background-color: #FC5B5C; */
   color: white; 
   border: none; 
@@ -50,6 +57,7 @@
   line-height: 1.5;
   width: calc(100% - 2 * (.75rem + 1px)); /* คำนวณขนาดความกว้างของ text area */
   resize: none; /* ป้องกันการ resize ขนาดของ text area */
+  background-color: #F4F4F4;
 }
 
 .create-modal .modal-footer {
@@ -57,4 +65,12 @@
   justify-content: flex-end;
   align-items: center;
   margin-left: auto;
+}
+
+.tagset-cancel {
+  background-color: #FC5B5C;
+}
+
+.tagset-confirm {
+  background-color: #5F5AB8;
 }

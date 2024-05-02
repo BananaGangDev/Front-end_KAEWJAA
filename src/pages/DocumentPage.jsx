@@ -15,10 +15,6 @@ import TextIncreaseOutlinedIcon from '@mui/icons-material/TextIncreaseOutlined';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-// import SideBar from "/src/components/SideBar.jsx";
-
-// import Fab from '@mui/material/Fab';
-
 function DocumentPage() {
   const [showAddcorpusModal, setShowAddcorpusModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -189,7 +185,9 @@ function DocumentPage() {
         <Row>
           <Col>
             <div className="button-bar">
-              <Button className="corpus-button" href='/documentcorpus'>Corpus</Button>
+              <Button className="corpus-button" href='/documentcorpus' 
+              style={{padding:"0.1em 1.0em", border:"none", backgroundColor:"#FC5B5C", borderRadius:"9px"}}
+              >Corpus</Button>
               <Button className="concordancer-button" href="/concordance">Concordancer</Button>
               <Button className='sort-button' onClick={sortFiles}>A-Z <FilterAltOutlinedIcon /></Button>
             </div>
@@ -229,10 +227,10 @@ function DocumentPage() {
             Are you sure you want to add "{selectedItem}" to corpus ?
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowAddcorpusModal(false)}>
+            <Button className='tagset-cancel' variant="secondary" onClick={() => setShowAddcorpusModal(false)}>
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleAddCorpus}>
+            <Button className='tagset-confirm' variant="danger" onClick={handleAddCorpus}>
               Add
             </Button>
           </Modal.Footer>
@@ -251,10 +249,10 @@ function DocumentPage() {
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            <Button className='tagset-cancel' variant="secondary" onClick={() => setShowEditModal(false)}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={() => handleEdit()}>
+            <Button className='tagset-confirm' variant="primary" onClick={() => handleEdit()}>
               Save
             </Button>
           </Modal.Footer>
@@ -269,12 +267,15 @@ function DocumentPage() {
           </Modal.Body>
           <Modal.Footer>
             <Button
+              className='tagset-cancel'
               variant="secondary"
               onClick={() => setShowDeleteModal(false)}
             >
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleDelete}>
+            <Button
+            className='tagset-confirm'
+             variant="danger" onClick={handleDelete}>
               Delete
             </Button>
           </Modal.Footer>

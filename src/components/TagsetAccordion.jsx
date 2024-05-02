@@ -108,10 +108,10 @@ function TagsetAccordion({ id, name, description, onUpdate, onDelete, onCreateNe
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button className='tagset-cancel' variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSaveEdit}>
+          <Button className='tagset-confirm' variant="primary" onClick={handleSaveEdit}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -126,10 +126,10 @@ function TagsetAccordion({ id, name, description, onUpdate, onDelete, onCreateNe
           Are you sure you want to delete "{name}"?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancelDelete}>
+          <Button className='tagset-cancel' variant="secondary" onClick={handleCancelDelete}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleConfirmDelete}>
+          <Button className='tagset-confirm' variant="danger" onClick={handleConfirmDelete}>
             Delete
           </Button>
         </Modal.Footer>

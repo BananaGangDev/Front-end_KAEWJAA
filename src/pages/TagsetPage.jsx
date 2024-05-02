@@ -443,10 +443,10 @@ function TagsetPage({
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+          <Button className='tagset-cancel' variant="secondary" onClick={() => setShowEditModal(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleEditConfirm}>
+          <Button className='tagset-confirm' variant="primary" onClick={handleEditConfirm}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -463,10 +463,10 @@ function TagsetPage({
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+          <Button className='tagset-cancel' variant="secondary" onClick={() => setShowDeleteModal(false)}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleDeleteConfirm}>
+          <Button className='tagset-confirm' variant="danger" onClick={handleDeleteConfirm}>
             Delete
           </Button>
         </Modal.Footer>

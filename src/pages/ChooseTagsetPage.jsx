@@ -260,10 +260,10 @@ function ChooseTagsetPage () {
                     <div className='tagset-content' onClick={() => tagsetpage(item.tagset_id)}>{item.tagset_name}</div>
                     <div className='tagset-content' onClick={() => tagsetpage(item.tagset_id)}>{item.description}</div>
                     <div className='tagset-button'>
-                        <BookmarkBorderOutlinedIcon
+                        {/* <BookmarkBorderOutlinedIcon
                         onClick={handleBookmarkClick}
                         style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
-                        />
+                        /> */}
                       <EditOutlinedIcon onClick={() => handleEditModalShow(item)}/>
                       <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(item.tagset_id, item.tagset_name)}/>
                     </div>
@@ -329,10 +329,10 @@ function ChooseTagsetPage () {
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
+            <Button className='tagset-cancel' variant="secondary" onClick={() => setShowCreateModal(false)}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleCreateClick}>
+            <Button className='tagset-confirm' variant="primary" onClick={handleCreateClick}>
               Create
             </Button>
           </Modal.Footer>
@@ -362,10 +362,10 @@ function ChooseTagsetPage () {
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            <Button className='tagset-cancel' variant="secondary" onClick={() => setShowEditModal(false)}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleEditConfirm}>
+            <Button className='tagset-confirm' variant="primary" onClick={handleEditConfirm}>
               Save
             </Button>
           </Modal.Footer>
@@ -379,10 +379,10 @@ function ChooseTagsetPage () {
             Are you sure you want to delete {selectedItem.name}?
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            <Button className='tagset-cancel' variant="secondary" onClick={() => setShowDeleteModal(false)}>
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleDelete}>
+            <Button className='tagset-confirm' variant="danger" onClick={handleDelete}>
               Delete
             </Button>
           </Modal.Footer>
