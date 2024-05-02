@@ -15,8 +15,10 @@ import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRen
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import TextIncreaseOutlinedIcon from '@mui/icons-material/TextIncreaseOutlined';
 import Swal from 'sweetalert2';
+import { filledInputClasses } from '@mui/material';
 
-function DocumentPage() {
+
+function DocumentCorpusPage() {
   const [showAddcorpusModal, setShowAddcorpusModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -27,7 +29,7 @@ function DocumentPage() {
   const [files, setFiles] = useState([]);
   const [updateFile, setUpdateFile] = useState([]);
 
-  let [corpusstatus, setCorpusStatus] = useState(false);
+  let [corpusstatus, setCorpusStatus] = useState(true);
   const [sortAsc, setSortAsc] = useState(true); // State เพื่อเก็บสถานะการเรียงลำดับไฟล์ A-Z
 
   const Toast = Swal.mixin({
@@ -44,7 +46,7 @@ function DocumentPage() {
 
   useEffect(() => {
     fetchfileAll();
-  }, [1]);
+  }, []);
 
   const fetchfileAll = async()=>{
     try {
@@ -53,6 +55,7 @@ function DocumentPage() {
         throw new Error(`API request failed with status ${response.status}`);
       }
       const fileall = response.data.paths;
+      // console.log(response.data)
       setFiles(fileall);
     } catch (error) {
       console.error('Error fetching tagsets:', error);
@@ -110,7 +113,7 @@ function DocumentPage() {
             title: "This file has been added to corpus successfully!"
           });
           setSelectedItem([]);
-          navigate('/documentcorpus');
+          fetchfileAll();
         }
       
     } catch (error) {
@@ -153,17 +156,6 @@ function DocumentPage() {
     }
   };
 
-
-//  const setstatus = async () => {
-//   if(corpusstatus == false){
-//     setCorpusStatus(true);
-//     fetchfileAll();
-//   }else {
-//     setCorpusStatus(false);
-//     fetchfileAll();
-//   }
-//  };
-
   const sortFiles = () => {
     setSortAsc(!sortAsc); // สลับสถานะการเรียงลำดับ A-Z
     const sortedFiles = [...files].sort((a, b) => {
@@ -172,6 +164,16 @@ function DocumentPage() {
     setFiles(sortedFiles);
   };
 
+  const toerrortagger = async (file_name) => {
+    try {
+      const res = await api.get('sys/get_string_in_file?file_name='+file_name);
+      const file_data = res.data
+      // console.log(file_name + ' : ' + res.data);
+      navigate('/errortag', { state: { file_name, file_data } });
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <SideBar>
       <Container>
@@ -183,7 +185,7 @@ function DocumentPage() {
         <Row>
           <Col>
             <div className="button-bar">
-              <Button className="corpus-button" href='/documentcorpus'>Corpus</Button>
+              <Button className="corpus-button" href='/document'>Document</Button>
               <Button className="concordancer-button" href="/concordance">Concordancer</Button>
               <Button className='sort-button' onClick={sortFiles}>A-Z <FilterAltOutlinedIcon /></Button>
             </div>
@@ -195,19 +197,19 @@ function DocumentPage() {
 
         <Row className="item-list">
           {files.map((item, index) => (
-            <Col key={index} className="file-item">
-              <div className="item-icon">
+            <Col key={index} className="file-item"> 
+              <div className="item-icon" onClick={()=> toerrortagger(item)}>
                 <InsertDriveFileIcon style={{fontSize:"100px", color:"A4A4A4"}} />
               </div>
               <div className="item-details">
                 <div className="file-name">{item}</div>
               </div>
               <div className="item-actions">
-                {corpusstatus ? (
+                {/* {corpusstatus ? (
                   ''
                 ) : (
                   <TextIncreaseOutlinedIcon style={{cursor:"pointer"}} onClick={() => handleaddcorpusclick(item)}/>
-                )}
+                )} */}
                 <DriveFileRenameOutlineOutlinedIcon style={{cursor:"pointer"}} onClick={() => handleeditclick(item)}/> 
                 <DeleteOutlineOutlinedIcon style={{cursor:"pointer"}} onClick={() => handledeleteclick(item)}/>
               </div>      
@@ -275,4 +277,4 @@ function DocumentPage() {
   );
 }
 
-export default DocumentPage;
+export default DocumentCorpusPage;

@@ -242,7 +242,7 @@ function ChooseTagsetPage () {
         </Row>
         <Row>
           <BsPlus 
-            className="new-button"
+            className="add-tagset-button"
             onClick={() => setShowCreateModal(true)} 
           />
         </Row>
@@ -251,21 +251,21 @@ function ChooseTagsetPage () {
           <Col className="header-column-description">Description</Col>
           <Col className="header-column">Total tagset: {totalTagsets}</Col>
         </Row>
-        <Row className="item-list">
+        {/* <Row className="item-list"> */}
           <div className='tagset-accordion'>
             {tags.map((item) => (
               
-              <Card key={item.tagset_id} style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
+                <Card key={item.tagset_id} style={{ backgroundColor: "#E7E5FF", marginBottom: "15px", textAlign: "center"}}>
                   <AccordionSummary>
                     <div className='tagset-content' onClick={() => tagsetpage(item.tagset_id)}>{item.tagset_name}</div>
-                    <div className='tagset-content'onClick={() => tagsetpage(item.tagset_id)}>{item.description}</div>
+                    <div className='tagset-content' onClick={() => tagsetpage(item.tagset_id)}>{item.description}</div>
                     <div className='tagset-button'>
-                        {/* <BookmarkBorderOutlinedIcon
+                        <BookmarkBorderOutlinedIcon
                         onClick={handleBookmarkClick}
                         style={{ color: isBookmarked ? '#FC5B5C' : 'inherit' }}
-                        /> */}
-                        <EditOutlinedIcon onClick={() => handleEditModalShow(item)}/>
-                        <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(item.tagset_id, item.tagset_name)}/>
+                        />
+                      <EditOutlinedIcon onClick={() => handleEditModalShow(item)}/>
+                      <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(item.tagset_id, item.tagset_name)}/>
                     </div>
                   </AccordionSummary>
                 </Card >
@@ -302,7 +302,7 @@ function ChooseTagsetPage () {
                 </div>
               </Col>
             ))} */}
-        </Row>
+        {/* </Row> */}
 
         <Modal className='create-modal' show={showCreateModal} onHide={() => setShowCreateModal(false)}>
           <Modal.Header>
@@ -373,7 +373,7 @@ function ChooseTagsetPage () {
 
         <Modal className='create-modal' show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
           <Modal.Header>
-            <Modal.Title>Delete {selectedItem.type === 'file' ? 'File' : 'Folder'}</Modal.Title>
+            <Modal.Title>Delete Tagset</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             Are you sure you want to delete {selectedItem.name}?

@@ -113,11 +113,13 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
   const renderTags = (tagData) => {
     return (
       <div key={tagData.label_id}>
-        <div className='tagset-button'
+        <div className='label-button'
           
           style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
           <div className='tagset-content'>
+            <div>
             {tagData.children.length > 0 && <ExpandMoreIcon style={{cursor: "pointer"}} onClick={() => toggleTag(tagData)}/>} {tagData.label_name} - {tagData.label_description}
+            </div>
             <div className='tagset-action-button'>
               <AddBoxOutlinedIcon onClick={() => handleShowCreateModal(tagData)}/>
               <EditOutlinedIcon onClick={() => handleEditModalShow(tagData)} />
@@ -131,6 +133,26 @@ function TagsetPage({ id, name, description, onUpdate, onDelete, onCreateNestedT
           </div>
         )}
       </div>
+
+      // <div key={tagData.label_id}>
+      //   <div className='label-button' style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
+      //     <div className='tagset-content'>
+      //       <div>{tagData.children.length > 0 && <ExpandMoreIcon style={{cursor: "pointer"}} onClick={() => toggleTag(tagData)}/>} {tagData.label_name}</div>
+      //       <div className='label-description'>{tagData.label_description}</div>
+      //       <div className='tagset-action-button'>
+      //         <AddBoxOutlinedIcon onClick={() => handleShowCreateModal(tagData)}/>
+      //         <EditOutlinedIcon onClick={() => handleEditModalShow(tagData)} />
+      //         <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(tagData.label_id, tagData.label_name)} />
+      //       </div>
+      //     </div>
+      //   </div>
+      //   {tagData.isOpen && tagData.children.length > 0 && (
+      //     <div style={{ marginLeft: '40px' }}>
+      //       {tagData.children.map(child => renderTags(child))}
+      //     </div>
+      //   )}
+      // </div>
+
     );
   };
 

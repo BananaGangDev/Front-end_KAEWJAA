@@ -100,9 +100,11 @@ body {
     /* padding: 5px 5px; */
     font-size: 30px;
     border-radius: 35px;
-    position: absolute;
+    position: fixed;
     bottom: 100px; 
     right: 100px; 
+    display: flex;
+    right: 100px;
 
   }
   
@@ -149,11 +151,12 @@ body {
   }
   .file-name{
     font-family: Fredoka, sans-serif;
-    font-weight: bold;
+    /* font-weight: bold; */
     white-space: nowrap;
     overflow: hidden;
     box-sizing: border-box;
     text-overflow: ellipsis;
+    text-align: center;
   }
   
   
@@ -161,6 +164,8 @@ body {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    padding: 0px 30px 0px 30px;
+    /* justify-content: flex-end; */
   }
   
 
@@ -207,4 +212,35 @@ textarea {
   color:gray;
   font-size: 1em;
   border: none;
+}
+
+.add-tagset-button {
+  background-color: #FC5B5C;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  /* padding: 5px 5px; */
+  font-size: 30px;
+  border-radius: 35px;
+  position: fixed;
+  bottom: 100px; 
+  right: 100px; 
+  display: flex;
+  top: 8.5%;
+  right: 10%; 
+  position: absolute;
+}
+
+.new-button:focus {
+  outline: none;
+  background-color: #fa4a4a;
+}
+
+.new-button:hover {
+  outline: none;
+  background-color: #fa4a4a;
+  color: #ffffff;
 }
