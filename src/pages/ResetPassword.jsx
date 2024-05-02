@@ -16,9 +16,10 @@ const ResetPassword = () => {
     <SideBar>
     <div className="reset-password-container">
       <form onSubmit={handleResetPassword}>
-        <div className='reset-h1'>
-          <h1>Reset Password</h1>
+      <div className="header">
+          <div className="headerContext">Reset Password</div>
         </div>
+        <hr id="line" />
         <div>
           <label>Old Password</label>
           <div className="old">

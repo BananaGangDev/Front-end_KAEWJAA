@@ -46,17 +46,22 @@ function DocumentPage() {
 
   return (
     <SideBar>
-      <Container>
+      <Container className='documentpage'>
         <Row>
           <Col>
-            <h1 className="document-title">Document</h1>
+            <div className="header">
+              <div className="headerContext">Document</div>
+            </div>
+            <hr id="line" />
           </Col>
         </Row>
         <Row>
           <Col>
             <div className="button-bar">
               <Button className="corpus-button">Corpus</Button>
-              <Button className="concordancer-button" href="/concordance">Concordancer</Button>
+              <Button className="concordancer-button" href="/concordance">
+                Concordancer
+              </Button>
               <Dropdown>
                 <Dropdown.Toggle className="sort-button" id="sort-dropdown">
                   Sort by
@@ -87,11 +92,17 @@ function DocumentPage() {
               >
                 Create File
               </Dropdown.Item>
-              <Dropdown.Item href="/import" onSelect={handleDropdownClose}>Import File</Dropdown.Item>
+              <Dropdown.Item href="/import" onSelect={handleDropdownClose}>
+                Import File
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Row>
-        <Modal className='create-modal' show={showCreateModal} onHide={() => setShowCreateModal(false)}>
+        <Modal
+          className="create-modal"
+          show={showCreateModal}
+          onHide={() => setShowCreateModal(false)}
+        >
           <Modal.Header>
             <Modal.Title>Create New File</Modal.Title>
           </Modal.Header>
@@ -104,13 +115,16 @@ function DocumentPage() {
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowCreateModal(false)}
+            >
               Cancel
             </Button>
             <Button
               variant="primary"
               onClick={() => {
-                handleCreate('New Item', 'Description goes here');
+                handleCreate("New Item", "Description goes here");
               }}
             >
               Create
@@ -121,7 +135,11 @@ function DocumentPage() {
           {items.map((item) => (
             <Col key={item.id} className="file-item">
               <div className="item-icon">
-                {item.type === 'file' ? <BsFileEarmarkText /> : <BsFolderPlus />}
+                {item.type === "file" ? (
+                  <BsFileEarmarkText />
+                ) : (
+                  <BsFolderPlus />
+                )}
               </div>
               <div className="item-details">
                 <div className="item-name">{item.name}</div>
@@ -151,10 +169,15 @@ function DocumentPage() {
           ))}
         </Row>
 
-
-        <Modal className='create-modal' show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal
+          className="create-modal"
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+        >
           <Modal.Header>
-            <Modal.Title>Edit {selectedItem.type === 'file' ? 'File' : 'Folder'}</Modal.Title>
+            <Modal.Title>
+              Edit {selectedItem.type === "file" ? "File" : "Folder"}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <InputGroup className="mb-3">
@@ -169,22 +192,33 @@ function DocumentPage() {
             <Button variant="secondary" onClick={() => setShowEditModal(false)}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={() => handleEdit(selectedItem.name)}>
+            <Button
+              variant="primary"
+              onClick={() => handleEdit(selectedItem.name)}
+            >
               Save
             </Button>
           </Modal.Footer>
         </Modal>
 
-
-        <Modal className='create-modal' show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal
+          className="create-modal"
+          show={showDeleteModal}
+          onHide={() => setShowDeleteModal(false)}
+        >
           <Modal.Header>
-            <Modal.Title>Delete {selectedItem.type === 'file' ? 'File' : 'Folder'}</Modal.Title>
+            <Modal.Title>
+              Delete {selectedItem.type === "file" ? "File" : "Folder"}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             Are you sure you want to delete {selectedItem.name}?
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+            >
               Cancel
             </Button>
             <Button variant="danger" onClick={handleDelete}>

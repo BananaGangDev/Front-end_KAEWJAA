@@ -161,13 +161,13 @@ function Dashboard() {
   const bar_Data = graphData ? graphData.map((parent) => ({
     Root: parent.root_name,
     Errortagger: parent.data
-      .reduce((total, child) => total + parseFloat(child.count), 0)
-      .toFixed(2),
+      .reduce((total, child) => total + parseFloat(child.count), 0),
     tooltipBar: parent.data.map((child) => ({
       id: child.child_name,
       num: child.count,
     })),
   })): [];
+  console.log(bar_Data)
 
   // const line_Data = [
   //   {
@@ -341,7 +341,10 @@ function Dashboard() {
       tooltip={(e) => (
         <div className="bartooltip">
           <p>{e.data.Root}</p>
-          <p>{e.data.tooltipBar}</p>
+          {e.data.tooltipBar.map((item, index) => (
+          <p key={index}>{item.id}: {item.num}</p>
+        ))}
+          
         </div>
       )}
     />

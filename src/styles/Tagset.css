@@ -1,3 +1,6 @@
+.tagsetpage{
+    padding: 2em 2em 0 2em;
+}
 .tagset-header {
     display: flex;
     align-items: center;
