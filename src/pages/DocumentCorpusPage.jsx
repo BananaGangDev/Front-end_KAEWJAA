@@ -202,7 +202,7 @@ function DocumentCorpusPage() {
           {files.map((item, index) => (
             <Col key={index} className="file-item"> 
               <div className="item-icon" onClick={()=> toerrortagger(item)}>
-                <InsertDriveFileIcon style={{fontSize:"100px", color:"A4A4A4"}} />
+                <InsertDriveFileIcon style={{fontSize:"100px", color:"A4A4A4", cursor:"pointer"}} />
               </div>
               <div className="item-details">
                 <div className="file-name">{item}</div>
