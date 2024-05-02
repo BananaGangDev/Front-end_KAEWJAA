@@ -15,18 +15,14 @@ function ImportFilePage() {
   };
 
   return (
-      <div className='ImportFilePage'>
-        <div className='import-header'>
-          {/* <ArrowBackIcon className='import-back-icon' onClick={handleBackClick} /> */}
-          <div className="header">
+    <div className='ImportFilePage'>
+      <div className='import-header'>
+        {/* <ArrowBackIcon className='import-back-icon' onClick={handleBackClick} /> */}
+        <div className="header">
+          <ArrowBackIcon 
+            id="backArrow"
+            onClick={() => navigate('/document')} />
           <div className="headerContext">Import File</div>
-        </div>
-        <hr id="line" />
-          <div className='ButtonFrame'>
-            {/* <button className={`FileMode ${uploadType === 'file' ? 'active' : ''}`} onClick={() => setUploadType('file')}>File</button>
-          <button className={`LinkMode ${uploadType === 'link' ? 'active' : ''}`} onClick={() => setUploadType('link')}>Link</button> */}
-          </div>
-          {uploadType === 'file' ? <FileUploadComponent /> : <LinkUploadComponent />}
         </div>
         <hr id="line" />
         <div className='ButtonFrame'>
@@ -35,6 +31,7 @@ function ImportFilePage() {
         </div>
         {uploadType === 'file' ? <FileUploadComponent /> : <LinkUploadComponent />}
       </div>
+    </div>
   );
 }
 

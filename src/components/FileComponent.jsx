@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import api from '/src/api.jsx';
 import '/src/styles/FileComponent.css';
-import { frameData } from 'framer-motion';
+// import { frameData } from 'framer-motion';
 
 function FileUploadComponent() {
   const [file, setFile] = useState(null);
@@ -19,25 +19,40 @@ function FileUploadComponent() {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
+      console.log("formData: ", formData);
 
       try {
         const response = await api.post(`/sys/upload`, formData);
-
-        alert('File uploaded successfully!');
-        console.log(response.data);
+        if (response.status === 200) {
+          alert('File uploaded successfully!');
+          console.log(response.data);
+        } else {
+          alert(response.data);
+        }
       } catch (error) {
         console.error('Error uploading file:', error);
         alert('Failed to upload file.');
       }
     } else if (textValue) {
       try {
-        const formData = new FormData();
-        formData.append('text', textValue);
 
-        const file_name = `text_${Date.now()}`
-        // formData.append('file_name', file_name);;
+        const file_name = `text_file_${Date.now()}`;
+        const blob = new Blob([textValue], { type: 'text/plain' });
+        const file = new File([blob], file_name, { type: 'text/plain' });
 
-        const response = await api.post(`/sys/upload/text?text=${frameData}&file_name=${file_name}`);
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          console.log(`Contents of the file (${file_name}):`, e.target.result);
+        };
+        reader.readAsText(file);        
+
+        console.log("Text: ", textValue);
+
+        const response = await api.post(`/sys/upload/text?text=${textValue}&file_name=${file_name}`, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
 
         alert('Text uploaded successfully!');
         console.log(response.data);

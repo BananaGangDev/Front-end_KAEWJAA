@@ -9,6 +9,7 @@
 }
 
 .errortag-header {
+    /* background-color: #A29BFE; */
     height: 5vh;
     display: grid;
     grid-template-columns: 2ch auto;
@@ -27,6 +28,7 @@
 }
 
 .main-bar {
+    /* background-color: aquamarine; */
     height: 5vh;
     display: flex;
     justify-content: center;
@@ -39,41 +41,46 @@
 }
 
 .errortag-container {
-    height: 55vh;
+    /* background-color: brown; */
+    height: 60vh;
     display: grid;
     grid-template-columns: 50vw 30vw;
     justify-content: center;
     align-items: center;
     padding: 2vh 4vw;
-    gap: 2%;
+    gap: 5%;
 }
 
 .errortag-text {
     width: 50vw;
-    height: 100%;
+    height: 90%;
+    max-height: 400px;
+    overflow-y: auto;
     display: flex;
     background-color: white;
     color: #515151;
     border: 0.2vw solid rgba(0, 0, 0, .1);
     border-radius: 2vw;
-    padding: 0 1vw;
-    font-size: 2.5vw;
+    padding: 15px;
+    font-size: 20px;
 }
 
 .errortag-tagset {
-    /* background-color: antiquewhite;
+    background-color: antiquewhite;
     width: 30vw;
-    height: 100%;
-    font-size: 2.5vw; */
-        max-height: 300px; /* Adjust this height as needed */
+    height: 100vw;
+    font-size: 18px;
+    max-height: 400px; /* Adjust this height as needed */
     overflow-y: auto;
     border: 1px solid #ccc; /* Optional, for visual separation */
     padding: 10px; /* Optional, for better appearance */
     margin-top: 10px;
+    /* border-radius: 2vw; */
 }
 
 .errortag-footer {
-    height: 22vh;
+    /* background-color: violet; */
+    height: 20vh;
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;
@@ -84,13 +91,13 @@
 
 .correction {
     width: 50vw;
-    height: 100%;
+    height: 90%;
     background-color: white;
     color: #515151;
     border: 0.2vw solid rgba(0, 0, 0, .1);
     border-radius: 2vw;
-    padding: 0 1vw;
-    font-size: 2.5vw;
+    padding: 10px;
+    font-size: 20px;
 }
 
 .footer-bar {
@@ -100,14 +107,25 @@
     align-items: center;
     width: 30vw;
     height: 100%;
-    gap: 2%;
+    gap: 10%;
 }
 
-.errortag-submit-btn, .errortag-remove-btn {
-    width: 70%;
+.errortag-submit-btn {
+    background-color: #5F5AB8;
+    color: white;
+    width: 60%;
     height: 40%;
-    border-radius: 2vw;
-    font-size: 2.5vw;
+    border-radius: 15px;
+    font-size: 18px;
+}
+
+.errortag-remove-btn {
+    background-color: #FC5B5C;
+    color: white;
+    width: 60%;
+    height: 40%;
+    border-radius: 15px;
+    font-size: 18px;
 }
 
 .toggle-click {
