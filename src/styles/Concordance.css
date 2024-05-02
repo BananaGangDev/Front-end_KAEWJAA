@@ -1,6 +1,7 @@
 .Concordancepage {
   /* font-family: 'Dangrek', sans-serif; */
   font-family: Dangrek, sans-serif;
+  background: #FFF8F1;
   color: black ;
   height: 100vh;
   display: flex;

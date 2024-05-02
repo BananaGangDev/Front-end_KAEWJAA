@@ -27,6 +27,7 @@ import { ResponsiveBar } from "@nivo/bar";
 import API from "/src/api.jsx";
 
 function Dashboard() {
+  const themeColor = ['#63afae', '#f9654a', '#ff733e', '#ff9c3e', '#ffc75a'];
   const Cards = [
     {
       theme: "#FC5B5C",
@@ -107,38 +108,6 @@ function Dashboard() {
 
   const [graphData, setGraphData] = useState([]);
 
-  const dashboard_Data = [
-    {
-      id: "Lexis (L)",
-      label: "Lexis (L) label",
-      value: 120,
-    },
-    {
-      id: "Word(W)",
-      label: "Word(W)",
-      value: 50,
-    },
-    {
-      id: "Infelicities (Z)",
-      label: "Infelicities (Z) label",
-      value: 100,
-    },
-    {
-      id: "Lexico-G(X)",
-      label: "Lexico-G(X)",
-      value: 30,
-    },
-    {
-      id: "Grammar (G)",
-      label: "Grammar (G)",
-      value: 90,
-    },
-    {
-      id: "Form (F)",
-      label: "Form (F)",
-      value: 102,
-    },
-  ];
 
   const pie_Data = graphData ? graphData.map((parent) => ({
     id: parent.root_name,
@@ -153,11 +122,6 @@ function Dashboard() {
   })) : [];
   
 
-  // const bar_Data = graphData.map((parent) => ({
-  //   Value: parent.root_name,
-  //   Errortagger: parent.data.reduce((total, child) => total + parseFloat(child.count), 0).toFixed(2),
-  //   tooltipBar: parent.data.map(child => ({id: child.child_name, num: child.count}))
-  // }));
   const bar_Data = graphData ? graphData.map((parent) => ({
     Root: parent.root_name,
     Errortagger: parent.data
@@ -197,16 +161,6 @@ function Dashboard() {
       </div>
     );
   };
-
-  const BarTooltip = () => {
-    const datum = bar_Data;
-    return (
-      <div className="bartooltip">
-        <p>{datum.Value}</p>
-      </div>
-    );
-  };
-  // console.log('bar', bar_Data)
 
   // const MyResponsiveLine = ({ data }) => (
   //   <ResponsiveLine
@@ -259,7 +213,7 @@ function Dashboard() {
       padAngle={0.7}
       cornerRadius={3}
       activeOuterRadiusOffset={8}
-      colors={{ scheme: "nivo" }}
+      colors={themeColor}
       borderWidth={1}
       borderColor={{
         from: "color",
@@ -312,7 +266,7 @@ function Dashboard() {
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme: "nivo" }}
+      colors={({ index }) => themeColor[index % themeColor.length]}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
@@ -342,7 +296,7 @@ function Dashboard() {
         <div className="bartooltip">
           <p>{e.data.Root}</p>
           {e.data.tooltipBar.map((item, index) => (
-          <p key={index}>{item.id}: {item.num}</p>
+          <p key={index}>{item.id} (item.description): {item.num}</p>
         ))}
           
         </div>
@@ -425,7 +379,7 @@ function Dashboard() {
                     </Paper>
                   ))}
                 </div>
-                <div className="PieChart" style={{ height: "400px" }}>
+                <div className="PieChart" style={{ height: "500px" }}>
                   <MyResponsivePie data={pie_Data} />
                 </div>
                 <div className="BarChart" style={{ height: "400px" }}>
