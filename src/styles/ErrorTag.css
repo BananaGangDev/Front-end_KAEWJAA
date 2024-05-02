@@ -42,7 +42,7 @@
 
 .errortag-container {
     /* background-color: brown; */
-    height: 55vh;
+    height: 60vh;
     display: grid;
     grid-template-columns: 50vw 30vw;
     justify-content: center;
@@ -54,12 +54,14 @@
 .errortag-text {
     width: 50vw;
     height: 90%;
+    max-height: 400px;
+    overflow-y: auto;
     display: flex;
     background-color: white;
     color: #515151;
     border: 0.2vw solid rgba(0, 0, 0, .1);
     border-radius: 2vw;
-    padding: 10px;
+    padding: 15px;
     font-size: 20px;
 }
 
@@ -68,17 +70,17 @@
     width: 30vw;
     height: 100vw;
     font-size: 18px;
-    max-height: 300px; /* Adjust this height as needed */
+    max-height: 400px; /* Adjust this height as needed */
     overflow-y: auto;
     border: 1px solid #ccc; /* Optional, for visual separation */
     padding: 10px; /* Optional, for better appearance */
     margin-top: 10px;
-    border-radius: 2vw;
+    /* border-radius: 2vw; */
 }
 
 .errortag-footer {
     /* background-color: violet; */
-    height: 25vh;
+    height: 20vh;
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;

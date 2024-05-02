@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import ArrowBackIcon from "@mui/icons-material/ArrowBackIcon";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { v4 as uuidv4 } from 'uuid';
 import SideBar from '../components/SideBar';
 import api from '/src/api.jsx';
 import '/src/styles/ErrorTag.css';
 
 function TextEditor() {
-  const [text, setText] = useState('I are a student from Thammasat University');
   const [correction, setCorrection] = useState('');
   const [selectedText, setSelectedText] = useState('');
   const [selectedTag, setSelectedTag] = useState(''); // For storing the selected tag
@@ -17,7 +16,10 @@ function TextEditor() {
   const [logs, setLogs] = useState([]);
   const [selectedTagsetId, setSelectedTagsetId] = useState(null); // Store selected tagset ID
   const location = useLocation();
-  const { formData, totalPrice } = location.state || { formData: null, totalPrice: null };
+  // const { file_name, file_data } = location.state || { formData: null, totalPrice: null };
+  const { file_name, file_data } = location.state || {};
+  const [text, setText] = useState(file_data);
+  const navigate = useNavigate();
 
   const handleSelectText = () => {
     const selection = window.getSelection();
@@ -101,9 +103,9 @@ function TextEditor() {
       return;
     }
 
-    const fileName = 'textfile.txt';
-    const blob = new Blob([text], { type: 'text/plain' });
-    const file = new File([blob], fileName, { type: 'text/plain' });
+    // const fileName = 'textfile.txt';
+    // const blob = new Blob([text], { type: 'text/plain' });
+    // const file = new File([blob], fileName, { type: 'text/plain' });
 
     // Log file content before uploading
     const reader = new FileReader();
@@ -119,9 +121,10 @@ function TextEditor() {
     console.log("Blob: ", blob);
     console.log("File : ", file);
     console.log("File name : ", file.name);
+    console.log("formData: ", formData)
 
     try {
-      const response = await api.put(`/sys/save-file?tagset_id=${selectedTagsetId}`, formData);
+      const response = await api.put(`/sys/save-file?tagset_id=${selectedTagsetId}`, file.name);
       if (response.status === 200) {
         alert('File saved successfully!');
       } else {
@@ -244,8 +247,10 @@ function TextEditor() {
   return (
     <div className="text-editor">
       <div className='errortag-header'>
-        {/* <ArrowBackIcon className='errortag-backicon' /> */}
-        <div className='errortag-filename'>file110424</div>
+        <ArrowBackIcon 
+          id="backArrow"
+          onClick={() => navigate('/document')}/>
+        <div className='errortag-filename'>{file_name}</div>
 
       </div>
       <div className='main-bar'>
