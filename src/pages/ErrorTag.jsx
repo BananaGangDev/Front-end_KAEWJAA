@@ -104,22 +104,9 @@ function TextEditor() {
       alert('Please select a tagset.');
       return;
     }
-
-    // Prepare the text as a JSON object
-    // const data = {
-    //   text: text,
-    // };
-
-    // const fileName = file_name;
+    
     const blob = new Blob([text], { type: 'text/plain' });
     const file = new File([blob], file_name, { type: 'text/plain' });
-
-    // // Log file content before uploading
-    // const reader = new FileReader();
-    // reader.onload = function (e) {
-    //   console.log(`Contents of the file (${fileName}):`, e.target.result);
-    // };
-    // reader.readAsText(file);
 
     const formData = new FormData();
     formData.append('file', file);
