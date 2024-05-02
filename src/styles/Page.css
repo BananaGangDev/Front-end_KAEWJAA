@@ -30,7 +30,7 @@
 }
   
   .button-bar {
-    font-family: Fredoka;
+    /* font-family: Fredoka; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,18 +91,26 @@
     border: none;
     width: 40px;
     height: 40px;
-    padding: 5px 5px;
+    /* padding: 5px 5px; */
     font-size: 30px;
     border-radius: 35px;
-    position: absolute;
+    position: fixed;
     bottom: 100px; 
     right: 100px; 
-    border: none;
+    display: flex;
+    right: 100px;
+
   }
   
   .new-button:focus {
     outline: none;
     background-color: #fa4a4a;
+  }
+
+  .new-button:hover {
+    outline: none;
+    background-color: #fa4a4a;
+    color: #ffffff;
   }
   
   .item-list {
@@ -135,11 +143,23 @@
     font-family: Fredoka, sans-serif;
     font-weight: bold;
   }
+  .file-name{
+    font-family: Fredoka, sans-serif;
+    /* font-weight: bold; */
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+  
   
   .item-actions {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    padding: 0px 30px 0px 30px;
+    /* justify-content: flex-end; */
   }
   
 
@@ -186,4 +206,35 @@ textarea {
   color:gray;
   font-size: 1em;
   border: none;
+}
+
+.add-tagset-button {
+  background-color: #FC5B5C;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  /* padding: 5px 5px; */
+  font-size: 30px;
+  border-radius: 35px;
+  position: fixed;
+  bottom: 100px; 
+  right: 100px; 
+  display: flex;
+  top: 8.5%;
+  right: 10%; 
+  position: absolute;
+}
+
+.new-button:focus {
+  outline: none;
+  background-color: #fa4a4a;
+}
+
+.new-button:hover {
+  outline: none;
+  background-color: #fa4a4a;
+  color: #ffffff;
 }

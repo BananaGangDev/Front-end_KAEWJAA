@@ -22,6 +22,8 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "framer-motion": "^11.0.22",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^4.2.67",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",

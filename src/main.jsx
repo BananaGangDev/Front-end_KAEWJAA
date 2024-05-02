@@ -13,6 +13,7 @@ import DocumentPage from './pages/DocumentPage';
 import TagsetPage from './pages/TagsetPage';
 import Errortag from '/src/pages/ErrorTag.jsx';
 import ChooseTagsetPage from './pages/ChooseTagsetPage.jsx';
+import DocumentCorpusPage from './pages/DocumentCorpusPage.jsx';
 
 import { AuthProvider } from '/src/components/AuthContext.jsx';
 
@@ -30,6 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/concordance" element={<Concordance />} />
           <Route path="/errortag" element={<Errortag />} />
           <Route path="/choosetagset" element={<ChooseTagsetPage />} />
+          <Route path="/documentcorpus" element={<DocumentCorpusPage />} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>

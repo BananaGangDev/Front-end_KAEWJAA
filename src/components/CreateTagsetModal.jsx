@@ -21,27 +21,27 @@ function CreateTagsetModal({ show, setShowCreateModal, onCreateTagset, tagName, 
   return (
     <Modal className='create-modal' show={show} onHide={() => setShowCreateModal(false)}>
       <Modal.Header>
-        <Modal.Title>Create New Tagset</Modal.Title>
+        <Modal.Title>Create New Tag Label</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group controlId="tagName">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Label Name</Form.Label>
             <Form.Control
               type="text"
               value={tagName}
               onChange={(e) => setTagName(e.target.value)}
-              placeholder="Enter tagset name"
+              placeholder="Enter Label name"
             />
           </Form.Group>
           <Form.Group controlId="tagDescription">
-            <Form.Label>Description</Form.Label>
+            <Form.Label>Label Description</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
               value={tagDescription}
               onChange={(e) => setTagDescription(e.target.value)}
-              placeholder="Enter tagset description"
+              placeholder="Enter Label description"
             />
           </Form.Group>
         </Form>

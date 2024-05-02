@@ -131,7 +131,8 @@ function sidebar(props) {
 
               <Item icon={<DashboardIcon />} name="Dashboard" to="/dashboard" />
               <Item icon={<DescriptionIcon />} name="Document" to="/document" />
-              <Item icon={<LocalOfferIcon />} name="Tagset" to="/tagset" />
+              <Item icon={<DashboardIcon />} name="Dashboard" to="/dashboard" />
+              <Item icon={<LocalOfferIcon />} name="Tagset" to="/choosetagset" />
               
             </div>
             <div className="group ">
