@@ -26,7 +26,7 @@ const LoginForm = () => {
 
   if (isLoggedIn) {
     console.log("Login successfully!!!");
-    navigate('/document');
+    navigate('/dashboard');
   }
 
   return (
