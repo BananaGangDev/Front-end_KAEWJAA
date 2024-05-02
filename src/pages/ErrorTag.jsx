@@ -7,6 +7,9 @@ import api from '/src/api.jsx';
 import '/src/styles/ErrorTag.css';
 
 function TextEditor() {
+  const location = useLocation();
+  const { file_name, file_data } = location.state || {};
+  const [text, setText] = useState(file_data);
   const [correction, setCorrection] = useState('');
   const [selectedText, setSelectedText] = useState('');
   const [selectedTag, setSelectedTag] = useState(''); // For storing the selected tag
@@ -15,10 +18,7 @@ function TextEditor() {
   const [selectedRange, setSelectedRange] = useState({ start: 0, end: 0 });
   const [logs, setLogs] = useState([]);
   const [selectedTagsetId, setSelectedTagsetId] = useState(null); // Store selected tagset ID
-  const location = useLocation();
   // const { file_name, file_data } = location.state || { formData: null, totalPrice: null };
-  const { file_name, file_data } = location.state || {};
-  const [text, setText] = useState(file_data);
   const navigate = useNavigate();
 
   const handleSelectText = () => {
@@ -70,13 +70,15 @@ function TextEditor() {
       setSelectedText('');
       setSelectedRange({ start: 0, end: 0 });
       setSelectedTag('');
-      // Implement logic to store the log (e.g., send to server)
-      console.log("Selected text: ", selectedText);
-      console.log("Updated text: ", updatedText);
-      console.log('Submitted log:', newLog);
 
       // const updatedText = updateTextWithTag(text, selectedRange, selectedTag, correction);
       // setText(updatedText);
+      console.log("Selected text: ", selectedText);
+      console.log("Updated text: ", updatedText);
+      console.log('Submitted log:', newLog);
+    }
+    else {
+      console.log("Error");
     }
   };
 
@@ -103,28 +105,34 @@ function TextEditor() {
       return;
     }
 
-    // const fileName = 'textfile.txt';
-    // const blob = new Blob([text], { type: 'text/plain' });
-    // const file = new File([blob], fileName, { type: 'text/plain' });
+    // Prepare the text as a JSON object
+    // const data = {
+    //   text: text,
+    // };
 
-    // Log file content before uploading
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      console.log(`Contents of the file (${fileName}):`, e.target.result);
-    };
-    reader.readAsText(file);
+    // const fileName = file_name;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const file = new File([blob], file_name, { type: 'text/plain' });
+
+    // // Log file content before uploading
+    // const reader = new FileReader();
+    // reader.onload = function (e) {
+    //   console.log(`Contents of the file (${fileName}):`, e.target.result);
+    // };
+    // reader.readAsText(file);
 
     const formData = new FormData();
     formData.append('file', file);
 
-    console.log("Tagset id: ", typeof (selectedTagsetId));
-    console.log("Blob: ", blob);
-    console.log("File : ", file);
-    console.log("File name : ", file.name);
-    console.log("formData: ", formData)
+    // console.log("Tagset id: ", typeof (selectedTagsetId));
+    // console.log("Blob: ", blob);
+    // console.log("File : ", file);
+    // console.log("File name : ", fileName);
+    // console.log("formData: ", formData)
+    // console.log("formData type: ", typeof(formData));
 
     try {
-      const response = await api.put(`/sys/save-file?tagset_id=${selectedTagsetId}`, file.name);
+      const response = await api.put(`/sys/save-file?tagset_id=${selectedTagsetId}`, formData);
       if (response.status === 200) {
         alert('File saved successfully!');
       } else {
@@ -137,8 +145,40 @@ function TextEditor() {
   };
 
   const handleExport = async () => {
-    
-  }
+    if (!file_name) {
+      alert('File name is missing.');
+      return;
+    }
+
+    try {
+      // Make a GET request to fetch the file from the backend
+      const response = await api.get(`/sys/download?file_name=${file_name}&in_corpus=true`, {
+        responseType: 'blob',
+      });
+  
+      if (response.status === 200 && response.data && response.data.type === 'application/pdf') {
+        const url = window.URL.createObjectURL(new Blob([response.data], {
+          responseType: 'blob',}));
+  
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${file_name}.pdf`);
+  
+        document.body.appendChild(link);
+        link.click();
+  
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
+  
+        alert('File downloaded successfully!');
+      } else {
+        alert('Failed to download PDF. Check the server');
+      }
+    } catch (error) {
+      console.error('Error exporting file:', error);
+      alert('An error occurred while exporting the file.');
+    }
+  };
 
   // Fetch all tagsets
   useEffect(() => {
@@ -247,15 +287,15 @@ function TextEditor() {
   return (
     <div className="text-editor">
       <div className='errortag-header'>
-        <ArrowBackIcon 
+        <ArrowBackIcon
           id="backArrow"
-          onClick={() => navigate('/document')}/>
+          onClick={() => navigate('/document')} />
         <div className='errortag-filename'>{file_name}</div>
 
       </div>
       <div className='main-bar'>
         <button className="errortag-save" onClick={handleSave}>Save</button>
-        <button className="errortag-export" onClick={handleSave}>Export</button>
+        <button className="errortag-export" onClick={handleExport}>Export</button>
       </div>
       <div className='errortag-container'>
         <div
@@ -301,18 +341,18 @@ function TextEditor() {
         </div>
       </div>
       <div className='errortag-footer'>
-          <input
-            className='correction'
-            type='text'
-            value={correction}
-            onChange={handleCorrectionChange}
-            placeholder="Enter correction"
-          />
-          <div className='footer-bar'>
-            <button className='errortag-submit-btn' onClick={handleSubmit}>Submit</button>
-            <button className='errortag-remove-btn' onClick={handleRemove}>Remove</button>
-          </div>
+        <input
+          className='correction'
+          type='text'
+          value={correction}
+          onChange={handleCorrectionChange}
+          placeholder="Enter correction"
+        />
+        <div className='footer-bar'>
+          <button className='errortag-submit-btn' onClick={handleSubmit}>Submit</button>
+          <button className='errortag-remove-btn' onClick={handleRemove}>Remove</button>
         </div>
+      </div>
 
     </div>
   );

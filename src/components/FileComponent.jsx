@@ -17,8 +17,9 @@ function FileUploadComponent() {
 
   const handleUpload = async () => {
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
+      const formData = new FormData(textValue);
+      // formData.append('file', file);
+      console.log("formData: ", formData);
 
       try {
         const response = await api.post(`/sys/upload`, formData);
