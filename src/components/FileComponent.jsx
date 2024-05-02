@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import api from '/src/api.jsx';
 import '/src/styles/FileComponent.css';
+import { frameData } from 'framer-motion';
 
 function FileUploadComponent() {
   const [file, setFile] = useState(null);
@@ -30,13 +31,13 @@ function FileUploadComponent() {
       }
     } else if (textValue) {
       try {
-        const file_name = encodeURIComponent(`text_${new Date().toISOString().replace(/:/g, '-')}.txt`);
-        const texts = encodeURIComponent(textValue);
+        const formData = new FormData();
+        formData.append('text', textValue);
 
-        const response = await api.post(`/sys/upload-text?file_name=${file_name}&texts=${texts}`, {
-          file_name: file_name,
-          texts: texts
-        });
+        const file_name = `text_${Date.now()}`
+        // formData.append('file_name', file_name);;
+
+        const response = await api.post(`/sys/upload/text?text=${frameData}&file_name=${file_name}`);
 
         alert('Text uploaded successfully!');
         console.log(response.data);

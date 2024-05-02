@@ -6,14 +6,15 @@ import api from '/src/api.jsx';
 import '/src/styles/ErrorTag.css';
 
 function TextEditor() {
-  const [text, setText] = useState('I am a student from Thammasat University');
+  const [text, setText] = useState('I are a student from Thammasat University');
   const [correction, setCorrection] = useState('');
   const [selectedText, setSelectedText] = useState('');
   const [selectedTag, setSelectedTag] = useState(''); // For storing the selected tag
   const [tags, setTags] = useState([]);
+  const [tagsets, setTagsets] = useState([]); // Store all tagsets
   const [selectedRange, setSelectedRange] = useState({ start: 0, end: 0 });
   const [logs, setLogs] = useState([]);
-  // const highlightColor = '#ffff00';
+  const [selectedTagsetId, setSelectedTagsetId] = useState(null); // Store selected tagset ID
 
   const handleSelectText = () => {
     const selection = window.getSelection();
@@ -23,11 +24,13 @@ function TextEditor() {
       const end = range.endOffset;
       if (start !== end) {
         setSelectedText(selection.toString());
+
         setSelectedRange({ start, end });
       } else {
         setSelectedText('');
         setSelectedRange({ start: 0, end: 0 });
       }
+
     }
   };
 
@@ -46,15 +49,29 @@ function TextEditor() {
         // isHighlighted: false,
       };
       setLogs([...logs, newLog]);
+
+      const updatedText = text.slice(0, selectedRange.start) +
+        `<${selectedTag} corr="${correction}">${selectedText}</${selectedTag}>` +
+        text.slice(selectedRange.end);
+
+      setText(updatedText);
+
+      // setText('');
+      // setTimeout(() => {
+      //   setText(updatedText);
+      // }, 0);
+
       setCorrection('');
       setSelectedText('');
       setSelectedRange({ start: 0, end: 0 });
       setSelectedTag('');
       // Implement logic to store the log (e.g., send to server)
+      console.log("Selected text: ", selectedText);
+      console.log("Updated text: ", updatedText);
       console.log('Submitted log:', newLog);
 
-      const updatedText = updateTextWithTag(text, selectedRange, selectedTag, correction);
-      setText(updatedText);
+      // const updatedText = updateTextWithTag(text, selectedRange, selectedTag, correction);
+      // setText(updatedText);
     }
   };
 
@@ -62,55 +79,142 @@ function TextEditor() {
   const handleRemove = () => {
     if (selectedText) {
 
-      const updatedText = removeTagFromText(text, selectedRange);
-      setText(updatedText);
+      const selectRemove = /<[^>]+>(.*?)<\/[^>]+>/g.exec(selectedText)?.[1] ?? selectedText;
 
-      console.log(updatedText);
+      const regex = new RegExp(`<[^>]+>${selectRemove}</[^>]+>`);
+      const removedText = text.replace(regex, selectRemove);
+      // setText(removedText);
+      console.log("Remove text: ", removedText);
+      setText(removedText);
 
       setSelectedText('');
       setSelectedRange({ start: 0, end: 0 });
     }
   };
 
+  const handleSave = async () => {
+    if (!selectedTagsetId) {
+      alert('Please select a tagset.');
+      return;
+    }
 
-  const handleSave = () => {
-    // Implement logic to save the logs
-    console.log('Saving logs...');
-    localStorage.setItem('errorTagLogs', JSON.stringify(logs));
-    alert('Logs saved successfully!');
+    const fileName = 'textfile.txt';
+    const blob = new Blob([text], { type: 'text/plain' });
+    const file = new File([blob], fileName, { type: 'text/plain' });
+
+    // Log file content before uploading
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      console.log(`Contents of the file (${fileName}):`, e.target.result);
+    };
+    reader.readAsText(file);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    console.log("Tagset id: ", typeof(selectedTagsetId));
+    console.log("Blob: ", blob);
+    console.log("File : ", file);
+    console.log("File name : ", file.name);
+
+    try {
+      const response = await api.put(`/sys/save-file?tagset_id=${selectedTagsetId}`, formData);
+      // const response = await api({
+      //   method: 'PUT',
+      //   url: `/sys/save-file`,
+      //   params: { tagset_id: selectedTagsetId }, // Use params for query parameters
+      //   data: formData,
+      //   headers: { 'Content-Type': 'multipart/form-data' }
+      // });
+      if (response.status === 200) {
+        alert('File saved successfully!');
+      } else {
+        alert(`File save failed: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error saving file:', error);
+      alert('An error occurred while saving the file.');
+    }
   };
 
+  // Fetch all tagsets
   useEffect(() => {
-    const fetchTagsets = async () => {
+    const fetchAllTagsets = async () => {
       try {
-        const response = await api.get(`/tagsets/labels?tagset_id=1`);
+        const response = await api.get('/tagsets/all');
         if (response.status !== 200) {
           throw new Error(`API request failed with status ${response.status}`);
         }
-        const tagset = response.data;
-        console.log(tagset);
-
-        const nestedTags = {}; 
-        tagset.forEach(tag => {
-          nestedTags[tag.label_name] = { ...tag, children: [], isOpen: false };
-        });
-
-        tagset.forEach(tag => {
-          if (tag.label_parent !== 'ROOT' && nestedTags[tag.label_parent]) {
-            nestedTags[tag.label_parent].children.push(nestedTags[tag.label_name]);
-          }
-        });
-        const rootTags = tagset.filter(tag => tag.label_parent === 'ROOT').map(tag => nestedTags[tag.label_name]);
-        setTags(rootTags);
-
-        console.log(rootTags);
-
+        const data = response.data;
+        setTagsets(data);
       } catch (error) {
         console.error('Error fetching tagsets:', error);
       }
     };
-    fetchTagsets();
+    fetchAllTagsets();
   }, []);
+
+  // Fetch labels for seleected tagset
+  useEffect(() => {
+    if (selectedTagsetId) {
+      const fetchTagsetLabels = async () => {
+        try {
+          const response = await api.get(`/tagsets/labels?tagset_id=${selectedTagsetId}`);
+          if (response.status !== 200) {
+            throw new Error(`API request failed with status ${response.status}`);
+          }
+          const labels = response.data;
+          const nestedTags = {};
+          labels.forEach(tag => {
+            nestedTags[tag.label_name] = { ...tag, children: [], isOpen: false, selectable: !labels.some(t => t.label_parent === tag.label_name) };
+          });
+
+          labels.forEach(tag => {
+            if (tag.label_parent !== 'ROOT' && nestedTags[tag.label_parent]) {
+              nestedTags[tag.label_parent].children.push(nestedTags[tag.label_name]);
+            }
+          });
+          const rootTags = labels.filter(tag => tag.label_parent === 'ROOT').map(tag => nestedTags[tag.label_name]);
+          setTags(rootTags);
+        } catch (error) {
+          console.error('Error fetching labels:', error);
+        }
+      };
+      fetchTagsetLabels();
+    }
+  }, [selectedTagsetId]);
+  // useEffect(() => {
+  //   const fetchTagsets = async () => {
+  //     try {
+  //       const response = await api.get(`/tagsets/labels?tagset_id=1`);
+  //       if (response.status !== 200) {
+  //         throw new Error(`API request failed with status ${response.status}`);
+  //       }
+  //       const tagset = response.data;
+  //       console.log(tagset);
+
+  //       const nestedTags = {};
+  //       tagset.forEach(tag => {
+  //         // nestedTags[tag.label_name] = { ...tag, children: [], isOpen: false };
+  //         nestedTags[tag.label_name] = { ...tag, children: [], isOpen: false, selectable: !tagset.some(t => t.label_parent === tag.label_name) };
+  //       });
+
+  //       tagset.forEach(tag => {
+  //         if (tag.label_parent !== 'ROOT' && nestedTags[tag.label_parent]) {
+  //           nestedTags[tag.label_parent].children.push(nestedTags[tag.label_name]);
+  //         }
+  //       });
+  //       const rootTags = tagset.filter(tag => tag.label_parent === 'ROOT').map(tag => nestedTags[tag.label_name]);
+  //       setTags(rootTags);
+
+  //       console.log(rootTags);
+
+  //     } catch (error) {
+  //       console.error('Error fetching tagsets:', error);
+  //     }
+  //   };
+  //   fetchTagsets();
+  // }, []);
 
   const toggleTag = (tag) => {
     tag.isOpen = !tag.isOpen;
@@ -120,7 +224,12 @@ function TextEditor() {
   const renderTags = (tagData) => {
     return (
       <div key={tagData.label_id}>
-        <button className='toggle-click' onClick={() => toggleTag(tagData)}>
+        <button
+          className='toggle-click'
+          onClick={() => {
+            if (tagData.selectable) setSelectedTag(tagData.label_name);
+            toggleTag(tagData)
+          }}>
           {tagData.label_name} - {tagData.label_description}
         </button>
         {tagData.isOpen && tagData.children.length > 0 && (
@@ -133,57 +242,74 @@ function TextEditor() {
   };
 
   return (
-    <SideBar>
-      <div className="text-editor">
-        <div className='errortag-header'>
-          {/* <ArrowBackIcon className='errortag-backicon' /> */}
-          <div className='errortag-filename'>file110424</div>
+    <div className="text-editor">
+      <div className='errortag-header'>
+        {/* <ArrowBackIcon className='errortag-backicon' /> */}
+        <div className='errortag-filename'>file110424</div>
+
+      </div>
+      <div className='main-bar'>
+        <button className="errortag-save" onClick={handleSave}>Save</button>
+        <button className="errortag-export" onClick={handleSave}>Export</button>
+      </div>
+      <div className='errortag-container'>
+        <div
+          className='errortag-text'
+          onMouseUp={handleSelectText}
+        // dangerouslySetInnerHTML={{ __html: text }}
+        >
+          {text}
+
         </div>
-        <div className='main-bar'>
-          <button onClick={handleSubmit}>Submit</button>
-          <button onClick={handleSave}>Save</button>
-        </div>
-        <div className='errortag-container'>
-          <div
-            className='errortag-text'
-            onMouseUp={handleSelectText}
-          // dangerouslySetInnerHTML={{ __html: text }}
-          >
-            {selectedRange.start > 0 && selectedRange.end > 0 && (
-              <>
-                {text.slice(0, selectedRange.start)}
-                <span style={{ backgroundColor: highlightColor }}>
-                  {text.slice(selectedRange.start, selectedRange.end)}
-                </span>
-                {text.slice(selectedRange.end)}
-              </>
-            )}
-            {text}
-          </div>
-          <div className="errortag-tagset">
-            <h3>Tagsets</h3>
-              {tags.length > 0 ? (
-                tags.map(rootTag => renderTags(rootTag))
-              ) : (
-                <p>No tagsets found.</p>
-              )}
-          </div>
-          <div className='errortag-footer'>
-            <input
-              className='correction'
-              type='text'
-              value={correction}
-              onChange={handleCorrectionChange}
-              placeholder="Enter correction"
-            />
-            <div className='footer-bar'>
-              <button className='errortag-submit-btn' onClick={handleSubmit}>Submit</button>
-              <button className='errortag-remove-btn' onClick={handleRemove}>Remove</button>
+        <div className="errortag-tagset">
+          <h3>Tagsets</h3>
+          {/* {tags.length > 0 ? (
+            tags.map(rootTag => renderTags(rootTag))
+          ) : (
+            <p>No tagsets found.</p>
+          )} */}
+          {tagsets.length > 0 ? (
+            <div>
+              {tagsets.map(tagset => (
+                <label key={tagset.tagset_id}>
+                  <input
+                    type="checkbox"
+                    value={tagset.tagset_id}
+                    checked={selectedTagsetId === tagset.tagset_id}
+                    onChange={() => setSelectedTagsetId(tagset.tagset_id)}
+                  />
+                  {tagset.tagset_name} - {tagset.description}
+                </label>
+              ))}
             </div>
+          ) : (
+            <p>No tagsets found.</p>
+          )}
+          <div>
+            <h3>Labels</h3>
+            {tags.length > 0 ? (
+              tags.map(rootTag => renderTags(rootTag))
+            ) : (
+              <p>No labels found.</p>
+            )}
+          </div>
+        </div>
+        <div className='errortag-footer'>
+          <input
+            className='correction'
+            type='text'
+            value={correction}
+            onChange={handleCorrectionChange}
+            placeholder="Enter correction"
+          />
+          <div className='footer-bar'>
+            <button className='errortag-submit-btn' onClick={handleSubmit}>Submit</button>
+            <button className='errortag-remove-btn' onClick={handleRemove}>Remove</button>
           </div>
         </div>
       </div>
-    </SideBar >
+
+    </div>
   );
 }
 

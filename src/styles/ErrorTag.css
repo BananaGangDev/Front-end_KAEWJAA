@@ -2,49 +2,36 @@
     background: #fff8f1;
     width: 100vw;
     height: 100vh;
-    /* display: table-column; */
     display: flex;
     flex-direction: column;
-    /* justify-content: center;
-    align-items: center;  */
     margin: 0;               
     padding: 0; 
 }
 
 .errortag-header {
-    height: 5%;
-    /* background-color: aquamarine; */
+    height: 5vh;
     display: grid;
     grid-template-columns: 2ch auto;
     align-items: center;
-    gap: 50px;
-    padding: 10px;
-}
-
-.errortag-backicon {
-    /* background-color: brown; */
-    height: 100%;
-    padding-left: 10px;
+    gap: 2vw;
+    padding: 1vh 2vw;
 }
 
 .errortag-filename {
-    /* background-color: blueviolet; */
     height: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
-    font-size: 24px;
+    font-size: 2.5vw;
     font-weight: 500;
-    margin-left: 100px;
 }
 
 .main-bar {
-    /* background-color: violet; */
-    height: 5%;
+    height: 5vh;
     display: flex;
     justify-content: center;
-    padding: 5px;
-    gap: 10px;
+    padding: 0.5vh;
+    gap: 1vw;
 }
 
 .main-bar button {
@@ -52,14 +39,13 @@
 }
 
 .errortag-container {
-    /* background-color: burlywood; */
-    height: 55%;
+    height: 55vh;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 50vw 30vw;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    gap: 5%;
+    padding: 2vh 4vw;
+    gap: 2%;
 }
 
 .errortag-text {
@@ -68,28 +54,32 @@
     display: flex;
     background-color: white;
     color: #515151;
-    border: 2px solid rgba(0, 0, 0, .1);
-    border-radius: 20px;
-    padding: 0 10px;
-    font-size: 24px;
+    border: 0.2vw solid rgba(0, 0, 0, .1);
+    border-radius: 2vw;
+    padding: 0 1vw;
+    font-size: 2.5vw;
 }
 
 .errortag-tagset {
-    background-color: antiquewhite;
+    /* background-color: antiquewhite;
     width: 30vw;
     height: 100%;
-    font-size: 24px;
+    font-size: 2.5vw; */
+        max-height: 300px; /* Adjust this height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Optional, for visual separation */
+    padding: 10px; /* Optional, for better appearance */
+    margin-top: 10px;
 }
 
 .errortag-footer {
-    /* background-color: violet; */
-    height: 22%;
+    height: 22vh;
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    gap: 5%;
+    padding: 2vh 4vw;
+    gap: 2%;
 }
 
 .correction {
@@ -97,42 +87,37 @@
     height: 100%;
     background-color: white;
     color: #515151;
-    border: 2px solid rgba(0, 0, 0, .1);
-    border-radius: 20px;
-    padding: 0 10px;
-    font-size: 24px;
+    border: 0.2vw solid rgba(0, 0, 0, .1);
+    border-radius: 2vw;
+    padding: 0 1vw;
+    font-size: 2.5vw;
 }
 
 .footer-bar {
-    /* background-color: antiquewhite; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 30vw;
     height: 100%;
-    gap: 10%;
+    gap: 2%;
 }
 
-.errortag-submit-btn {
+.errortag-submit-btn, .errortag-remove-btn {
     width: 70%;
     height: 40%;
-    border-radius: 20px;
-    /* background-color: #2B40FF; */
-    background-color: #5F5AB8;
-    font-size: 30px;
-}
-
-.errortag-remove-btn {
-    width: 70%;
-    height: 40%;
-    border-radius: 20px;
-    background-color: #FC5B5C;
-    font-size: 30px;
+    border-radius: 2vw;
+    font-size: 2.5vw;
 }
 
 .toggle-click {
     background-color: #E7E5FF;
     color: black;
-    margin: 5px;
+    margin: 1vh;
+}
+
+.toggle-click.selected {
+    background-color: #A29BFE; /* Change this to your preferred selected color */
+    color: white; /* Adjust the text color if needed */
+    font-weight: bold; /* Optional, make it more noticeable */
 }
