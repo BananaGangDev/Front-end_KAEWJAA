@@ -1,5 +1,8 @@
 import React, { StrictMode, useState, useEffect } from "react";
 import SideBar from "../components/SideBar";
+import notfound from '../assets/nopage.png';
+import choose from '../assets/choose.png';
+
 
 // Material-UI Icons
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
@@ -8,11 +11,13 @@ import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 
 // Material-UI Components
+import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Nivo Components
 import { ResponsivePie } from "@nivo/pie";
@@ -26,66 +31,81 @@ function Dashboard() {
     {
       theme: "#FC5B5C",
       label: "Total Document",
-      dataKey: "totalDocuments",
+      dataKey: "total",
       logo: <DescriptionOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#219653",
       label: "Checked Document",
-      dataKey: "checkedDocuments",
+      dataKey: "check",
       logo: <TaskAltOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#F98A6C",
       label: "Error Part",
-      dataKey: "errorParts",
+      dataKey: "error",
       logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     // {
     //   theme: "#5C83E5",
     //   label: "Tagset Root",
-    //   dataKey: "tagsetRoots",
+    //   dataKey: "tagset",
     //   logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }} />,
     // },
   ];
-  //API
-  const cardData = {
-    totalDocuments: 100,
-    checkedDocuments: 80,
-    errorParts: 10,
-    tagsetRoots: 2,
+  const [cardData, setCardData] = useState({});
+  // const cardData = {
+
+  // };
+  const [tagsetgroup, setTagsetgroup] = useState([]);
+  const [tagsetID, setTagsetID] = useState("");
+  const [statusFetch, setStatusFetch] = useState('');
+
+  const handleChange = async (event) => {
+    const selectedTagsetID = event.target.value;
+    setStatusFetch('')
+    setCardData({});
+    setGraphData([]);
+    setTagsetID(selectedTagsetID);
+    await fetchTagsetData(selectedTagsetID);
   };
 
-  const graphData =  [
-    {
-      "root_name": "F",
-      "data": [
-        {
-          "child_name": "FS",
-          "child_description": "Spelling error",
-          "count": 6,
-          "percent": "33.33333333333333"
-        },
-        {
-          "child_name": "FM",
-          "child_description": "Morphological error",
-          "count": 6,
-          "percent": "33.33333333333333"
-        }
-      ]
-    },
-    {
-      "root_name": "G",
-      "data": [
-        {
-          "child_name": "GA",
-          "child_description": "Artical",
-          "count": 6,
-          "percent": "33.33333333333333"
-        }
-      ]
+  //API
+  useEffect(() => {
+    const fetchTagset = async () => {
+      // const response = await api.get(`/holiday/check_holiday?holiday_date=${currentTime.toJSON().split('T')[0]}`);
+      const response = await API.get(`/tagsets/all`);
+      setTagsetgroup(response.data);
+    };
+
+    fetchTagset();
+  }, []);
+  useEffect(() => {});
+
+  const fetchTagsetData = async (ID) => {
+    console.log("id: ", tagsetID);
+    const responseTagdata = await API.get(
+      `/dashboard/get_stat?tagset_id=${ID}`
+    );
+    // setStatusFetch(responseTagdata.status)
+
+    //change DATA
+    if (responseTagdata.status == 200) {
+      console.log("status: ", responseTagdata.status);
+      setStatusFetch(200);
+      setCardData(responseTagdata.data.card_data);
+      setGraphData(responseTagdata.data.data);
     }
-  ]
+    if (responseTagdata.status == 204) {
+      console.log("status: ", responseTagdata.status);
+      setStatusFetch(204);
+      setCardData(responseTagdata.data.card_data);
+      setGraphData(responseTagdata.data.data);
+    }
+  };
+  // console.log("Data: ",tagsetData)
+
+  const [graphData, setGraphData] = useState([]);
 
   const dashboard_Data = [
     {
@@ -120,24 +140,34 @@ function Dashboard() {
     },
   ];
 
-  const pie_Data = graphData.map(parent => ({
+  const pie_Data = graphData ? graphData.map((parent) => ({
     id: parent.root_name,
-    value: parent.data.reduce((total, child) => total + parseFloat(child.percent), 0).toFixed(2),
-    tooltip: parent.data.map(child => ({ id: child.child_name, num: child.percent }))
-  }));
+    value: parent.data
+      .reduce((total, child) => total + parseFloat(child.percent), 0)
+      .toFixed(2),
+    tooltip: parent.data.map((child) => ({
+      id: child.child_name,
+      description: child.child_description,
+      num: child.percent,
+    })),
+  })) : [];
+  
 
   // const bar_Data = graphData.map((parent) => ({
   //   Value: parent.root_name,
   //   Errortagger: parent.data.reduce((total, child) => total + parseFloat(child.count), 0).toFixed(2),
   //   tooltipBar: parent.data.map(child => ({id: child.child_name, num: child.count}))
-  // }));    
-  const bar_Data = graphData.map((parent) => ({
+  // }));
+  const bar_Data = graphData ? graphData.map((parent) => ({
     Root: parent.root_name,
-    Errortagger: parent.data.reduce((total, child) => total + parseFloat(child.count), 0).toFixed(2),
-    tooltipBar: parent.data.map(child => ({id: child.child_name, num: child.count}))
-  }));    
-  console.log(bar_Data)
-
+    Errortagger: parent.data
+      .reduce((total, child) => total + parseFloat(child.count), 0)
+      .toFixed(2),
+    tooltipBar: parent.data.map((child) => ({
+      id: child.child_name,
+      num: child.count,
+    })),
+  })): [];
 
   // const line_Data = [
   //   {
@@ -149,32 +179,32 @@ function Dashboard() {
   //   },
   // ];
 
-  
-  
   const PieTooltip = ({ datum }) => {
     // ค้นหาข้อมูลของ slice จาก pie_Data โดยใช้ id ของ datum
-    const tooltipData = pie_Data.find(item => item.id === datum.id);
-    console.log(datum)
-    
+    const tooltipData = pie_Data.find((item) => item.id === datum.id);
+
     return (
-      <div className='pietooltip'>
+      <div className="pietooltip">
         <p>{datum.id}</p>
         {/* ถ้าพบข้อมูลใน tooltipData ให้แสดง tooltip */}
-        {tooltipData && tooltipData.tooltip.map(child => (
-          <p key={child.id}>{child.id}: {parseFloat(child.num).toFixed(2)}%</p>
-        ))}
+        {tooltipData &&
+          tooltipData.tooltip.map((child) => (
+            <p key={child.id}>
+              {child.id} ({child.description} ) :{" "}
+              {parseFloat(child.num).toFixed(2)}%
+            </p>
+          ))}
       </div>
     );
   };
 
   const BarTooltip = () => {
-    const datum =bar_Data
+    const datum = bar_Data;
     return (
-      <div className='bartooltip'>
+      <div className="bartooltip">
         <p>{datum.Value}</p>
       </div>
     );
-
   };
   // console.log('bar', bar_Data)
 
@@ -269,7 +299,7 @@ function Dashboard() {
           ],
         },
       ]}
-      tooltip={({ datum }) => <PieTooltip datum={datum} />} 
+      tooltip={({ datum }) => <PieTooltip datum={datum} />}
     />
   );
 
@@ -311,34 +341,41 @@ function Dashboard() {
       tooltip={(e) => (
         <div className="bartooltip">
           <p>{e.data.Root}</p>
+          <p>{e.data.tooltipBar}</p>
         </div>
       )}
     />
   );
-  
 
-
-
-  const [tagsetgroup, setTagsetgroup] = useState([{ title: "AjarnNok", id: 123 }, { title: "AjarnJack", id: 645}])
-  const [tagset, setTagset] = useState("");
-
-  const handleChange = (event) => {
-    setTagset(event.target.value);
+  const loading = () => {
+    return statusFetch != 204 ? (
+      <div className="loadingDashboard">
+        <h1>Loading</h1>
+        <CircularProgress id="loadingicon"/>
+      </div>
+    ) : null;
   };
 
-  //Get tag name
-  // useEffect(() => {
-  //   const fetchFilename = async () => {
-  //     try {
-  //       const response = await API.get(`/tagsets/all`);
-  //       console.log("API: ", response.data)
-  //       // setTagsetgroup(response.data)
-  //     } catch (error) {
-  //       console.error('Error fetching filename:', error);
-  //     }
-  //   };
-  //   fetchFilename();
-  // }, []);
+  const notFound= () => {
+    return (
+      <div className="notFoundAlert">
+       <img src={notfound} alt="No page found" style={{ height: "7em" }} />
+
+        <h2> Data not found. </h2>
+      </div>
+    )
+  }
+  const plzChooseTagset= () => {
+    return (
+      <div className="chooseplzChooseTagset">
+       <img src={choose} alt="No page found" style={{ height: "7em" }} />
+
+        <h2>Please choose a tagset.</h2>
+      </div>
+    )
+  }
+
+
 
   return (
     <SideBar>
@@ -353,49 +390,50 @@ function Dashboard() {
               style={{ width: "auto", minWidth: 200, background: "#fff" }}
             >
               <InputLabel id="demo-simple-select-label">Tagset</InputLabel>
-              <Select value={tagset} label="Tagset" onChange={handleChange}>
+              <Select value={tagsetID} label="Tagset" onChange={handleChange}>
                 {tagsetgroup.map((option, index) => (
-                  <MenuItem key={index} value={option.title}>
-                    {option.title}
+                  <MenuItem key={index} value={option.tagset_id}>
+                    {option.tagset_name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </div>
-          {tagset !== "" && (
-            <div className="cardsGroup">
-              {Cards.map((card, index) => (
-                <Paper
-                  key={index}
-                  className="card"
-                  sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
-                >
-                  <div className="cardLogo" style={{ color: card.theme }}>
-                    {card.logo}
-                  </div>
-                  <div className="cardContent">
-                    <div className="cardkey">{cardData[card.dataKey]} </div>
-                    <div className="cardLabel">{card.label} </div>
-                  </div>
-                </Paper>
-              ))}
-            </div>
-          )}
-          {tagset !== "" && (
-            <React.StrictMode>
-              <div className="PieChart" style={{ height: "400px" }}>
-                <MyResponsivePie data={pie_Data} />
-              </div>
-              {/* <div className="Line" style={{ height: "400px" }}>
-                <MyResponsiveLine data={line_Data} />
-              </div> */}
-              <div className="BarChart" style={{ height: "400px" }}>
-                <MyResponsiveBar data={bar_Data} />
-              </div>
-            </React.StrictMode>
-          )}
-          {tagset == "" && (
-            <div className="chooseTagAlert">Please choose tagset. </div>
+
+          {tagsetID !== "" ? (
+            statusFetch === '' ? (
+              loading()
+            ) : statusFetch === 200 ? (
+              <>
+                <div className="cardsGroup">
+                  {Cards.map((card, index) => (
+                    <Paper
+                      key={index}
+                      className="card"
+                      sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
+                    >
+                      <div className="cardLogo" style={{ color: card.theme }}>
+                        {card.logo}
+                      </div>
+                      <div className="cardContent">
+                        <div className="cardkey">{cardData[card.dataKey]}</div>
+                        <div className="cardLabel">{card.label}</div>
+                      </div>
+                    </Paper>
+                  ))}
+                </div>
+                <div className="PieChart" style={{ height: "400px" }}>
+                  <MyResponsivePie data={pie_Data} />
+                </div>
+                <div className="BarChart" style={{ height: "400px" }}>
+                  <MyResponsiveBar data={bar_Data} />
+                </div>
+              </>
+            ) : (
+              notFound()
+            )
+          ) : (
+            plzChooseTagset()
           )}
         </div>
       </div>
