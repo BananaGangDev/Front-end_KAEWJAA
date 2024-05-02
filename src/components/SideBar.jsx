@@ -131,7 +131,6 @@ function sidebar(props) {
 
               <Item icon={<DashboardIcon />} name="Dashboard" to="/dashboard" />
               <Item icon={<DescriptionIcon />} name="Document" to="/document" />
-              <Item icon={<DashboardIcon />} name="Dashboard" to="/dashboard" />
               <Item icon={<LocalOfferIcon />} name="Tagset" to="/choosetagset" />
               
             </div>
