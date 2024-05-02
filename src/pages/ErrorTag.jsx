@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 // import ArrowBackIcon from "@mui/icons-material/ArrowBackIcon";
 import { v4 as uuidv4 } from 'uuid';
 import SideBar from '../components/SideBar';
@@ -15,6 +16,8 @@ function TextEditor() {
   const [selectedRange, setSelectedRange] = useState({ start: 0, end: 0 });
   const [logs, setLogs] = useState([]);
   const [selectedTagsetId, setSelectedTagsetId] = useState(null); // Store selected tagset ID
+  const location = useLocation();
+  const { formData, totalPrice } = location.state || { formData: null, totalPrice: null };
 
   const handleSelectText = () => {
     const selection = window.getSelection();
@@ -107,26 +110,18 @@ function TextEditor() {
     reader.onload = function (e) {
       console.log(`Contents of the file (${fileName}):`, e.target.result);
     };
-    reader.readAsText(file); 
+    reader.readAsText(file);
 
     const formData = new FormData();
     formData.append('file', file);
 
-    console.log("Tagset id: ", typeof(selectedTagsetId));
+    console.log("Tagset id: ", typeof (selectedTagsetId));
     console.log("Blob: ", blob);
     console.log("File : ", file);
     console.log("File name : ", file.name);
 
     try {
       const response = await api.put(`/sys/save-file?tagset_id=${selectedTagsetId}`, formData);
-      // const response = await api({
-      //   method: 'PUT',
-      //   url: `/sys/save-file`,
-      //   params: { tagset_id: selectedTagsetId }, // Use params for query parameters
-      //   data: formData,
-      //   headers: { 'Content-Type': 'multipart/form-data' }
-      // });
-      const detail = response.detail;
       if (response.status === 200) {
         alert('File saved successfully!');
       } else {
@@ -137,6 +132,10 @@ function TextEditor() {
       alert('An error occurred while saving the file.');
     }
   };
+
+  const handleExport = async () => {
+    
+  }
 
   // Fetch all tagsets
   useEffect(() => {
@@ -295,7 +294,8 @@ function TextEditor() {
             )}
           </div>
         </div>
-        <div className='errortag-footer'>
+      </div>
+      <div className='errortag-footer'>
           <input
             className='correction'
             type='text'
@@ -308,7 +308,6 @@ function TextEditor() {
             <button className='errortag-remove-btn' onClick={handleRemove}>Remove</button>
           </div>
         </div>
-      </div>
 
     </div>
   );

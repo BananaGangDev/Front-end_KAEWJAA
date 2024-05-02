@@ -21,12 +21,12 @@ const ResetPassword = () => {
         </div>
         <hr id="line" />
         <div>
-          <label>Old Password</label>
-          <div className="old">
+          <label>Username</label>
+          <div className="reset-input">
             <input
-              className='input-old'
-                type="password"
-                placeholder="Old password"
+              className='input-username'
+                type="text"
+                placeholder="Username"
                 required
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
@@ -34,12 +34,12 @@ const ResetPassword = () => {
           </div>
         </div>
         <div>
-          <label>New Password</label>
-          <div className="new">
+          <label>Firstname</label>
+          <div className="reset-input">
             <input
-              className="input-new"
-              type="password"
-              placeholder="New password"
+              className="input-firstname"
+              type="text"
+              placeholder="Firstname"
               required
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
@@ -47,12 +47,12 @@ const ResetPassword = () => {
           </div>
         </div>
         <div>
-          <label>Confirm New Password</label>
-          <div className="confirm">
+          <label>Lastname</label>
+          <div className="reset-input">
             <input
-              className="input-confirm"
-              type="password"
-              placeholder="New password"
+              className="input-lastname"
+              type="text"
+              placeholder="Lastname"
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
