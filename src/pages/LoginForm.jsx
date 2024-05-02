@@ -106,6 +106,11 @@ const LoginForm = () => {
     }
   };
 
+  if (isLoggedIn) {
+    console.log("Login successfully!!!");
+    navigate('/dashboard');
+  }
+
   return (
     <div className='wrapper'>
       <form onSubmit={handleLogin}>

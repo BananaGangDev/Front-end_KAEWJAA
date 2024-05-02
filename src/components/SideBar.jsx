@@ -125,12 +125,12 @@ function sidebar(props) {
                 width: open ? "auto" : 0 }}
                 className="UserDetail"
               >
-                <div className="UserDetail_container">NAME:</div>
+                {/* <div className="UserDetail_container">NAME:</div> */}
                 <div className="UserDetail_container">USERNAME:</div>
               </motion.h3>
 
-              <Item icon={<DescriptionIcon />} name="Document" to="/document" />
               <Item icon={<DashboardIcon />} name="Dashboard" to="/dashboard" />
+              <Item icon={<DescriptionIcon />} name="Document" to="/document" />
               <Item icon={<LocalOfferIcon />} name="Tagset" to="/tagset" />
               
             </div>

@@ -1,5 +1,8 @@
-import React, { StrictMode, useState } from "react";
+import React, { StrictMode, useState, useEffect } from "react";
 import SideBar from "../components/SideBar";
+import notfound from '../assets/nopage.png';
+import choose from '../assets/choose.png';
+
 
 // Material-UI Icons
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
@@ -8,11 +11,13 @@ import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 
 // Material-UI Components
+import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Nivo Components
 import { ResponsivePie } from "@nivo/pie";
@@ -26,50 +31,96 @@ function Dashboard() {
     {
       theme: "#FC5B5C",
       label: "Total Document",
-      dataKey: "totalDocuments",
+      dataKey: "total",
       logo: <DescriptionOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#219653",
       label: "Checked Document",
-      dataKey: "checkedDocuments",
+      dataKey: "check",
       logo: <TaskAltOutlinedIcon sx={{ fontSize: 40 }} />,
     },
     {
       theme: "#F98A6C",
       label: "Error Part",
-      dataKey: "errorParts",
+      dataKey: "error",
       logo: <WarningAmberOutlinedIcon sx={{ fontSize: 40 }} />,
     },
-    {
-      theme: "#5C83E5",
-      label: "Tagset Root",
-      dataKey: "tagsetRoots",
-      logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }} />,
-    },
+    // {
+    //   theme: "#5C83E5",
+    //   label: "Tagset Root",
+    //   dataKey: "tagset",
+    //   logo: <TurnedInNotOutlinedIcon sx={{ fontSize: 40 }} />,
+    // },
   ];
-  //API
-  const cardData = {
-    totalDocuments: 100,
-    checkedDocuments: 80,
-    errorParts: 10,
-    tagsetRoots: 2,
+  const [cardData, setCardData] = useState({});
+  // const cardData = {
+
+  // };
+  const [tagsetgroup, setTagsetgroup] = useState([]);
+  const [tagsetID, setTagsetID] = useState("");
+  const [statusFetch, setStatusFetch] = useState('');
+
+  const handleChange = async (event) => {
+    const selectedTagsetID = event.target.value;
+    setStatusFetch('')
+    setCardData({});
+    setGraphData([]);
+    setTagsetID(selectedTagsetID);
+    await fetchTagsetData(selectedTagsetID);
   };
+
+  //API
+  useEffect(() => {
+    const fetchTagset = async () => {
+      // const response = await api.get(`/holiday/check_holiday?holiday_date=${currentTime.toJSON().split('T')[0]}`);
+      const response = await API.get(`/tagsets/all`);
+      setTagsetgroup(response.data);
+    };
+
+    fetchTagset();
+  }, []);
+  useEffect(() => {});
+
+  const fetchTagsetData = async (ID) => {
+    console.log("id: ", tagsetID);
+    const responseTagdata = await API.get(
+      `/dashboard/get_stat?tagset_id=${ID}`
+    );
+    // setStatusFetch(responseTagdata.status)
+
+    //change DATA
+    if (responseTagdata.status == 200) {
+      console.log("status: ", responseTagdata.status);
+      setStatusFetch(200);
+      setCardData(responseTagdata.data.card_data);
+      setGraphData(responseTagdata.data.data);
+    }
+    if (responseTagdata.status == 204) {
+      console.log("status: ", responseTagdata.status);
+      setStatusFetch(204);
+      setCardData(responseTagdata.data.card_data);
+      setGraphData(responseTagdata.data.data);
+    }
+  };
+  // console.log("Data: ",tagsetData)
+
+  const [graphData, setGraphData] = useState([]);
 
   const dashboard_Data = [
     {
       id: "Lexis (L)",
-      label: "Lexis (L)",
-      value: 7.5,
+      label: "Lexis (L) label",
+      value: 120,
     },
     {
       id: "Word(W)",
       label: "Word(W)",
-      value: 10.5,
+      value: 50,
     },
     {
       id: "Infelicities (Z)",
-      label: "Infelicities (Z)",
+      label: "Infelicities (Z) label",
       value: 100,
     },
     {
@@ -80,7 +131,7 @@ function Dashboard() {
     {
       id: "Grammar (G)",
       label: "Grammar (G)",
-      value: 21.8,
+      value: 90,
     },
     {
       id: "Form (F)",
@@ -89,63 +140,116 @@ function Dashboard() {
     },
   ];
 
-  const line_Data = [
-    {
-      id: "Errortager",
-      data: dashboard_Data.map((item) => ({
-        x: item.id,
-        y: item.value,
-      })),
-    },
-  ];
+  const pie_Data = graphData ? graphData.map((parent) => ({
+    id: parent.root_name,
+    value: parent.data
+      .reduce((total, child) => total + parseFloat(child.percent), 0)
+      .toFixed(2),
+    tooltip: parent.data.map((child) => ({
+      id: child.child_name,
+      description: child.child_description,
+      num: child.percent,
+    })),
+  })) : [];
+  
 
-  const bar_Data = dashboard_Data.map((item) => ({
-    Value: item.id,
-    Errortagger: item.value,
-  }));
+  // const bar_Data = graphData.map((parent) => ({
+  //   Value: parent.root_name,
+  //   Errortagger: parent.data.reduce((total, child) => total + parseFloat(child.count), 0).toFixed(2),
+  //   tooltipBar: parent.data.map(child => ({id: child.child_name, num: child.count}))
+  // }));
+  const bar_Data = graphData ? graphData.map((parent) => ({
+    Root: parent.root_name,
+    Errortagger: parent.data
+      .reduce((total, child) => total + parseFloat(child.count), 0),
+    tooltipBar: parent.data.map((child) => ({
+      id: child.child_name,
+      num: child.count,
+    })),
+  })): [];
+  console.log(bar_Data)
 
-  const MyResponsiveLine = ({ data }) => (
-    <ResponsiveLine
-      data={data}
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-      xScale={{ type: "point" }}
-      yScale={{
-        type: "linear",
-        min: "auto",
-        max: "auto",
-        stacked: true,
-        reverse: false,
-      }}
-      yFormat=" >-.2f"
-      axisTop={null}
-      axisRight={null}
-      axisBottom={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: "Error",
-        legendOffset: 36,
-        legendPosition: "middle",
-        truncateTickAt: 0,
-      }}
-      axisLeft={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: "Amount",
-        legendOffset: -40,
-        legendPosition: "middle",
-        truncateTickAt: 0,
-      }}
-      pointSize={10}
-      pointColor={{ from: "color", modifiers: [] }}
-      pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
-      pointLabelYOffset={-12}
-      enableTouchCrosshair={true}
-      useMesh={true}
-    />
-  );
+  // const line_Data = [
+  //   {
+  //     id: "Errortager",
+  //     data: dashboard_Data.map((item) => ({
+  //       x: item.id,
+  //       y: item.value,
+  //     })),
+  //   },
+  // ];
+
+  const PieTooltip = ({ datum }) => {
+    // ค้นหาข้อมูลของ slice จาก pie_Data โดยใช้ id ของ datum
+    const tooltipData = pie_Data.find((item) => item.id === datum.id);
+
+    return (
+      <div className="pietooltip">
+        <p>{datum.id}</p>
+        {/* ถ้าพบข้อมูลใน tooltipData ให้แสดง tooltip */}
+        {tooltipData &&
+          tooltipData.tooltip.map((child) => (
+            <p key={child.id}>
+              {child.id} ({child.description} ) :{" "}
+              {parseFloat(child.num).toFixed(2)}%
+            </p>
+          ))}
+      </div>
+    );
+  };
+
+  const BarTooltip = () => {
+    const datum = bar_Data;
+    return (
+      <div className="bartooltip">
+        <p>{datum.Value}</p>
+      </div>
+    );
+  };
+  // console.log('bar', bar_Data)
+
+  // const MyResponsiveLine = ({ data }) => (
+  //   <ResponsiveLine
+  //     data={data}
+  //     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+  //     xScale={{ type: "point" }}
+  //     yScale={{
+  //       type: "linear",
+  //       min: "auto",
+  //       max: "auto",
+  //       stacked: true,
+  //       reverse: false,
+  //     }}
+  //     yFormat=" >-.2f"
+  //     axisTop={null}
+  //     axisRight={null}
+  //     axisBottom={{
+  //       tickSize: 5,
+  //       tickPadding: 5,
+  //       tickRotation: 0,
+  //       legend: "Error",
+  //       legendOffset: 36,
+  //       legendPosition: "middle",
+  //       truncateTickAt: 0,
+  //     }}
+  //     axisLeft={{
+  //       tickSize: 5,
+  //       tickPadding: 5,
+  //       tickRotation: 0,
+  //       legend: "Amount",
+  //       legendOffset: -40,
+  //       legendPosition: "middle",
+  //       truncateTickAt: 0,
+  //     }}
+  //     pointSize={10}
+  //     pointColor={{ from: "color", modifiers: [] }}
+  //     pointBorderWidth={2}
+  //     pointBorderColor={{ from: "serieColor" }}
+  //     pointLabelYOffset={-12}
+  //     enableTouchCrosshair={true}
+  //     useMesh={true}
+  //   />
+  // );
 
   const MyResponsivePie = ({ data }) => (
     <ResponsivePie
@@ -170,26 +274,6 @@ function Dashboard() {
         from: "color",
         modifiers: [["darker", 2]],
       }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
       legends={[
         {
           anchor: "bottom",
@@ -215,6 +299,7 @@ function Dashboard() {
           ],
         },
       ]}
+      tooltip={({ datum }) => <PieTooltip datum={datum} />}
     />
   );
 
@@ -222,34 +307,12 @@ function Dashboard() {
     <ResponsiveBar
       data={data}
       keys={["Errortagger"]}
-      indexBy="Value"
+      indexBy="Root"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
       colors={{ scheme: "nivo" }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "#38bcb2",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "#eed312",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      axisTop={null}
-      axisRight={null}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
@@ -275,19 +338,47 @@ function Dashboard() {
         modifiers: [["darker", 1.6]],
       }}
       role="application"
-      ariaLabel="Nivo bar chart demo"
-      barAriaLabel={(e) =>
-        e.id + ": " + e.formattedValue + " in Value: " + e.indexValue
-      }
+      tooltip={(e) => (
+        <div className="bartooltip">
+          <p>{e.data.Root}</p>
+          {e.data.tooltipBar.map((item, index) => (
+          <p key={index}>{item.id}: {item.num}</p>
+        ))}
+          
+        </div>
+      )}
     />
   );
 
-  const tagsetgroup = [{ title: "AjarnNok" }, { title: "AjarnJack" }];
-  const [tagset, setTagset] = useState("");
-
-  const handleChange = (event) => {
-    setTagset(event.target.value);
+  const loading = () => {
+    return statusFetch != 204 ? (
+      <div className="loadingDashboard">
+        <h1>Loading</h1>
+        <CircularProgress id="loadingicon"/>
+      </div>
+    ) : null;
   };
+
+  const notFound= () => {
+    return (
+      <div className="notFoundAlert">
+       <img src={notfound} alt="No page found" style={{ height: "7em" }} />
+
+        <h2> Data not found. </h2>
+      </div>
+    )
+  }
+  const plzChooseTagset= () => {
+    return (
+      <div className="chooseplzChooseTagset">
+       <img src={choose} alt="No page found" style={{ height: "7em" }} />
+
+        <h2>Please choose a tagset.</h2>
+      </div>
+    )
+  }
+
+
 
   return (
     <SideBar>
@@ -302,53 +393,54 @@ function Dashboard() {
               style={{ width: "auto", minWidth: 200, background: "#fff" }}
             >
               <InputLabel id="demo-simple-select-label">Tagset</InputLabel>
-              <Select value={tagset} label="Tagset" onChange={handleChange}>
+              <Select value={tagsetID} label="Tagset" onChange={handleChange}>
                 {tagsetgroup.map((option, index) => (
-                  <MenuItem key={index} value={option.title}>
-                    {option.title}
+                  <MenuItem key={index} value={option.tagset_id}>
+                    {option.tagset_name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </div>
-          {tagset !== "" && (
-            <div className="cardsGroup">
-              {Cards.map((card, index) => (
-                <Paper
-                  key={index}
-                  className="card"
-                  sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
-                >
-                  <div className="cardLogo" style={{ color: card.theme }}>
-                    {card.logo}
-                  </div>
-                  <div className="cardContent">
-                    <div className="cardkey">{cardData[card.dataKey]} </div>
-                    <div className="cardLabel">{card.label} </div>
-                  </div>
-                </Paper>
-              ))}
-            </div>
-          )}
-          {tagset !== "" && (
-            <React.StrictMode>
-              <div className="PieChart" style={{ height: "400px" }}>
-                <MyResponsivePie data={dashboard_Data} />
-              </div>
-              <div className="Line" style={{ height: "400px" }}>
-                <MyResponsiveLine data={line_Data} />
-              </div>
-              <div className="BarChart" style={{ height: "400px" }}>
-                <MyResponsiveBar data={bar_Data} />
-              </div>
-            </React.StrictMode>
-          )}
-          {tagset == "" && (
-            <div className="chooseTagAlert">Please choose tagset. </div>
+
+          {tagsetID !== "" ? (
+            statusFetch === '' ? (
+              loading()
+            ) : statusFetch === 200 ? (
+              <>
+                <div className="cardsGroup">
+                  {Cards.map((card, index) => (
+                    <Paper
+                      key={index}
+                      className="card"
+                      sx={{ border: `solid 1px ${card.theme}`, width: 250 }}
+                    >
+                      <div className="cardLogo" style={{ color: card.theme }}>
+                        {card.logo}
+                      </div>
+                      <div className="cardContent">
+                        <div className="cardkey">{cardData[card.dataKey]}</div>
+                        <div className="cardLabel">{card.label}</div>
+                      </div>
+                    </Paper>
+                  ))}
+                </div>
+                <div className="PieChart" style={{ height: "400px" }}>
+                  <MyResponsivePie data={pie_Data} />
+                </div>
+                <div className="BarChart" style={{ height: "400px" }}>
+                  <MyResponsiveBar data={bar_Data} />
+                </div>
+              </>
+            ) : (
+              notFound()
+            )
+          ) : (
+            plzChooseTagset()
           )}
         </div>
       </div>
-      {console.log(line_Data)}
+      {/* {console.log(line_Data)} */}
     </SideBar>
   );
 }

@@ -1,12 +1,6 @@
-:root{
-  color:black;
+.documentpage{
+  padding: 2em 2em 0 2em;
 }
-
-body {
-  background: #FFF8F1;
-  box-sizing: border-box;
-}
-
 .document-title {
     /* font-family: Dangrek, sans-serif; */
     text-align: center;
