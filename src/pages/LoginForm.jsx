@@ -99,17 +99,17 @@ const LoginForm = () => {
       const { access_token, refresh_token } = response.data;
       login(access_token, refresh_token);
 
-      navigate('/concordance');
+      navigate('/dashboard');
     } catch (error) {
       alert('Invalid username or password');
       console.error('Login error:', error);
     }
   };
 
-  if (isLoggedIn) {
-    console.log("Login successfully!!!");
-    navigate('/dashboard');
-  }
+  // if (isLoggedIn) {
+  //   console.log("Login successfully!!!");
+  //   navigate('/dashboard');
+  // }
 
   return (
     <div className='wrapper'>
