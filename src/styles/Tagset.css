@@ -43,8 +43,8 @@
 .tagset-content {
     margin-inline: 10px; /* ระยะห่างด้านซ้ายของ Card */
     text-align: left; /* จัดเนื้อหาอยู่ด้านซ้าย */
-    margin-inline: auto;
-    margin-left: 5%;
+
+    margin: 0 1em 0 1em ;
     text-align: justify;
     display: flex;
     flex-direction: row;
@@ -70,21 +70,22 @@
     border-radius: 10px;
     /* width: 100%; */
     height: 40px;
+    
 }
 
 .tagset-action-button {
     display: inline-flex;
     /* top: -10px; */
-    /* padding-top: 8px; */
+    padding-top: 8px;
     /* padding-bottom: 0px; */
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
     margin-left: auto;
     margin-right: 10px;
-    margin-top: 7px;
-}
+    margin-top: 7px;*/
+} 
   
 .tagset-action-button > * {
     margin-left: 5px;
@@ -93,12 +94,23 @@
 
 
 .tagset-content {
-    text-align: left;
+    /* text-align: left; */
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+
 }
   
 .label-description {
     text-align: center;
+    margin-left: 10px;
     /* display: flex;
     flex-direction: row; */
+    margin-top: 7px;
+}
+
+.tagset-name-root {
+    display: flex;
+    align-items: center;
 }
   

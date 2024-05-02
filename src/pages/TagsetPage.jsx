@@ -122,50 +122,52 @@ function TagsetPage({
 
   const renderTags = (tagData) => {
     return (
-      <div key={tagData.label_id}>
-        <div className='label-button'
-          
-          style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
-          <div className='tagset-content'>
-            <div>
-            {tagData.children.length > 0 && <ExpandMoreIcon style={{cursor: "pointer"}} onClick={() => toggleTag(tagData)}/>} {tagData.label_name} - {tagData.label_description}
-            </div>
-            <div className='tagset-action-button'>
-              <AddBoxOutlinedIcon onClick={() => handleShowCreateModal(tagData)}/>
-              <EditOutlinedIcon onClick={() => handleEditModalShow(tagData)} />
-              <DeleteOutlinedIcon
-                onClick={() =>
-                  handleDeleteModalShow(tagData.label_id, tagData.label_name)
-                }
-              />
-            </div>
-          </div>
-        </div>
-        {tagData.isOpen && tagData.children.length > 0 && (
-          <div style={{ marginLeft: "40px" }}>
-            {tagData.children.map((child) => renderTags(child))}
-          </div>
-        )}
-      </div>
-
       // <div key={tagData.label_id}>
-      //   <div className='label-button' style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
+      //   <div className='label-button'
+          
+      //     style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
       //     <div className='tagset-content'>
-      //       <div>{tagData.children.length > 0 && <ExpandMoreIcon style={{cursor: "pointer"}} onClick={() => toggleTag(tagData)}/>} {tagData.label_name}</div>
-      //       <div className='label-description'>{tagData.label_description}</div>
+      //       <div>
+      //       {tagData.children.length > 0 && <ExpandMoreIcon style={{cursor: "pointer"}} onClick={() => toggleTag(tagData)}/>} {tagData.label_name} - {tagData.label_description}
+      //       </div>
       //       <div className='tagset-action-button'>
       //         <AddBoxOutlinedIcon onClick={() => handleShowCreateModal(tagData)}/>
       //         <EditOutlinedIcon onClick={() => handleEditModalShow(tagData)} />
-      //         <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(tagData.label_id, tagData.label_name)} />
+      //         <DeleteOutlinedIcon
+      //           onClick={() =>
+      //             handleDeleteModalShow(tagData.label_id, tagData.label_name)
+      //           }
+      //         />
       //       </div>
       //     </div>
       //   </div>
       //   {tagData.isOpen && tagData.children.length > 0 && (
-      //     <div style={{ marginLeft: '40px' }}>
-      //       {tagData.children.map(child => renderTags(child))}
+      //     <div style={{ marginLeft: "40px" }}>
+      //       {tagData.children.map((child) => renderTags(child))}
       //     </div>
       //   )}
       // </div>
+
+      <div key={tagData.label_id}>
+        <div className='label-button' style={{ backgroundColor: "#E7E5FF", marginBottom: "15px"}}>
+          <div className='tagset-content'>
+            <div className='tagset-name-root'>{tagData.children.length > 0 && <ExpandMoreIcon style={{cursor: "pointer", paddingTop:"7px"}} onClick={() => toggleTag(tagData)}/>}
+             {tagData.label_name}
+            </div>
+            <div className='label-description'>{tagData.label_description}</div>
+            <div className='tagset-action-button'>
+              <AddBoxOutlinedIcon onClick={() => handleShowCreateModal(tagData)}/>
+              <EditOutlinedIcon onClick={() => handleEditModalShow(tagData)} />
+              <DeleteOutlinedIcon onClick={() => handleDeleteModalShow(tagData.label_id, tagData.label_name)} />
+            </div>
+          </div>
+        </div>
+        {tagData.isOpen && tagData.children.length > 0 && (
+          <div style={{ marginLeft: '40px' }}>
+            {tagData.children.map(child => renderTags(child))}
+          </div>
+        )}
+      </div>
 
     );
   };
