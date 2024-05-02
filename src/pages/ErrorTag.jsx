@@ -107,7 +107,7 @@ function TextEditor() {
     reader.onload = function (e) {
       console.log(`Contents of the file (${fileName}):`, e.target.result);
     };
-    reader.readAsText(file);
+    reader.readAsText(file); 
 
     const formData = new FormData();
     formData.append('file', file);
@@ -126,6 +126,7 @@ function TextEditor() {
       //   data: formData,
       //   headers: { 'Content-Type': 'multipart/form-data' }
       // });
+      const detail = response.detail;
       if (response.status === 200) {
         alert('File saved successfully!');
       } else {

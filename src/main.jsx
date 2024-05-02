@@ -14,9 +14,12 @@ import TagsetPage from './pages/TagsetPage';
 import Errortag from '/src/pages/ErrorTag.jsx';
 import ChooseTagsetPage from './pages/ChooseTagsetPage.jsx';
 
+import { AuthProvider } from '/src/components/AuthContext.jsx';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route exact path="/" element={<LoginForm />} />
           <Route path="/document" element={<DocumentPage />} />
@@ -30,10 +33,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
           <Route path="*" element={<> not found</>} />
         </Routes>
-      </BrowserRouter>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>,
-  
+
 
 
 )
-  
