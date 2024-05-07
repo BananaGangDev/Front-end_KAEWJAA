@@ -81,6 +81,7 @@
     border: none;
     padding: 0.15em 1.0em;
     background-color: #FC5B5C;
+    color: #FFF8F1;
   }
   
   .sort-button:focus {
